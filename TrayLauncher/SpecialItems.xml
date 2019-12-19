@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Be very careful when editing this file.
+     Malformed XML can cause the application to crash
+-->
+<SpecialMenuItems>
+  <Shortcut>
+    <Name>Separator</Name>
+    <Path>Not Applicable</Path>
+    <Args>Not visible for a separator</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>About Windows</Name>
+    <Path>ms-settings:about</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>About Windows (WinVer)</Name>
+    <Path>Winver.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Account Pictures Folder</Name>
+    <Path>Shell:AccountPictures</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>AppData Folder</Name>
+    <Path>%AppData%</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>AutoPlay settings</Name>
+    <Path>ms-settings:autoplay</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Calculator</Name>
+    <Path>Calc.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Character Map</Name>
+    <Path>CharMap.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Clipboard Settings</Name>
+    <Path>ms-settings:clipboard</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Command Prompt</Name>
+    <Path>CMD.exe</Path>
+    <Args>/k</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Computer Management</Name>
+    <Path>MMC.exe</Path>
+    <Args>Compmgmt.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Connected Devices</Name>
+    <Path>ms-settings:connecteddevices</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Control Panel</Name>
+    <Path>Control.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Credential Manager</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.CredentialManager</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Date &amp; Time</Name>
+    <Path>Control.exe</Path>
+    <Args>TimeDate.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Date and Time</Name>
+    <Path>ms-settings:dateandtime</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Desktop Folder</Name>
+    <Path>shell:ThisPCDesktopFolder</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Device Manager</Name>
+    <Path>MMC.exe</Path>
+    <Args>devmgmt.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Devices and Printers</Name>
+    <Path>Control.exe</Path>
+    <Args>Printers</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Disk Management</Name>
+    <Path>MMC.exe</Path>
+    <Args>diskmgmt.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Display Settings</Name>
+    <Path>ms-settings:display</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Documents Folder</Name>
+    <Path>shell:Personal</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Downloads Folder</Name>
+    <Path>shell:Downloads</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Event Viewer</Name>
+    <Path>MMC.exe</Path>
+    <Args>Eventvwr.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>File History</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.FileHistory</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Fonts</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.Fonts</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Indexing Options</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.IndexingOptions</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Keyboard Properties</Name>
+    <Path>Control.exe</Path>
+    <Args>keyboard</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Libraries</Name>
+    <Path>shell:Libraries</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Local AppData Folder</Name>
+    <Path>%LocalAppData%</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Local AppData Low</Name>
+    <Path>shell:LocalAppDataLow</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Location Settings</Name>
+    <Path>ms-settings:privacy-location</Path>
+    <Args>s</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Microsoft Store</Name>
+    <Path>ms-windows-store://home/</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Microsoft Store Downloads</Name>
+    <Path>ms-windows-store://downloadsandupdates</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Microsoft Store Settings</Name>
+    <Path>ms-windows-store://Settings</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Mouse &amp; Touchpad</Name>
+    <Path>ms-settings:mousetouchpad</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Mouse Properties</Name>
+    <Path>Control.exe</Path>
+    <Args>Main.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Music Folder</Name>
+    <Path>shell:My Music</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Network Connections</Name>
+    <Path>Control.exe</Path>
+    <Args>ncpa.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Network Places</Name>
+    <Path>shell:NetworkPlacesFolder</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Network Status</Name>
+    <Path>ms-settings:network-status</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Networks Available</Name>
+    <Path>ms-availablenetworks:</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Notepad</Name>
+    <Path>Notepad.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Notification Settings</Name>
+    <Path>ms-settings:notifications</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>OneDrive Camera Roll</Name>
+    <Path>shell:OneDriveCameraRoll</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>OneDrive Documents</Name>
+    <Path>shell:OneDriveDocuments</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>OneDrive Folder</Name>
+    <Path>shell:OneDrive</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>OneDrive Music</Name>
+    <Path>shell:OneDriveMusic</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>OneDrive Pictures</Name>
+    <Path>shell:OneDrivePictures</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Performance Monitor</Name>
+    <Path>MMC.exe</Path>
+    <Args>perfmon.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Personalization</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.Personalization</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Pictures Folder</Name>
+    <Path>shell:My Pictures</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Power Options</Name>
+    <Path>Control.exe</Path>
+    <Args>powercfg.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Printers</Name>
+    <Path>Control.exe</Path>
+    <Args>Printers</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Printers and Scanners</Name>
+    <Path>ms-settings:printers</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Programs and Features</Name>
+    <Path>Control.exe</Path>
+    <Args>Appwiz.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Recent Items Folder</Name>
+    <Path>shell:Recent</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Recycle Bin</Name>
+    <Path>shell:RecycleBinFolder</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Region Settings</Name>
+    <Path>Control.exe</Path>
+    <Args>intl.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Registry Editor</Name>
+    <Path>Regedit.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Run Dialog</Name>
+    <Path>shell:::{2559a1f3-21d7-11d4-bdaf-00c04f60b9f0}</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>ScreenShots Folder</Name>
+    <Path>shell:Screenshots</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Security and Maintenance</Name>
+    <Path>Control.exe</Path>
+    <Args>Wscui.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>SendTo Folder</Name>
+    <Path>shell:SendTo</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Services</Name>
+    <Path>MMC.exe</Path>
+    <Args>Services.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Sound Settings</Name>
+    <Path>Control.exe</Path>
+    <Args>mmsys.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Start Menu Folder</Name>
+    <Path>shell:Start Menu</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Startup Apps</Name>
+    <Path>ms-settings:startupapps</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Startup Folder</Name>
+    <Path>shell:Startup</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>System Information</Name>
+    <Path>MsInfo32.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>System Properties</Name>
+    <Path>Control.exe</Path>
+    <Args>sysdm.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Task Manager</Name>
+    <Path>Taskmgr.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Task Scheduler</Name>
+    <Path>MMC.exe</Path>
+    <Args>taskschd.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Taskbar Settings</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.Taskbar</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Temp Folder</Name>
+    <Path>Explorer.exe</Path>
+    <Args>%TEMP%</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>This PC Folder</Name>
+    <Path>shell:MyComputerFolder</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Troubleshooting</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.Troubleshooting</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>User Accounts</Name>
+    <Path>Control.exe</Path>
+    <Args>/name Microsoft.UserAccounts</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>User Files Folder</Name>
+    <Path>shell:UsersFilesFolder</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>User Profile Folder</Name>
+    <Path>shell:Profile</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>User Programs Folder</Name>
+    <Path>shell:UserProgramFiles</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Video Folder</Name>
+    <Path>shell:My Video</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Wi-Fi</Name>
+    <Path>ms-settings:network-wifi</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Defender Firewall</Name>
+    <Path>Control.exe</Path>
+    <Args>firewall.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Firewall</Name>
+    <Path>MMC.exe</Path>
+    <Args>WF.msc</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Folder</Name>
+    <Path>Explorer.exe</Path>
+    <Args>%WINDIR%</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows PowerShell</Name>
+    <Path>PowerShell.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Privacy</Name>
+    <Path>ms-settings:privacy</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Recovery</Name>
+    <Path>ms-settings:recovery</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Security (Defender)</Name>
+    <Path>ms-settings:windowsdefender</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Settings</Name>
+    <Path>ms-settings:</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows System Folder</Name>
+    <Path>shell:System</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Update</Name>
+    <Path>ms-settings:windowsupdate</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Update History</Name>
+    <Path>ms-settings:windowsupdate-history</Path>
+    <Args></Args>
+  </Shortcut>
+
+  <!-- New Item Template
+
+  <Shortcut>
+    <Name></Name>
+    <Path></Path>
+    <Args></Args>
+  </Shortcut>
+
+  -->
+</SpecialMenuItems>

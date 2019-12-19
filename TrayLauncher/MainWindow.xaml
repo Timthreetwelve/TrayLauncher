@@ -1,0 +1,421 @@
+﻿<Window x:Class="TrayLauncher.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Properties="clr-namespace:TrayLauncher.Properties"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TrayLauncher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
+    mc:Ignorable="d"
+    Title="TrayLauncher"
+    Width="800"
+    Height="450"
+    MaxWidth="{x:Static SystemParameters.PrimaryScreenWidth}"
+    Closing="Window_Closing"
+    KeyUp="Window_KeyUp"
+    SizeToContent="WidthAndHeight"
+    StateChanged="Window_StateChanged">
+
+    <Window.Resources>
+        <!--  This provides a way to change the menu background in code  -->
+        <SolidColorBrush x:Key="brush1" Color="White" />
+        <ItemsPanelTemplate x:Key="MenuTPL">
+            <StackPanel Margin="-2,0,0,0" Background="{StaticResource ResourceKey=brush1}" />
+        </ItemsPanelTemplate>
+
+        <!--  Style to right align text in the data grid  -->
+        <Style x:Key="alignRight" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,0,5,0" />
+        </Style>
+
+        <!--  Style to "pad" text in cells in the data grid  -->
+        <Style x:Key="ColumnMargin5" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5,0,5,0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!--  Taskbar Icon  -->
+        <tb:TaskbarIcon x:Name="myNotifyIcon"
+            MenuActivation="RightClick"
+            ToolTipText="TrayLauncher"
+            TrayMouseDoubleClick="MyNotifyIcon_TrayMouseDoubleClick"
+            Visibility="Visible">
+
+            <!--  Fancy Tooltip  -->
+            <tb:TaskbarIcon.TrayToolTip>
+                <Border
+                    Width="100"
+                    Height="30"
+                    Background="WhiteSmoke"
+                    BorderBrush="Black"
+                    BorderThickness="2"
+                    CornerRadius="5"
+                    Opacity=".9">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontWeight="Normal"
+                        Foreground="Black"
+                        Text="TrayLauncher" />
+                </Border>
+            </tb:TaskbarIcon.TrayToolTip>
+
+            <!--  Context menu  -->
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu Name="trayMenu" Background="{StaticResource ResourceKey=brush1}">
+                    <ContextMenu.Style>
+                        <Style TargetType="{x:Type ContextMenu}">
+                            <Setter Property="ItemsPanel" Value="{StaticResource MenuTPL}" />
+                            <Setter Property="HasDropShadow" Value="True" />
+                        </Style>
+                    </ContextMenu.Style>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
+        <!--  Main window  -->
+        <StackPanel
+            Height="28"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+
+            <!--  Dock menu at top  -->
+            <DockPanel LastChildFill="False">
+
+                <!--  Begin menu  -->
+                <Menu x:Name="mnuMain"
+                    Height="28"
+                    Padding="10,5,0,0"
+                    Background="White"
+                    DockPanel.Dock="Top"
+                    FontSize="13">
+
+                    <!--  File menu  -->
+                    <MenuItem Header="_File">
+                        <MenuItem Name="mnuExit"
+                            Click="MnuExit_Click"
+                            Header="Exit"
+                            InputGestureText="Alt+F4" />
+                    </MenuItem>
+
+                    <!--  Action menu  -->
+                    <MenuItem Header="Configuration">
+                        <MenuItem Name="mnuAdd"
+                            Click="MnuAdd_Click"
+                            Header="Add Menu Item" />
+                        <MenuItem Name="mnuDelete"
+                            Click="MnuDel_Click"
+                            Header="Remove Selected Item" />
+                        <MenuItem Name="mnuUpdate"
+                            Click="MnuUpdate_Click"
+                            Header="Update Selected Item" />
+                        <Separator />
+                        <MenuItem Name="mnuTest"
+                            Click="MnuTest_Click"
+                            Header="Test Selected Item" />
+                        <Separator />
+                        <MenuItem Name="mnuRefresh"
+                            Click="MnuRefresh_Click"
+                            Header="Refresh List" />
+                        <Separator />
+                        <MenuItem Name="mnuBackupXML"
+                            Click="MnuBackupXML_Click"
+                            Header="Backup Menu File" />
+                    </MenuItem>
+
+                    <!--  Options  -->
+                    <MenuItem Header="Options">
+                        <MenuItem Name="mnuStartWW"
+                            Checked="MnuStartWW_Checked"
+                            Header="Start with Windows"
+                            IsCheckable="True"
+                            Unchecked="MnuStartWW_Unchecked" />
+                        <MenuItem Name="mnuStartNotify"
+                            Checked="MnuStartNotify_Checked"
+                            Header="Startup Notification"
+                            IsCheckable="True"
+                            Unchecked="MnuStartNotify_Unchecked" />
+                        <MenuItem Name="mnuHideOnStart"
+                            Checked="MnuHideOnStart_Checked"
+                            Header="Hide Main Window on Start"
+                            IsCheckable="True"
+                            Unchecked="MnuHideOnStart_Unchecked" />
+                        <Separator />
+                        <MenuItem x:Name="mnuFontIncrease"
+                            Click="MnuFontIncrease_Click"
+                            Header="Increase Font Size"
+                            InputGestureText="Ctrl+Num +" />
+                        <MenuItem x:Name="mnuFontDecrease"
+                            Click="MnuFontDecrease_Click"
+                            Header="Decrease Font Size"
+                            InputGestureText="Ctrl+Num -" />
+                        <Separator />
+                        <MenuItem Name="mnuBackColor" Header="Background Color">
+                            <StackPanel Margin="-35,0,-50,0" Orientation="Vertical">
+                                <ComboBox Name="CmbBackground"
+                                    Width="190"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    SelectionChanged="CmbBackground_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle
+                                                    Width="24"
+                                                    Height="16"
+                                                    Margin="0,2,5,2"
+                                                    Fill="{Binding Name}" />
+                                                <TextBlock Text="{Binding Name}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </MenuItem>
+                        <MenuItem Name="mnuTextColor" Header="Text Color">
+                            <StackPanel Margin="-35,0,-50,0" Orientation="Vertical">
+                                <ComboBox Name="CmbForeground"
+                                    Width="190"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    SelectionChanged="CmbForeground_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle
+                                                    Width="24"
+                                                    Height="16"
+                                                    Margin="0,2,5,2"
+                                                    Fill="{Binding Name}" />
+                                                <TextBlock Text="{Binding Name}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </MenuItem>
+                        <MenuItem Name="mnuSepColor" Header="Separator Color">
+                            <StackPanel Margin="-35,0,-50,0" Orientation="Vertical">
+                                <ComboBox Name="CmbSeparator"
+                                    Width="190"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    SelectionChanged="CmbSeparator_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle
+                                                    Width="24"
+                                                    Height="16"
+                                                    Margin="0,2,5,2"
+                                                    Fill="{Binding Name}" />
+                                                <TextBlock Text="{Binding Name}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </MenuItem>
+                        <MenuItem Header="Menu Color Preview">
+                            <TextBlock Name="tbColorSample"
+                                Width="150"
+                                Height="50"
+                                Margin="-35,0,-55,0"
+                                Padding="10,15"
+                                Text="Menu Color Preview"
+                                TextWrapping="Wrap" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Tray Icon Color">
+                            <MenuItem Name="mnuBlueIco"
+                                Click="MnuBlueIco_Click"
+                                Header="Blue">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="LightSkyBlue" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="mnuBlackIco"
+                                Click="MnuBlackIco_Click"
+                                Header="Black">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="Black" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="mnuCyanIco"
+                                Click="MnuCyanIco_Click"
+                                Header="Cyan">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="Cyan" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="mnuGreenIco"
+                                Click="MnuGreenIco_Click"
+                                Header="Green">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="LimeGreen" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="mnuOrangeIco"
+                                Click="MnuOrangeIco_Click"
+                                Header="Orange">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="OrangeRed" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="mnuRedIco"
+                                Click="MnuRedIco_Click"
+                                Header="Red">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="Red" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="mnuWhiteIco"
+                                Click="MnuWhiteIco_Click"
+                                Header="White">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="White" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="mnuYellowIco"
+                                Click="MnuYellowIco_Click"
+                                Header="Yellow">
+                                <MenuItem.Icon>
+                                    <Rectangle
+                                        Width="16"
+                                        Height="16"
+                                        Fill="Yellow" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                    </MenuItem>
+                    <!--  Help menu  -->
+                    <MenuItem Header="_Help">
+                        <MenuItem Name="mnuReadme"
+                            Click="MnuReadme_Click"
+                            Header="View Readme File" />
+                        <MenuItem Name="mnuAbout"
+                            Click="MnuAbout_Click"
+                            Header="About"
+                            InputGestureText="F1" />
+                    </MenuItem>
+                </Menu>
+            </DockPanel>
+        </StackPanel>
+
+        <!--  theDataGrid  -->
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" />
+            <DataGrid x:Name="theDataGrid"
+                MinHeight="50"
+                Margin="10,30,10,20"
+                AlternatingRowBackground="WhiteSmoke"
+                AlternationCount="1"
+                AutoGenerateColumns="False"
+                BorderBrush="#E2E2E2"
+                CanUserAddRows="False"
+                CanUserSortColumns="False"
+                FrozenColumnCount="1"
+                HeadersVisibility="Column"
+                HorizontalGridLinesBrush="#E2E2E2"
+                HorizontalScrollBarVisibility="Auto"
+                IsReadOnly="True"
+                MouseDoubleClick="DataGridRow_MouseDoubleClick"
+                SelectionMode="Single"
+                SelectionUnit="FullRow"
+                VerticalGridLinesBrush="#E2E2E2">
+
+                <!--  Style to show separators in gray  -->
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Foreground" Value="Black" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Header}" Value="Separator">
+                                <Setter Property="Foreground" Value="Gray" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+
+
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Name="dgcmAdd"
+                            Click="MnuAdd_Click"
+                            Header="Add Menu Item" />
+                        <MenuItem Name="dgcmRemove"
+                            Click="MnuDel_Click"
+                            Header="Remove Selected Item" />
+                        <MenuItem Name="dgcmUpdate"
+                            Click="MnuUpdate_Click"
+                            Header="Update Selected Item" />
+                        <Separator />
+                        <MenuItem Name="dgcmTest"
+                            Click="MnuTest_Click"
+                            Header="Test Selected Item" />
+                        <Separator />
+                        <MenuItem Name="dgcmRefresh"
+                            Click="MnuRefresh_Click"
+                            Header="Refresh Menu List" />
+
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <!--  Datagrid columns  -->
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="40"
+                        Binding="{Binding Pos}"
+                        ElementStyle="{StaticResource alignRight}"
+                        Header="Pos" />
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="120"
+                        Binding="{Binding Header}"
+                        ElementStyle="{StaticResource ColumnMargin5}"
+                        Header="Menu Text" />
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="120"
+                        Binding="{Binding AppPath}"
+                        ElementStyle="{StaticResource ColumnMargin5}"
+                        Header="Application Path" />
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="120"
+                        Binding="{Binding Arguments}"
+                        ElementStyle="{StaticResource ColumnMargin5}"
+                        Header="Arguments" />
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="120"
+                        Binding="{Binding ToolTip}"
+                        ElementStyle="{StaticResource ColumnMargin5}"
+                        Header="Tooltip" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel Margin="10" />
+    </Grid>
+</Window>

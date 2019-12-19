@@ -1,0 +1,147 @@
+﻿<Window x:Class="TrayLauncher.AddItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TrayLauncher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Add a Menu Item"
+    Width="800"
+    Height="300"
+    MinWidth="590"
+    FontSize="14"
+    SizeToContent="Height"
+    WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="125" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Menu Item Text" />
+        <TextBox x:Name="tbAddHeader"
+            Grid.Row="1"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Application Path" />
+        <TextBox x:Name="tbAddAppPath"
+            Grid.Row="2"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Arguments" />
+        <TextBox x:Name="tbAddArguments"
+            Grid.Row="3"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="ToolTip" />
+        <TextBox x:Name="tbAddToolTip"
+            Grid.Row="4"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Position" />
+        <TextBox x:Name="tbAddPosition"
+            Grid.Row="5"
+            Grid.Column="2"
+            Width="50"
+            Height="25"
+            Margin="0,0,30,0"
+            HorizontalAlignment="Left"
+            MaxLength="5"
+            PreviewTextInput="TbAddPosition_PreviewTextInput_1" />
+
+        <TextBlock
+            Grid.Row="6"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Special Items" />
+        <ComboBox Name="cmbSpecial"
+            Grid.Row="6"
+            Grid.Column="2"
+            Width="200"
+            Height="25"
+            Margin="0,5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
+            SelectedIndex="0"
+            SelectionChanged="CmbSpecial_SelectionChanged" />
+        <StackPanel
+            Grid.Row="6"
+            Grid.Column="3"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+
+            <Button x:Name="btnAdd"
+                Width="70"
+                Height="25"
+                Margin="2,2,15,2"
+                Click="BtnAdd_Click"
+                Content="Add" />
+            <Button x:Name="btnExitAdd"
+                Width="70"
+                Height="25"
+                Margin="2"
+                Click="BtnExitAdd_Click"
+                Content="Done" />
+        </StackPanel>
+        <TextBlock x:Name="lblStatus"
+            Grid.Row="7"
+            Grid.Column="3"
+            Width="280"
+            Height="35"
+            Margin="0,5,3,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch"
+            TextAlignment="Right" />
+    </Grid>
+</Window>

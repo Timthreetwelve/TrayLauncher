@@ -1,0 +1,118 @@
+﻿<Window x:Class="TrayLauncher.UpdateItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TrayLauncher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Update Menu Item"
+    Width="800"
+    Height="300"
+    FontSize="14"
+    SizeToContent="Height"
+    WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Menu Item Text" />
+        <TextBox x:Name="tbUpdateHeader"
+            Grid.Row="1"
+            Grid.Column="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Application Path" />
+        <TextBox x:Name="tbUpdateAppPath"
+            Grid.Row="2"
+            Grid.Column="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Arguments" />
+        <TextBox x:Name="tbUpdateArguments"
+            Grid.Row="3"
+            Grid.Column="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="ToolTip" />
+        <TextBox x:Name="tbUpdateToolTip"
+            Grid.Row="4"
+            Grid.Column="2"
+            Height="25"
+            Margin="0,0,0,0"
+            MaxLength="260" />
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="1"
+            Margin="0,0,10,0"
+            VerticalAlignment="Center"
+            Text="Position" />
+        <TextBox x:Name="tbUpdatePosition"
+            Grid.Row="5"
+            Grid.Column="2"
+            Width="50"
+            Height="25"
+            Margin="0,0,30,0"
+            HorizontalAlignment="Left"
+            MaxLength="5"
+            PreviewTextInput="TbUpdatePosition_PreviewTextInput" />
+        <TextBlock x:Name="lblStatus"
+            Grid.Row="6"
+            Grid.Column="2"
+            Width="440"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" />
+        <StackPanel
+            Grid.Row="6"
+            Grid.Column="2"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button x:Name="btnUpdate"
+                Width="70"
+                Margin="2,2,15,2"
+                Click="BtnUpdate_Click"
+                Content="Update" />
+            <Button x:Name="btnExitUpdate"
+                Width="70"
+                Margin="2"
+                Click="BtnExitUpdate_Click"
+                Content="Cancel" />
+        </StackPanel>
+
+    </Grid>
+</Window>

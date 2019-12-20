@@ -51,6 +51,7 @@ namespace TrayLauncher
         #region Read Settings
         private void ReadSettings()
         {
+            WriteLog.WriteTempFile("Entering UpdateItem");
             xmlMenuFile = Properties.Settings.Default.XMLfile;
             FontSize = Properties.Settings.Default.FontSize;
 
@@ -166,6 +167,7 @@ namespace TrayLauncher
                                        $"AppPath: {tbUpdateAppPath.Text}, " +
                                        $"Arguments: {tbUpdateArguments.Text}, " +
                                        $"Tooltip: {tbUpdateToolTip.Text} ");
+                WriteLog.WriteTempFile("Leaving UpdateItem");
                 Close();
             }
             catch (Exception ex)
@@ -179,6 +181,7 @@ namespace TrayLauncher
 
         private void BtnExitUpdate_Click(object sender, RoutedEventArgs e)
         {
+            WriteLog.WriteTempFile("Leaving UpdateItem");
             Close();
         }
         #endregion

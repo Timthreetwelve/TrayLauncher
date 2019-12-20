@@ -16,9 +16,9 @@ namespace TrayLauncher
         #region Only One Instance
         private static Mutex _mutex = null;
 
-        //
-        // Make sure that only one instance is running
-        //
+        /////////////////////////////////////////////////
+        // Make sure that only one instance is running //
+        /////////////////////////////////////////////////
         protected override void OnStartup(StartupEventArgs e)
         {
             const string appName = "TrayLauncher";

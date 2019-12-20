@@ -12,12 +12,12 @@ infrequently used program or setting that takes you minutes to locate.
 How TrayLauncher Works
 ======================
 When TrayLauncher is first run is will put an icon in the system tray and open its main window.
-It will also put a message in the notification area. You can choose to disable the message and
-hide the main window if desired.
+It will also show a message in the notification area. You can choose to disable the message and
+hide the main window in the Options menu if desired.
 
-Left-clicking the icon in the system tray will display the menu. Initially this menu contains
-some items to get you started. As you would expect, clicking on the menu item will launch the
-application associated with that item.
+Left-clicking the icon in the system tray will display the menu. This menu contains a few items
+to get you started. As you would expect, clicking on the menu item will launch the application
+associated with that item.
 
 
 Main Window
@@ -28,8 +28,8 @@ of the menu separators. Additionally you can change the font size and the color 
 icon.
 
 The grid below the menu contains the items that have been added to the TrayLauncher menu. Two
-additional items will always appear on the menu. Manage appears at the top of the menu. Clicking
-Manage will display the main window if it is hidden. Exit appears as the last item on the menu.
+additional items will always appear on the menu. "Manage" appears at the top of the menu. Clicking
+Manage will display the main window if it is hidden. "Exit" appears as the last item on the menu.
 Clicking Exit will end the TrayLauncher application.
 
 When minimized the main window will not show in the task bar. To reopen it, double-click the
@@ -38,7 +38,7 @@ tray icon or left-click and select Manage at the top of the menu.
 
 Adding Entries
 ==============
-To add a menu entry, select Configuration from the main window and then select Add Menu Item.
+To add a menu entry, select the Configuration menu in the main window and then select Add Menu Item.
 A window will open.
 
 Enter the name of the menu item in the Menu Item Text field. This is the text that will be displayed
@@ -65,7 +65,7 @@ will renumber the list, starting at 100 and incrementing each item by 10. The Po
 required for every menu item.
 
 You can separate menu items into groups by placing a Separator between items. To add a separator
-enter separator in the Menu Item Text field and supply a value in the position field. Alternately
+enter "Separator" in the Menu Item Text field and supply a value in the position field. Alternately
 use the predefined separator from the drop-down discussed in the next paragraph. The other fields
 are ignored for a separator. Note that tooltips are not visible for separators. Separators appear
 grayed out in the main window as a visual cue.
@@ -153,6 +153,8 @@ existing icons or copy a new icon into that folder and name it the original name
 was renamed. Then select that icon from the Icon Color menu. Note that the new icon must be an ICO
 file and not another image format renamed to ICO.
 
+If the separators are showing on the menu as words instead of horizontal lines, check the spelling,
+that first "a" can be tricky.
 
 Diagnostics
 ===========

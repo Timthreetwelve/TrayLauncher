@@ -99,6 +99,11 @@
     <Args>Printers</Args>
   </Shortcut>
   <Shortcut>
+    <Name>Disk Cleanup</Name>
+    <Path>Cleanmgr.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
     <Name>Disk Management</Name>
     <Path>MMC.exe</Path>
     <Args>diskmgmt.msc</Args>
@@ -346,6 +351,11 @@
   <Shortcut>
     <Name>Startup Folder</Name>
     <Path>shell:Startup</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>System Configuration</Name>
+    <Path>msconfig.exe</Path>
     <Args></Args>
   </Shortcut>
   <Shortcut>

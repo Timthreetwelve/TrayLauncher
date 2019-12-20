@@ -5,41 +5,41 @@
     <Setting Name="SettingsUpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="FirstRun" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="WindowTop" Type="System.Double" Scope="User">
       <Value Profile="(Default)">200</Value>
     </Setting>
     <Setting Name="WindowLeft" Type="System.Double" Scope="User">
       <Value Profile="(Default)">200</Value>
     </Setting>
+	<Setting Name="FirstRun" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
     <Setting Name="BackColor" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">137</Value>
-    </Setting>
-    <Setting Name="StartWithWindows" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ForeColor" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">7</Value>
     </Setting>
+    <Setting Name="SeparatorColor" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="Icon" Type="System.String" Scope="User">
+      <Value Profile="(Default)">orange</Value>
+    </Setting>
+    <Setting Name="StartWithWindows" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="StartNotification" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="HideOnStart" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="XMLfile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FontSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">12</Value>
-    </Setting>
-    <Setting Name="Icon" Type="System.String" Scope="User">
-      <Value Profile="(Default)">orange</Value>
-    </Setting>
-    <Setting Name="SeparatorColor" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
-    </Setting>
-    <Setting Name="HideOnStart" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ShadeAltRows" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

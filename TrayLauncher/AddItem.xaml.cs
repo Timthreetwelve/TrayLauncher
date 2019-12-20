@@ -90,6 +90,7 @@ namespace TrayLauncher
         #region Read Settings
         private void ReadSettings()
         {
+            WriteLog.WriteTempFile("Entering AddItem");
             lblStatus.Text = "Ready";
             lblStatus.Foreground = Brushes.SlateGray;
 
@@ -217,6 +218,7 @@ namespace TrayLauncher
         // Close window when Exit button clicked
         private void BtnExitAdd_Click(object sender, RoutedEventArgs e)
         {
+            WriteLog.WriteTempFile($"Leaving AddItem, {addCount} items added");
             Close();
         }
 

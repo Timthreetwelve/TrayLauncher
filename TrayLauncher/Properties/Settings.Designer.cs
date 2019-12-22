@@ -37,18 +37,6 @@ namespace TrayLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FirstRun {
-            get {
-                return ((bool)(this["FirstRun"]));
-            }
-            set {
-                this["FirstRun"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("200")]
         public double WindowTop {
             get {
@@ -73,6 +61,18 @@ namespace TrayLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstRun {
+            get {
+                return ((bool)(this["FirstRun"]));
+            }
+            set {
+                this["FirstRun"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("137")]
         public int BackColor {
             get {
@@ -80,18 +80,6 @@ namespace TrayLauncher.Properties {
             }
             set {
                 this["BackColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool StartWithWindows {
-            get {
-                return ((bool)(this["StartWithWindows"]));
-            }
-            set {
-                this["StartWithWindows"] = value;
             }
         }
         
@@ -109,37 +97,13 @@ namespace TrayLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool StartNotification {
+        [global::System.Configuration.DefaultSettingValueAttribute("24")]
+        public int SeparatorColor {
             get {
-                return ((bool)(this["StartNotification"]));
+                return ((int)(this["SeparatorColor"]));
             }
             set {
-                this["StartNotification"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string XMLfile {
-            get {
-                return ((string)(this["XMLfile"]));
-            }
-            set {
-                this["XMLfile"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("12")]
-        public double FontSize {
-            get {
-                return ((double)(this["FontSize"]));
-            }
-            set {
-                this["FontSize"] = value;
+                this["SeparatorColor"] = value;
             }
         }
         
@@ -157,13 +121,25 @@ namespace TrayLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7")]
-        public int SeparatorColor {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StartWithWindows {
             get {
-                return ((int)(this["SeparatorColor"]));
+                return ((bool)(this["StartWithWindows"]));
             }
             set {
-                this["SeparatorColor"] = value;
+                this["StartWithWindows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool StartNotification {
+            get {
+                return ((bool)(this["StartNotification"]));
+            }
+            set {
+                this["StartNotification"] = value;
             }
         }
         
@@ -176,6 +152,30 @@ namespace TrayLauncher.Properties {
             }
             set {
                 this["HideOnStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string XMLfile {
+            get {
+                return ((string)(this["XMLfile"]));
+            }
+            set {
+                this["XMLfile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("14")]
+        public double FontSize {
+            get {
+                return ((double)(this["FontSize"]));
+            }
+            set {
+                this["FontSize"] = value;
             }
         }
         

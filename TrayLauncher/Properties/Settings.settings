@@ -11,7 +11,7 @@
     <Setting Name="WindowLeft" Type="System.Double" Scope="User">
       <Value Profile="(Default)">200</Value>
     </Setting>
-	<Setting Name="FirstRun" Type="System.Boolean" Scope="User">
+    <Setting Name="FirstRun" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="BackColor" Type="System.Int32" Scope="User">
@@ -21,7 +21,7 @@
       <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="SeparatorColor" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
+      <Value Profile="(Default)">24</Value>
     </Setting>
     <Setting Name="Icon" Type="System.String" Scope="User">
       <Value Profile="(Default)">orange</Value>
@@ -39,7 +39,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FontSize" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">12</Value>
+      <Value Profile="(Default)">14</Value>
     </Setting>
     <Setting Name="ShadeAltRows" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

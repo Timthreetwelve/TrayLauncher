@@ -144,6 +144,11 @@
     <Args>/name Microsoft.IndexingOptions</Args>
   </Shortcut>
   <Shortcut>
+    <Name>IProtocol Configuration</Name>
+    <Path>Cmd.exe</Path>
+    <Args>/k %windir%\system32\ipconfig.exe</Args>
+  </Shortcut>
+  <Shortcut>
     <Name>Keyboard Properties</Name>
     <Path>Control.exe</Path>
     <Args>keyboard</Args>
@@ -254,6 +259,11 @@
     <Args></Args>
   </Shortcut>
   <Shortcut>
+    <Name>Path (display)</Name>
+    <Path>PowerShell.exe</Path>
+    <Args>-NoExit echo Path;$env:path -split ';'</Args>
+  </Shortcut>
+  <Shortcut>
     <Name>Performance Monitor</Name>
     <Path>MMC.exe</Path>
     <Args>perfmon.msc</Args>
@@ -306,6 +316,11 @@
   <Shortcut>
     <Name>Registry Editor</Name>
     <Path>Regedit.exe</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Resource Monitor</Name>
+    <Path>resmon.exe</Path>
     <Args></Args>
   </Shortcut>
   <Shortcut>

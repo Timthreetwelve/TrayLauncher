@@ -20,7 +20,7 @@
         <!--  This provides a way to change the menu background in code  -->
         <SolidColorBrush x:Key="brush1" Color="White" />
         <ItemsPanelTemplate x:Key="MenuTPL">
-            <StackPanel Margin="-2,0,0,0" Background="{StaticResource ResourceKey=brush1}" />
+            <StackPanel Margin="-25,0,-20,0" Background="{StaticResource ResourceKey=brush1}" />
         </ItemsPanelTemplate>
 
         <!--  Style to right align text in the data grid  -->

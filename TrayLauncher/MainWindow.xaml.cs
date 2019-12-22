@@ -1,6 +1,8 @@
 ﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
 //
 // See App.xaml.cs for code that restricts app to one instance
+//
+//! Build as 64 bit!
 
 #region using directives
 
@@ -25,6 +27,7 @@ using System.Xml.Serialization;
 using TKUtils;
 using File = System.IO.File;
 using Path = System.IO.Path;
+using System.Runtime.InteropServices;
 
 #endregion using directives
 
@@ -63,14 +66,12 @@ namespace TrayLauncher
 
             ReadSettings();
 
-            LoadMenuDefaultItems();
-
             ConstructMenu();
         }
 
         ////////////////////////////// XML file methods //////////////////////////////
 
-        #region Get the menu XML file
+        #region Get the menu XML file  <- determine path and see if file exists
 
         private string GetXmlFile()
         {
@@ -109,7 +110,7 @@ namespace TrayLauncher
 
         #endregion Get the menu XML file
 
-        #region Read & Sort the XML file
+        #region Read & Sort the XML file  <- Used when renumbering is not desired
 
         private void SortXMLFile()
         {
@@ -141,7 +142,7 @@ namespace TrayLauncher
 
         #endregion Read & Sort the XML file
 
-        #region Refresh (reread, sort  and renumber)
+        #region Refresh  <- reread, sort and renumber
 
         private void RefreshMenu()
         {
@@ -180,7 +181,7 @@ namespace TrayLauncher
 
         #endregion Refresh (reread, sort  and renumber)
 
-        #region Create XML Starter
+        #region Create XML Starter  <- creates starter menu items and separators
 
         private void CreateXMLStarter(string menuFile)
         {
@@ -208,7 +209,7 @@ namespace TrayLauncher
                             new XElement("ToolTip", "This is an example menu item with arguments")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "200"),
-                            new XElement("MenuHeader", "Sums and minuses"),
+                            new XElement("MenuHeader", "Calculator"),
                             new XElement("AppPath", "Calc.exe"),
                             new XElement("Arguments", ""),
                             new XElement("ToolTip", "This is an app example")),
@@ -264,7 +265,121 @@ namespace TrayLauncher
 
         //////////////////////////// Menu & Datagrid methods ////////////////////////
 
-        #region Load menu items
+        #region Load Menu Default Items  <- loads Manage and Exit
+
+        private void LoadMenuDefaultItems()
+        {
+            WriteLog.WriteTempFile("Entering LoadMenuDefaultItems");
+
+            // Manage - Top item
+            MenuItem menuManage = new MenuItem
+            {
+                Header = "Manage",
+                Name = "mnuManage",
+                FontWeight = FontWeights.Bold,
+                ToolTip = "Manage TrayLauncher"
+            };
+            menuManage.Click += TbcmRestore_Click;
+            _ = trayMenu.Items.Add(menuManage);
+            WriteLog.WriteTempFile("  Loaded: Default item - Manage");
+
+            // Exit - Bottom item
+            MenuItem menuExit = new MenuItem
+            {
+                Header = "Exit",
+                Name = "mnuExit",
+                FontWeight = FontWeights.Normal,
+                ToolTip = "Exit TrayLauncher"
+            };
+            menuExit.Click += TbcmExit_Click;
+            _ = trayMenu.Items.Add(menuExit);
+            WriteLog.WriteTempFile("  Loaded: Default item - Exit");
+
+            // Title at the very bottom
+            string appVer = Title;
+            MenuItem menuTL = new MenuItem
+            {
+                Header = appVer,
+                Name = "mnuTest",
+                FontStyle = FontStyles.Italic,
+                IsEnabled = false,
+                IsHitTestVisible = false,
+                Margin = new Thickness(0, 3, 0, 0),
+            };
+
+            _ = trayMenu.Items.Add(menuTL);
+
+
+            WriteLog.WriteTempFile("Leaving LoadMenuDefaultItems");
+        }
+
+        #endregion Load Menu Default Items
+
+        #region Construct the menu  <- reads the XML file then calls LoadDataGrid() & LoadMenuItems()
+        public void ConstructMenu()
+        {
+            WriteLog.WriteTempFile("Entering ConstructMenu");
+            if (!File.Exists(xmlMenuFile))
+            {
+                _ = MessageBox.Show("The menu XML file cannot be found.",
+                    "ERROR", MessageBoxButton.OK, MessageBoxImage.Error); ;
+                WriteLog.WriteTempFile("The menu XML file cannot be found.");
+                Show();
+            }
+            else
+            {
+                try
+                {
+                    XmlSerializer deserializer = new XmlSerializer(typeof(MenuList));
+                    TextReader reader = new StreamReader(xmlMenuFile);
+                    object obj = deserializer.Deserialize(reader);
+                    XmlData = (MenuList)obj;
+                    reader.Close();
+                    WriteLog.WriteTempFile("  Menu file read successfully");
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show($"Failed to read menu XML file\n\n{ex.Message}\n\nUnable to continue.",
+                        "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    WriteLog.WriteTempFile($"Unable to read {xmlMenuFile}");
+                    WriteLog.WriteTempFile(ex.Message);
+                    WriteLog.WriteTempFile($"Unable to continue. Shutting down.");
+
+                    Environment.Exit(-1);
+                }
+                LoadMenuDefaultItems();
+                List<TLMenuItem> sortedList = LoadDataGrid();
+                LoadMenuItems(sortedList);
+            }
+            WriteLog.WriteTempFile("Leaving ConstructMenu");
+            WriteLog.WriteTempFile("TrayLauncher is Ready");
+        }
+
+        #endregion Construct the menu
+
+        #region Load Datagrid  <- sorts the menu items by position then loads the datagrid
+
+        private List<TLMenuItem> LoadDataGrid()
+        {
+            WriteLog.WriteTempFile("Entering LoadDataGrid");
+            //Sort the list for the data grid
+            List<TLMenuItem> sortedList = XmlData.menuList.OrderBy(z => z.Pos).ToList();
+
+            // This is equivalent to the line above
+            //var query = from MenuList in XmlData.menuList
+            //            orderby MenuList.Pos
+            //            select MenuList;
+            //List<TLMenuItem> sortedList = query.ToList();
+
+            theDataGrid.ItemsSource = sortedList;
+            WriteLog.WriteTempFile($"  Loaded {sortedList.Count()} items");
+            WriteLog.WriteTempFile("Leaving LoadDataGrid");
+            return sortedList;
+        }
+
+        #endregion Load Datagrid
+
+        #region Load menu items  <- loads menu items from list sorted in LoadDataGrid()
 
         private void LoadMenuItems(List<TLMenuItem> sortedList)
         {
@@ -318,113 +433,6 @@ namespace TrayLauncher
         }
 
         #endregion Load menu items
-
-        #region Load Datagrid
-
-        private List<TLMenuItem> LoadDataGrid()
-        {
-            WriteLog.WriteTempFile("Entering LoadDataGrid");
-            //Sort the list for the data grid
-            List<TLMenuItem> sortedList = XmlData.menuList.OrderBy(z => z.Pos).ToList();
-
-            // This is equivalent to the line above
-            //var query = from MenuList in XmlData.menuList
-            //            orderby MenuList.Pos
-            //            select MenuList;
-            //List<TLMenuItem> sortedList = query.ToList();
-
-            theDataGrid.ItemsSource = sortedList;
-            WriteLog.WriteTempFile($"  Loaded {sortedList.Count()} items");
-            WriteLog.WriteTempFile("Leaving LoadDataGrid");
-            return sortedList;
-        }
-
-        #endregion Load Datagrid
-
-        #region Load Menu Default Items
-
-        private void LoadMenuDefaultItems()
-        {
-            WriteLog.WriteTempFile("Entering LoadMenuDefaultItems");
-
-            //MenuItem menuTest = new MenuItem
-            //{
-            //    Header = "TrayLauncher",
-            //    Name = "mnuTest",
-            //    FontStyle = FontStyles.Italic,
-            //    //FontWeight = FontWeights.Bold,
-            //};
-            //menuTest.IsHitTestVisible = false;
-            //menuTest.Margin = new Thickness(-20, 0, 0, 0);
-            //_ = trayMenu.Items.Add(menuTest);
-
-            MenuItem menuManage = new MenuItem
-            {
-                Header = "Manage",
-                Name = "mnuManage",
-                FontWeight = FontWeights.Bold,
-                ToolTip = "Manage TrayLauncher"
-            };
-            menuManage.Click += TbcmRestore_Click;
-            _ = trayMenu.Items.Add(menuManage);
-            WriteLog.WriteTempFile("  Loaded: Default item - Manage");
-
-            MenuItem menuExit = new MenuItem
-            {
-                Header = "Exit",
-                Name = "mnuExit",
-                FontWeight = FontWeights.Normal,
-                ToolTip = "Exit TrayLauncher"
-            };
-            menuExit.Click += TbcmExit_Click;
-            _ = trayMenu.Items.Add(menuExit);
-            WriteLog.WriteTempFile("  Loaded: Default item - Exit");
-            WriteLog.WriteTempFile("Leaving LoadMenuDefaultItems");
-        }
-
-        #endregion Load Menu Default Items
-
-        #region Construct the menu
-
-        public void ConstructMenu()
-        {
-            WriteLog.WriteTempFile("Entering ConstructMenu");
-            if (!File.Exists(xmlMenuFile))
-            {
-                _ = MessageBox.Show("The menu XML file cannot be found.",
-                    "ERROR", MessageBoxButton.OK, MessageBoxImage.Error); ;
-                WriteLog.WriteTempFile("The menu XML file cannot be found.");
-                Show();
-            }
-            else
-            {
-                try
-                {
-                    XmlSerializer deserializer = new XmlSerializer(typeof(MenuList));
-                    TextReader reader = new StreamReader(xmlMenuFile);
-                    object obj = deserializer.Deserialize(reader);
-                    XmlData = (MenuList)obj;
-                    reader.Close();
-                    WriteLog.WriteTempFile("  Menu file read successfully");
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show($"Failed to read menu XML file\n\n{ex.Message}\n\nUnable to continue.",
-                        "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                    WriteLog.WriteTempFile($"Unable to read {xmlMenuFile}");
-                    WriteLog.WriteTempFile(ex.Message);
-                    WriteLog.WriteTempFile($"Unable to continue. Shutting down.");
-
-                    Environment.Exit(-1);
-                }
-                List<TLMenuItem> sortedList = LoadDataGrid();
-                LoadMenuItems(sortedList);
-            }
-            WriteLog.WriteTempFile("Leaving ConstructMenu");
-            WriteLog.WriteTempFile("TrayLauncher is Ready");
-        }
-
-        #endregion Construct the menu
 
         #region Remove an item
 
@@ -548,6 +556,7 @@ namespace TrayLauncher
                 {
                     try
                     {
+                        // Resolve environmental variables
                         launch.StartInfo.FileName = Environment.ExpandEnvironmentVariables(x.AppPath);
                         launch.StartInfo.Arguments = Environment.ExpandEnvironmentVariables(x.Arguments);
                         launch.Start();
@@ -573,7 +582,9 @@ namespace TrayLauncher
 
         #endregion Menu click handler  <- this guy does the launching
 
-        #region Menu events
+        //////////////////////// Main windows menu events ////////////////////////////
+
+        #region Menu events  <- the other menu events
 
         ////////////////////////////// File menu //////////////////////////////////
         private void MnuExit_Click(object sender, RoutedEventArgs e)
@@ -591,7 +602,7 @@ namespace TrayLauncher
             add.ShowDialog();
             SortXMLFile();
             trayMenu.Items.Clear();
-            LoadMenuDefaultItems();
+            // LoadMenuDefaultItems();
             ConstructMenu();
         }
 
@@ -602,7 +613,7 @@ namespace TrayLauncher
                 SortXMLFile();
                 RemoveItem();
                 trayMenu.Items.Clear();
-                LoadMenuDefaultItems();
+                //LoadMenuDefaultItems();
                 ConstructMenu();
             }
         }
@@ -626,7 +637,7 @@ namespace TrayLauncher
                 update.ShowDialog();
                 SortXMLFile();
                 trayMenu.Items.Clear();
-                LoadMenuDefaultItems();
+                //LoadMenuDefaultItems();
                 ConstructMenu();
             }
         }
@@ -696,7 +707,7 @@ namespace TrayLauncher
             if (Visibility == Visibility.Visible)
             {
                 trayMenu.Items.Clear();
-                LoadMenuDefaultItems();
+                //LoadMenuDefaultItems();
                 SortXMLFile();
                 ConstructMenu();
                 mnuSepColor.IsSubmenuOpen = false;
@@ -722,7 +733,7 @@ namespace TrayLauncher
         {
             Debug.WriteLine("  Refreshing menu");
             trayMenu.Items.Clear();
-            LoadMenuDefaultItems();
+            //LoadMenuDefaultItems();
             RefreshMenu();
             ConstructMenu();
             WriteLog.WriteTempFile($"  Menu refreshed");
@@ -990,6 +1001,8 @@ namespace TrayLauncher
         {
             WriteLog.WriteTempFile(" ");
             WriteLog.WriteTempFile("TrayLauncher is starting up");
+            WriteLog.WriteTempFile($"Application architecture is " +
+                                   $"{RuntimeInformation.ProcessArchitecture.ToString()} ");
             WriteLog.WriteTempFile("Entering ReadSettings");
 
             // Settings upgrade if needed
@@ -999,6 +1012,21 @@ namespace TrayLauncher
                 Properties.Settings.Default.SettingsUpgradeRequired = false;
                 Properties.Settings.Default.Save();
             }
+
+            // First time?
+            firstRun = Properties.Settings.Default.FirstRun;
+            if (firstRun)
+            {
+                Properties.Settings.Default.FirstRun = false;
+                //Show();
+            }
+            else
+            {
+                // Window position
+                Top = Properties.Settings.Default.WindowTop;
+                Left = Properties.Settings.Default.WindowLeft;
+            }
+            WriteLog.WriteTempFile($"  FirstRun is {firstRun}");
 
             // Put version number in title bar
             WindowTitleVersion();
@@ -1111,8 +1139,8 @@ namespace TrayLauncher
             // Hide main window on startup
             if (Properties.Settings.Default.HideOnStart == true)
             {
-                Hide();
                 mnuHideOnStart.IsChecked = true;
+                Hide();
                 WriteLog.WriteTempFile($"  Main window is hidden on startup");
             }
             else
@@ -1121,22 +1149,6 @@ namespace TrayLauncher
                 Show();
                 WriteLog.WriteTempFile($"  Main window is shown on startup");
             }
-
-            // First time?
-            firstRun = Properties.Settings.Default.FirstRun;
-            if (firstRun)
-            {
-                Properties.Settings.Default.FirstRun = false;
-                WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                this.Show();
-            }
-            else
-            {
-                // Window position
-                this.Top = Properties.Settings.Default.WindowTop;
-                this.Left = Properties.Settings.Default.WindowLeft;
-            }
-            WriteLog.WriteTempFile($"  FirstRun is {firstRun}");
 
             // Alternate row shading
             if (Properties.Settings.Default.ShadeAltRows == true)
@@ -1169,9 +1181,9 @@ namespace TrayLauncher
             string titleVer = version.ToString().Remove(version.ToString().LastIndexOf("."));
 
             // Set the windows title
-            this.Title = String.Format($"{myExe} -v{titleVer}");
+            Title = string.Format($"{myExe} - {titleVer}");
 
-            WriteLog.WriteTempFile($"  Version is {titleVer}");
+            WriteLog.WriteTempFile($"  {myExe} version is {titleVer}");
         }
 
         #endregion Title version
@@ -1254,14 +1266,6 @@ namespace TrayLauncher
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            //string myIconFile = Path.Combine(myIcons, iconFile);
-
-            //Uri iconUri = new Uri(myUri, UriKind.RelativeOrAbsolute);
-            //this.Icon = BitmapFrame.Create(iconUri);
-
-            //myNotifyIcon.Icon = new System.Drawing.Icon(Application.GetResourceStream(
-            //    new Uri(myUri)).Stream);
-            //myNotifyIcon.Icon = new System.Drawing.Icon(myIcon);
         }
 
         #endregion Get icon from Images folder
@@ -1270,6 +1274,7 @@ namespace TrayLauncher
 
         public void SetMenuBackground(Color selectedColor)
         {
+            // Set the background color of the tray menu
             // from https://www.dotnetcurry.com/wpf/1142/resources-wpf-static-dynamic-difference
 
             SolidColorBrush findsolidColorBrush = FindResource("brush1") as SolidColorBrush;
@@ -1312,7 +1317,7 @@ namespace TrayLauncher
         #endregion Font size
 
         #region Backup XML data
-
+        // Simple backup of the XML menu file
         private void BackupXMLFile()
         {
             SaveFileDialog dlgSave = new SaveFileDialog
@@ -1344,7 +1349,7 @@ namespace TrayLauncher
         #endregion Backup XML data
 
         #region Alternate row shading
-
+        // Shade alternate rows of the datagrid in the main window
         private void AltRowShadingOff()
         {
             theDataGrid.AlternationCount = 0;

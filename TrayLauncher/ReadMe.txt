@@ -3,21 +3,23 @@
 
 Introduction
 ============
-TrayLauncher is customizable menu to launch applications, websites, documents, settings and
-folders from the system tray area of the taskbar. You can use the TrayLauncher menu to launch
-your favorite applications, open frequently used folders and websites, or to open that
-infrequently used program or setting that takes you minutes to locate.
+TrayLauncher is customizable menu to launch applications, websites, documents, settings, folders
+and progressive web apps (PWAs) from the system tray area of the taskbar. You can use the
+TrayLauncher menu to launch your favorite applications, open frequently used folders and websites,
+or to open that infrequently used program or setting that takes you minutes to locate.
 
 
 How TrayLauncher Works
 ======================
-When TrayLauncher is first run is will put an icon in the system tray and open its main window.
-It will also show a message in the notification area. You can choose to disable the message and
-hide the main window in the Options menu if desired.
+When TrayLauncher is first run is will put an icon in the system tray and open its main window. It
+will also show a message in the notification area. You can choose to disable the message and hide
+the main window in the Options menu if desired.
 
-Left-clicking the icon in the system tray will display the menu. This menu contains a few items
-to get you started. As you would expect, clicking on the menu item will launch the application
+Left-clicking the icon in the system tray will display the menu. This menu contains a few items to
+get you started. As you would expect, clicking on the menu item will launch the application
 associated with that item.
+
+TrayLauncher was built to run in x64 mode to be able to launch certain Windows applications.
 
 
 Main Window
@@ -155,6 +157,7 @@ file and not another image format renamed to ICO.
 
 If the separators are showing on the menu as words instead of horizontal lines, check the spelling,
 that first "a" can be tricky.
+
 
 Diagnostics
 ===========

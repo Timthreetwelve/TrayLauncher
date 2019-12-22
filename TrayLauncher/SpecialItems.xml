@@ -6,7 +6,7 @@
   <Shortcut>
     <Name>Separator</Name>
     <Path>Not Applicable</Path>
-    <Args>Not visible for a separator</Args>
+    <Args></Args>
   </Shortcut>
   <Shortcut>
     <Name>About Windows</Name>

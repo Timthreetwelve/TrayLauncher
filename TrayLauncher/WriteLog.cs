@@ -163,7 +163,11 @@ namespace TKUtils
             string myExe = Assembly.GetExecutingAssembly().GetName().Name;
             string tStamp = string.Format("{0:yyyyMMdd}", DateTime.Now);
             string path = Path.GetTempPath();
+#if DEBUG
+            string filename = myExe + ".debug." + tStamp + ".log";
+#else
             string filename = myExe + ".temp." + tStamp + ".log";
+#endif
             return Path.Combine(path, filename);
         }
 
@@ -172,6 +176,6 @@ namespace TKUtils
             WriteLog.WriteLogFile(GetTempFile(), msg, 'U', 'N');
         }
 
-        #endregion Temp file
+#endregion Temp file
     }
 }

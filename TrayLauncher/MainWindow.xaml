@@ -94,6 +94,10 @@
 
                     <!--  File menu  -->
                     <MenuItem Header="_File">
+                        <MenuItem Name="mnuBackupXML"
+                            Click="MnuBackupXML_Click"
+                            Header="Backup Menu File" />
+                        <Separator />
                         <MenuItem Name="mnuExit"
                             Click="MnuExit_Click"
                             Header="Exit"
@@ -118,11 +122,8 @@
                         <Separator />
                         <MenuItem Name="mnuRefresh"
                             Click="MnuRefresh_Click"
-                            Header="Refresh List" />
-                        <Separator />
-                        <MenuItem Name="mnuBackupXML"
-                            Click="MnuBackupXML_Click"
-                            Header="Backup Menu File" />
+                            Header="Refresh List"
+                            InputGestureText="F5" />
                     </MenuItem>
 
                     <!--  Options  -->

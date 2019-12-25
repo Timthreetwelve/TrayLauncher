@@ -24,17 +24,6 @@ namespace TrayLauncher
         private string xmlMenuFile;
         private readonly int index;
 
-        #region Icon filename variables
-        //private const string blueIcon = "pack://application:,,,/Images/blue.ico";
-        //private const string blackIcon = "pack://application:,,,/Images/black.ico";
-        //private const string cyanIcon = "pack://application:,,,/Images/cyan.ico";
-        //private const string greenIcon = "pack://application:,,,/Images/green.ico";
-        //private const string orangeIcon = "pack://application:,,,/Images/orange.ico";
-        //private const string redIcon = "pack://application:,,,/Images/red.ico";
-        //private const string whiteIcon = "pack://application:,,,/Images/white.ico";
-        //private const string yellowIcon = "pack://application:,,,/Images/yellow.ico";
-        #endregion
-
         public UpdateItem(string header, string path, string args, string ttip, int pos, int idx)
         {
             InitializeComponent();
@@ -51,55 +40,9 @@ namespace TrayLauncher
         #region Read Settings
         private void ReadSettings()
         {
-            WriteLog.WriteTempFile("Entering UpdateItem");
+            WriteLog.WriteTempFile("  Entering UpdateItem");
             xmlMenuFile = Properties.Settings.Default.XMLfile;
             FontSize = Properties.Settings.Default.FontSize;
-
-            //// Icon file
-            //string iconFile = Properties.Settings.Default.Icon;
-            //switch (iconFile.ToLower())
-            //{
-            //    case "blue":
-            //        {
-            //            IconFromFile(blueIcon);
-            //            break;
-            //        }
-            //    case "black":
-            //        {
-            //            IconFromFile(blackIcon);
-            //            break;
-            //        }
-            //    case "cyan":
-            //        {
-            //            IconFromFile(cyanIcon);
-            //            break;
-            //        }
-            //    case "green":
-            //        {
-            //            IconFromFile(greenIcon);
-            //            break;
-            //        }
-            //    case "red":
-            //        {
-            //            IconFromFile(redIcon);
-            //            break;
-            //        }
-            //    case "white":
-            //        {
-            //            IconFromFile(whiteIcon);
-            //            break;
-            //        }
-            //    case "yellow":
-            //        {
-            //            IconFromFile(yellowIcon);
-            //            break;
-            //        }
-            //    default:
-            //        {
-            //            IconFromFile(orangeIcon);
-            //            break;
-            //        }
-            //}
         }
         #endregion Read Settings
 
@@ -161,27 +104,27 @@ namespace TrayLauncher
                         new XElement("ToolTip", tbUpdateToolTip.Text)));
                 xDoc.Save(xmlMenuFile);
 
-                WriteLog.WriteTempFile($"  Updating menu item at index {index} ");
-                WriteLog.WriteTempFile($"  Updated menu item: Header: {tbUpdateHeader.Text}, " +
+                WriteLog.WriteTempFile($"    Updating menu item at index {index} ");
+                WriteLog.WriteTempFile($"    Updated menu item: Header: {tbUpdateHeader.Text}, " +
                                        $"Position: {tbUpdatePosition.Text}, " +
                                        $"AppPath: {tbUpdateAppPath.Text}, " +
                                        $"Arguments: {tbUpdateArguments.Text}, " +
                                        $"Tooltip: {tbUpdateToolTip.Text} ");
-                WriteLog.WriteTempFile("Leaving UpdateItem");
+                WriteLog.WriteTempFile("  Leaving UpdateItem");
                 Close();
             }
             catch (Exception ex)
             {
                 _ = MessageBox.Show($"Error reading or writing to menu file\n{ex.Message}",
                                      "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                WriteLog.WriteTempFile($"Error reading or writing to menu file.");
-                WriteLog.WriteTempFile(ex.Message);
+                WriteLog.WriteTempFile($"* Error reading or writing to menu file.");
+                WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
 
         private void BtnExitUpdate_Click(object sender, RoutedEventArgs e)
         {
-            WriteLog.WriteTempFile("Leaving UpdateItem");
+            WriteLog.WriteTempFile("  Leaving UpdateItem");
             Close();
         }
         #endregion
@@ -211,11 +154,6 @@ namespace TrayLauncher
             tbUpdatePosition.Text = po.ToString();
         }
 
-        //public void IconFromFile(string iconFile)
-        //{
-        //    Uri iconUri = new Uri(iconFile, UriKind.RelativeOrAbsolute);
-        //    Icon = BitmapFrame.Create(iconUri);
-        //}
         #endregion
     }
 }

@@ -143,8 +143,7 @@ example, you could open the Windows folder by specifying %WINDIR% as the Applica
 even build upon the variables. For example %WINDIR%\Fonts would open the Fonts folder.
 
 After taking several minutes/hours/days to customize the menu with just the right items in just the
-right order, take a moment to backup your hard work by selecting Backup Menu File from the
-Configuration menu.
+right order, take a moment to backup your hard work by selecting Backup Menu File from the File menu.
 
 TrayLauncher should be able to launch anything that you can launch using the Run dialog. Heck,
 there's even a predefined menu item for the Run dialog!

@@ -81,8 +81,8 @@ namespace TrayLauncher
             {
                 _ = MessageBox.Show($"Error reading or writing to special items file\n{ex.Message}",
                     "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                WriteLog.WriteTempFile($"Error reading or writing to special items file.");
-                WriteLog.WriteTempFile(ex.Message);
+                WriteLog.WriteTempFile($"* Error reading or writing to special items file.");
+                WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
         #endregion
@@ -90,58 +90,12 @@ namespace TrayLauncher
         #region Read Settings
         private void ReadSettings()
         {
-            WriteLog.WriteTempFile("Entering AddItem");
+            WriteLog.WriteTempFile("  Entering AddItem");
             lblStatus.Text = "Ready";
             lblStatus.Foreground = Brushes.SlateGray;
 
             xmlMenuFile = Properties.Settings.Default.XMLfile;
             FontSize = Properties.Settings.Default.FontSize;
-
-            // Icon file
-            //string iconFile = Properties.Settings.Default.Icon;
-            //switch (iconFile.ToLower())
-            //{
-            //    case "blue":
-            //        {
-            //            IconFromFile(blueIcon);
-            //            break;
-            //        }
-            //    case "black":
-            //        {
-            //            IconFromFile(blackIcon);
-            //            break;
-            //        }
-            //    case "cyan":
-            //        {
-            //            IconFromFile(cyanIcon);
-            //            break;
-            //        }
-            //    case "green":
-            //        {
-            //            IconFromFile(greenIcon);
-            //            break;
-            //        }
-            //    case "red":
-            //        {
-            //            IconFromFile(redIcon);
-            //            break;
-            //        }
-            //    case "white":
-            //        {
-            //            IconFromFile(whiteIcon);
-            //            break;
-            //        }
-            //    case "yellow":
-            //        {
-            //            IconFromFile(yellowIcon);
-            //            break;
-            //        }
-            //    default:
-            //        {
-            //            IconFromFile(orangeIcon);
-            //            break;
-            //        }
-            //}
         }
         #endregion Read Settings
 
@@ -199,7 +153,7 @@ namespace TrayLauncher
             xDoc.Save(xmlMenuFile);
 
             ReadyForNext();
-            WriteLog.WriteTempFile($"  Added menu item: Header: {header}, " +
+            WriteLog.WriteTempFile($"    Added menu item: Header: {header}, " +
                                    $"Position: {pos}, " +
                                    $"AppPath: {apppath}, " +
                                    $"Arguments: {args}, " +
@@ -218,7 +172,7 @@ namespace TrayLauncher
         // Close window when Exit button clicked
         private void BtnExitAdd_Click(object sender, RoutedEventArgs e)
         {
-            WriteLog.WriteTempFile($"Leaving AddItem, {addCount} items added");
+            WriteLog.WriteTempFile($"  Leaving AddItem, {addCount} items added");
             Close();
         }
 
@@ -262,12 +216,6 @@ namespace TrayLauncher
             DateTime dt = DateTime.Now;
             return $"Added {dt}";
         }
-
-        //public void IconFromFile(string iconFile)
-        //{
-        //    Uri iconUri = new Uri(iconFile, UriKind.RelativeOrAbsolute);
-        //    this.Icon = BitmapFrame.Create(iconUri);
-        //}
         #endregion Helpers
 
         #region ComboBox events

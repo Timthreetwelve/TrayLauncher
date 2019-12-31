@@ -16,7 +16,6 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Windows.Controls;
 using TKUtils;
-using System.Windows.Media.Imaging;
 using System.Reflection;
 
 #endregion Using directives
@@ -27,20 +26,21 @@ namespace TrayLauncher
     public partial class AddItem : Window
     {
         #region Icon filename variables
-        private const string blueIcon = "pack://application:,,,/Images/blue.ico";
-        private const string blackIcon = "pack://application:,,,/Images/black.ico";
-        private const string cyanIcon = "pack://application:,,,/Images/cyan.ico";
-        private const string greenIcon = "pack://application:,,,/Images/green.ico";
-        private const string orangeIcon = "pack://application:,,,/Images/orange.ico";
-        private const string redIcon = "pack://application:,,,/Images/red.ico";
-        private const string whiteIcon = "pack://application:,,,/Images/white.ico";
-        private const string yellowIcon = "pack://application:,,,/Images/yellow.ico";
+        //private const string blueIcon = "pack://application:,,,/Images/blue.ico";
+        //private const string blackIcon = "pack://application:,,,/Images/black.ico";
+        //private const string cyanIcon = "pack://application:,,,/Images/cyan.ico";
+        //private const string greenIcon = "pack://application:,,,/Images/green.ico";
+        //private const string orangeIcon = "pack://application:,,,/Images/orange.ico";
+        //private const string redIcon = "pack://application:,,,/Images/red.ico";
+        //private const string whiteIcon = "pack://application:,,,/Images/white.ico";
+        //private const string yellowIcon = "pack://application:,,,/Images/yellow.ico";
         #endregion
 
         SpecialMenuItems special;
         private const string specItemsXML = "SpecialItems.xml";
         private string xmlMenuFile;
         private int addCount = 0;
+        private string itemType = string.Empty;
 
         public AddItem()
         {
@@ -71,11 +71,13 @@ namespace TrayLauncher
                 {
                     if (!string.IsNullOrEmpty(item.Name))
                     {
+                        cboxItems.Add(item.Name);
                         Debug.WriteLine($"   {item.Name} = {item.Path}");
-                        cboxItems.Add(item.Name.ToString());
                     }
                 }
                 cmbSpecial.ItemsSource = cboxItems;
+                cmbSpecial.SelectedIndex = 0;
+
             }
             catch (Exception ex)
             {
@@ -149,7 +151,8 @@ namespace TrayLauncher
                     new XElement("MenuHeader", header),
                     new XElement("AppPath", apppath),
                     new XElement("Arguments", args),
-                    new XElement("ToolTip", ttip)));
+                    new XElement("ToolTip", ttip),
+                    new XElement("Type",itemType)));
             xDoc.Save(xmlMenuFile);
 
             ReadyForNext();
@@ -157,7 +160,8 @@ namespace TrayLauncher
                                    $"Position: {pos}, " +
                                    $"AppPath: {apppath}, " +
                                    $"Arguments: {args}, " +
-                                   $"Tooltip: {ttip} ");
+                                   $"Tooltip: {ttip}, " +
+                                   $"Type: {itemType}");
             addCount++;
             if (addCount == 1)
             {
@@ -199,6 +203,7 @@ namespace TrayLauncher
             tbAddPosition.Text = string.Empty;
             tbAddArguments.Text = string.Empty;
             tbAddToolTip.Text = string.Empty;
+            itemType = string.Empty;
             lblStatus.Text = string.Empty;
 
             tbAddHeader.Background = Brushes.White;
@@ -231,15 +236,24 @@ namespace TrayLauncher
             {
                 foreach (var item in special.shortcuts)
                 {
-                    if (item.Name == cmbSpecial.SelectedItem.ToString())
+                    if (item.Name == cmbSpecial.SelectedValue.ToString())
                     {
                         tbAddHeader.Text = item.Name;
                         tbAddAppPath.Text = item.Path;
                         tbAddArguments.Text = item.Args;
+                        itemType = item.ItemType;
                     }
                 }
             }
         }
         #endregion
+
+        private void TbAddPosition_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                btnAdd.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace TrayLauncher
         [XmlElement("ToolTip")]
         public string ToolTip { get; set; }
 
-
+        [XmlElement("Type")]
+        public string ItemType { get; set; }
     }
 }

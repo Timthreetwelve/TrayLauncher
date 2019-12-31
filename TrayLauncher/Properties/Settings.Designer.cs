@@ -190,5 +190,17 @@ namespace TrayLauncher.Properties {
                 this["ShadeAltRows"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int SectionHeaderColor {
+            get {
+                return ((int)(this["SectionHeaderColor"]));
+            }
+            set {
+                this["SectionHeaderColor"] = value;
+            }
+        }
     }
 }

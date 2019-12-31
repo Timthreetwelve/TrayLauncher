@@ -24,5 +24,7 @@ namespace TrayLauncher
         [XmlElement("Args")]
         public string Args { get; set; }
 
+        [XmlElement("Type")]
+        public string ItemType { get; set; }
     }
 }

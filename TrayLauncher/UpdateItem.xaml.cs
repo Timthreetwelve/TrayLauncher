@@ -22,9 +22,10 @@ namespace TrayLauncher
     public partial class UpdateItem : Window
     {
         private string xmlMenuFile;
+        private readonly string itemType;
         private readonly int index;
 
-        public UpdateItem(string header, string path, string args, string ttip, int pos, int idx)
+        public UpdateItem(string header, string path, string args, string ttip, int pos, string itype, int idx)
         {
             InitializeComponent();
 
@@ -32,6 +33,7 @@ namespace TrayLauncher
 
             PreFillTextboxes(header, path, args, ttip, pos);
 
+            itemType = itype;
             index = idx;
         }
 
@@ -101,7 +103,8 @@ namespace TrayLauncher
                         new XElement("MenuHeader", tbUpdateHeader.Text),
                         new XElement("AppPath", tbUpdateAppPath.Text),
                         new XElement("Arguments", tbUpdateArguments.Text),
-                        new XElement("ToolTip", tbUpdateToolTip.Text)));
+                        new XElement("ToolTip", tbUpdateToolTip.Text),
+                        new XElement("Type", itemType)));
                 xDoc.Save(xmlMenuFile);
 
                 WriteLog.WriteTempFile($"    Updating menu item at index {index} ");

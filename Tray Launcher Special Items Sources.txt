@@ -1,0 +1,9 @@
+Sources for Settings
+
+https://www.tenforums.com/tutorials/78214-settings-pages-list-uri-shortcuts-windows-10-a.html
+
+https://www.tenforums.com/tutorials/3109-shell-commands-list-windows-10-a.html
+
+https://www.lifewire.com/command-line-commands-for-control-panel-applets-2626060
+
+https://docs.microsoft.com/en-us/windows/uwp/launch-resume/launch-default-app

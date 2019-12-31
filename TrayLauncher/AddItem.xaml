@@ -12,6 +12,7 @@
     FontSize="14"
     SizeToContent="Height"
     WindowStartupLocation="CenterOwner">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -96,8 +97,8 @@
             Margin="0,0,30,0"
             HorizontalAlignment="Left"
             MaxLength="5"
-            PreviewTextInput="TbAddPosition_PreviewTextInput_1" />
-
+            PreviewTextInput="TbAddPosition_PreviewTextInput_1"
+                 KeyUp="TbAddPosition_KeyUp" />
         <TextBlock
             Grid.Row="6"
             Grid.Column="1"
@@ -120,7 +121,6 @@
             Grid.Column="3"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
-
             <Button x:Name="btnAdd"
                 Width="70"
                 Height="25"

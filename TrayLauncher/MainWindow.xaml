@@ -20,7 +20,7 @@
         <!--  This provides a way to change the menu background in code  -->
         <SolidColorBrush x:Key="brush1" Color="White" />
         <ItemsPanelTemplate x:Key="MenuTPL">
-            <StackPanel Margin="-25,0,-20,0" Background="{StaticResource ResourceKey=brush1}" />
+            <StackPanel Margin="-20,0,-20,0" Background="{StaticResource ResourceKey=brush1}" />
         </ItemsPanelTemplate>
 
         <!--  Style to right align text in the data grid  -->
@@ -32,6 +32,12 @@
         <!--  Style to "pad" text in cells in the data grid  -->
         <Style x:Key="ColumnMargin5" TargetType="TextBlock">
             <Setter Property="Margin" Value="5,0,5,0" />
+        </Style>
+
+        <!--  Style to right align text in the data grid  -->
+        <Style x:Key="ColumnCenter" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+
         </Style>
     </Window.Resources>
 
@@ -73,6 +79,7 @@
                     </ContextMenu.Style>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
+
         </tb:TaskbarIcon>
 
         <!--  Main window  -->
@@ -188,6 +195,28 @@
                                                     Height="16"
                                                     Margin="0,2,5,2"
                                                     Fill="{Binding Name}" />
+                                                <TextBlock Text="{Binding Name}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </MenuItem>
+                        <MenuItem Name="mnuHeaderColor"
+                                  Header="Section Header Color">
+                            <StackPanel Margin="-35,0,-50,0"
+                                        Orientation="Vertical">
+                                <ComboBox Name="CmbHeader"
+                                          Width="190"
+                                          IsSynchronizedWithCurrentItem="True"
+                                          SelectionChanged="CmbHeader_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Rectangle Width="24"
+                                                           Height="16"
+                                                           Margin="0,2,5,2"
+                                                           Fill="{Binding Name}" />
                                                 <TextBlock Text="{Binding Name}" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -345,19 +374,22 @@
                 SelectionUnit="FullRow"
                 VerticalGridLinesBrush="#E2E2E2">
 
-                <!--  Style to show separators in gray  -->
+                <!--  Style to show separators and headers in gray  -->
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
                         <Setter Property="Foreground" Value="Black" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Header}" Value="Separator">
-                                <Setter Property="Foreground" Value="Gray" />
+                            <DataTrigger Binding="{Binding ItemType}" Value="S">
+                                <Setter Property="Foreground" Value="DarkCyan" />
+                                <Setter Property="FontWeight" Value="Regular" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ItemType}" Value="H">
+                                <Setter Property="Foreground" Value="DarkCyan" />
+                                <Setter Property="FontWeight" Value="Regular" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
-
-
 
                 <DataGrid.ContextMenu>
                     <ContextMenu>
@@ -414,6 +446,12 @@
                         Binding="{Binding ToolTip}"
                         ElementStyle="{StaticResource ColumnMargin5}"
                         Header="Tooltip" />
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="40"
+                        Binding="{Binding ItemType}"
+                        ElementStyle="{StaticResource ColumnCenter}"
+                        Header="Type" />
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

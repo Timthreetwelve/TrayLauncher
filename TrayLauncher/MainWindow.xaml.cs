@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -27,7 +28,6 @@ using System.Xml.Serialization;
 using TKUtils;
 using File = System.IO.File;
 using Path = System.IO.Path;
-using System.Runtime.InteropServices;
 
 #endregion using directives
 
@@ -201,7 +201,8 @@ namespace TrayLauncher
                             new XElement("MenuHeader", "Separator"),
                             new XElement("AppPath", "Not applicable"),
                             new XElement("Arguments", ""),
-                            new XElement("ToolTip", "Not visible for a separator")),
+                            new XElement("ToolTip", "Not visible for a separator"),
+                            new XElement("Type", "S")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "100"),
                             new XElement("MenuHeader", "Command Prompt"),
@@ -225,7 +226,8 @@ namespace TrayLauncher
                             new XElement("MenuHeader", "Separator"),
                             new XElement("AppPath", "Not applicable"),
                             new XElement("Arguments", ""),
-                            new XElement("ToolTip", "Not visible for a separator")),
+                            new XElement("ToolTip", "Not visible for a separator"),
+                            new XElement("Type", "S")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "500"),
                             new XElement("MenuHeader", "Search for Puppies"),
@@ -237,7 +239,8 @@ namespace TrayLauncher
                             new XElement("MenuHeader", "Separator"),
                             new XElement("AppPath", "Not applicable"),
                             new XElement("Arguments", ""),
-                            new XElement("ToolTip", "Not visible for a separator")),
+                            new XElement("ToolTip", "Not visible for a separator"),
+                            new XElement("Type", "S")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "700"),
                             new XElement("MenuHeader", "Taskbar Settings"),
@@ -249,7 +252,8 @@ namespace TrayLauncher
                             new XElement("MenuHeader", "Separator"),
                             new XElement("AppPath", "Not applicable"),
                             new XElement("Arguments", ""),
-                            new XElement("ToolTip", "Not visible for a separator"))
+                            new XElement("ToolTip", "Not visible for a separator"),
+                            new XElement("Type", "S"))
                         ));
                 xDoc.Save(menuFile);
             }
@@ -275,14 +279,26 @@ namespace TrayLauncher
             // Manage - Top item
             MenuItem menuManage = new MenuItem
             {
-                Header = "Manage",
+                Header = "Manage TrayLauncher",
                 Name = "mnuManage",
                 FontWeight = FontWeights.Bold,
-                ToolTip = "Manage TrayLauncher"
+                Margin = new Thickness(-5, 0, 0, 0),
+                ToolTip = "Open TrayLauncher main window"
             };
             menuManage.Click += TbcmRestore_Click;
             _ = trayMenu.Items.Add(menuManage);
             WriteLog.WriteTempFile("    Loaded: Default item - Manage");
+
+            // Separator under Manage
+            Color selectedColor = (Color)(CmbSeparator.SelectedItem as PropertyInfo).
+                GetValue(null, null);
+            Separator sep = new Separator
+            {
+                BorderBrush = new SolidColorBrush(selectedColor),
+                BorderThickness = new Thickness(0, 1, 0, 0)
+            };
+            _= trayMenu.Items.Add(sep);
+            WriteLog.WriteTempFile($"    Loaded: Default item - Separator");
 
             // Exit - Bottom item
             MenuItem menuExit = new MenuItem
@@ -290,27 +306,12 @@ namespace TrayLauncher
                 Header = "Exit",
                 Name = "mnuExit",
                 FontWeight = FontWeights.Normal,
+                Margin = new Thickness(-5, 0, 0, 0),
                 ToolTip = "Exit TrayLauncher"
             };
             menuExit.Click += TbcmExit_Click;
             _ = trayMenu.Items.Add(menuExit);
             WriteLog.WriteTempFile("    Loaded: Default item - Exit");
-
-            // Title at the very bottom
-            string appVer = Title;
-            MenuItem menuTL = new MenuItem
-            {
-                Header = appVer,
-                Name = "mnuTest",
-                FontStyle = FontStyles.Italic,
-                IsEnabled = false,
-                IsHitTestVisible = false,
-                Margin = new Thickness(0, 3, 0, 0),
-            };
-
-            _ = trayMenu.Items.Add(menuTL);
-
-
             WriteLog.WriteTempFile("  Leaving LoadMenuDefaultItems");
         }
 
@@ -385,7 +386,10 @@ namespace TrayLauncher
         private void LoadMenuItems(List<TLMenuItem> sortedList)
         {
             WriteLog.WriteTempFile("  Entering LoadMenuItems");
+
+            //? note here about value of x & y 
             int x = 0;
+            int y = 1;
 
             foreach (var item in sortedList)
             {
@@ -395,12 +399,11 @@ namespace TrayLauncher
                     WriteLog.WriteTempFile($"    NOT Loaded: null item {x}");
                     continue;
                 }
-
                 x++;
                 MenuItem mi = new MenuItem();
 
                 // If menu item is a separator
-                if (item.Header.PadRight(9).Substring(0, 9).ToUpper() == "SEPARATOR")
+                if (item.ItemType == "S")
                 {
                     Debug.WriteLine("Adding a separator");
                     Color selectedColor = (Color)(CmbSeparator.SelectedItem as PropertyInfo).
@@ -411,11 +414,24 @@ namespace TrayLauncher
                         BorderBrush = new SolidColorBrush(selectedColor),
                         BorderThickness = new Thickness(0, 1, 0, 0)
                     };
-                    trayMenu.Items.Insert(x, sep);
+                    trayMenu.Items.Insert(x + y, sep);
                     WriteLog.WriteTempFile($"    Loaded: item {x}, Separator");
                 }
+                // If menu item is a section header
+                else if (item.ItemType == "H")
+                {
+                    Debug.WriteLine("Adding a section header");
+                    mi.Header = item.Header;
+                    mi.IsHitTestVisible = false;
+                    mi.Margin = new Thickness(-5, 0, 0, 0);
+                    Color selectedColor = (Color)(CmbHeader.SelectedItem as PropertyInfo).
+                        GetValue(null, null);
+                    mi.Foreground = new SolidColorBrush(selectedColor);
+                    trayMenu.Items.Insert(x + y, mi);
+                    WriteLog.WriteTempFile($"    Loaded: item {x}, Section header");
+                }
                 else
-                // otherwise
+                // otherwise a normal menu item
                 {
                     mi.Header = item.Header;
                     if (!string.IsNullOrEmpty(item.ToolTip))
@@ -424,8 +440,9 @@ namespace TrayLauncher
                     }
                     mi.Click += Mi_Click;
                     mi.Tag = item;
+                    mi.Margin = new Thickness(5, 0, 0, 0);
                     Debug.WriteLine($"Adding item {item.Header}");
-                    trayMenu.Items.Insert(x, mi);
+                    trayMenu.Items.Insert(x + y, mi);
                     WriteLog.WriteTempFile($"    Loaded: item {x}, {item.Header}");
                 }
             }
@@ -624,7 +641,6 @@ namespace TrayLauncher
             add.ShowDialog();
             SortXMLFile();
             trayMenu.Items.Clear();
-            // LoadMenuDefaultItems();
             ConstructMenu();
         }
 
@@ -635,7 +651,6 @@ namespace TrayLauncher
                 SortXMLFile();
                 RemoveItem();
                 trayMenu.Items.Clear();
-                //LoadMenuDefaultItems();
                 ConstructMenu();
             }
         }
@@ -649,17 +664,17 @@ namespace TrayLauncher
                 string appPath = x.AppPath;
                 string args = x.Arguments;
                 string ttip = x.ToolTip;
+                string iType = x.ItemType;
                 int pos = x.Pos;
                 int index = theDataGrid.SelectedIndex;
 
-                UpdateItem update = new UpdateItem(header, appPath, args, ttip, pos, index)
+                UpdateItem update = new UpdateItem(header, appPath, args, ttip, pos, iType, index)
                 {
                     Owner = this
                 };
                 update.ShowDialog();
                 SortXMLFile();
                 trayMenu.Items.Clear();
-                //LoadMenuDefaultItems();
                 ConstructMenu();
             }
         }
@@ -727,13 +742,29 @@ namespace TrayLauncher
                                    $"index is {CmbForeground.SelectedIndex}");
         }
 
+        private void CmbHeader_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Properties.Settings.Default.SectionHeaderColor = CmbHeader.SelectedIndex;
+
+            if (Visibility == Visibility.Visible)
+            {
+                trayMenu.Items.Clear();
+                SortXMLFile();
+                ConstructMenu();
+                mnuHeaderColor.IsSubmenuOpen = false;
+            }
+
+            Debug.WriteLine($"Section Header SelectedIndex is {CmbHeader.SelectedIndex}");
+            WriteLog.WriteTempFile($"    Menu section header color is {CmbHeader.SelectedItem.ToString()}, " +
+                                   $"index is {CmbHeader.SelectedIndex}");
+        }
+
         private void CmbSeparator_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Properties.Settings.Default.SeparatorColor = CmbSeparator.SelectedIndex;
             if (Visibility == Visibility.Visible)
             {
                 trayMenu.Items.Clear();
-                //LoadMenuDefaultItems();
                 SortXMLFile();
                 ConstructMenu();
                 mnuSepColor.IsSubmenuOpen = false;
@@ -780,10 +811,10 @@ namespace TrayLauncher
                         WriteLog.WriteTempFile($"* Failed to launch {x.Header} ");
                         WriteLog.WriteTempFile($"* AppPath is empty.");
                     }
-                    else if (x.Header == "Separator")
+                    else if (x.ItemType == "S" || x.ItemType == "H")
                     {
                         myNotifyIcon.ShowBalloonTip("Test Launch Error",
-                            $"Cannot test a separator",
+                            $"Cannot test a separator or\nsection header",
                             BalloonIcon.Info);
                     }
                     else
@@ -894,11 +925,11 @@ namespace TrayLauncher
             _ = about.ShowDialog();
         }
 
-#endregion Menu events
+        #endregion Menu events
 
         ////////////////////////////// Keyboard events //////////////////////////////
 
-#region Keyboard events
+        #region Keyboard events
 
         // Handle keyboard events
         private void Window_KeyUp(object sender, KeyEventArgs e)
@@ -921,6 +952,7 @@ namespace TrayLauncher
                                      $"Hide Main Window on Startup = {Properties.Settings.Default.HideOnStart}\n" +
                                      $"Background Color Index = {Properties.Settings.Default.BackColor}\n" +
                                      $"Menu Text Color Index = { Properties.Settings.Default.ForeColor}\n" +
+                                     $"Menu Section Header Index = { Properties.Settings.Default.SectionHeaderColor}\n" +
                                      $"Separator Color Index = {Properties.Settings.Default.SeparatorColor}\n" +
                                      $"Font Size = {Properties.Settings.Default.FontSize}\n" +
                                      $"Icon Color = {Properties.Settings.Default.Icon}\n" +
@@ -1015,13 +1047,13 @@ namespace TrayLauncher
             }
         }
 
-#endregion Keyboard events
+        #endregion Keyboard events
 
         ////////////////////////////// Helper Methods ///////////////////////////////
 
-#region Helper methods
+        #region Helper methods
 
-#region Settings file
+        #region Settings file
 
         private void ReadSettings()
         {
@@ -1078,6 +1110,10 @@ namespace TrayLauncher
             Color selectedColor = (Color)(CmbForeground.SelectedItem as PropertyInfo)
                 .GetValue(null, null);
             trayMenu.Foreground = new SolidColorBrush(selectedColor);
+
+            // Menu Section Header color
+            CmbHeader.SelectedIndex = Properties.Settings.Default.SectionHeaderColor;
+            CmbHeader.ItemsSource = typeof(Colors).GetProperties();
 
             // Menu separator color
             CmbSeparator.SelectedIndex = Properties.Settings.Default.SeparatorColor;
@@ -1192,9 +1228,9 @@ namespace TrayLauncher
             WriteLog.WriteTempFile("  Leaving ReadSettings");
         }
 
-#endregion Settings file
+        #endregion Settings file
 
-#region Title version
+        #region Title version
 
         public void WindowTitleVersion()
         {
@@ -1212,9 +1248,9 @@ namespace TrayLauncher
             WriteLog.WriteTempFile($"    {myExe} version is {titleVer}");
         }
 
-#endregion Title version
+        #endregion Title version
 
-#region Startup Shortcut
+        #region Startup Shortcut
 
         // This will create/delete a shortcut in the users Startup folder
         private static void StartupShortcut(string mode)
@@ -1271,9 +1307,9 @@ namespace TrayLauncher
             }
         }
 
-#endregion Startup Shortcut
+        #endregion Startup Shortcut
 
-#region Get icon from Images folder
+        #region Get icon from Images folder
 
         public void IconFromFile(string iconFile)
         {
@@ -1294,9 +1330,9 @@ namespace TrayLauncher
             }
         }
 
-#endregion Get icon from Images folder
+        #endregion Get icon from Images folder
 
-#region Set Menu background color
+        #region Set Menu background color
 
         public void SetMenuBackground(Color selectedColor)
         {
@@ -1309,9 +1345,9 @@ namespace TrayLauncher
             Resources.Add("brush1", findsolidColorBrush);
         }
 
-#endregion Set Menu background color
+        #endregion Set Menu background color
 
-#region Font size
+        #region Font size
 
         // Increase / Decrease font size
         private void FontSmaller()
@@ -1340,9 +1376,9 @@ namespace TrayLauncher
             }
         }
 
-#endregion Font size
+        #endregion Font size
 
-#region Backup XML data
+        #region Backup XML data
         // Simple backup of the XML menu file
         private void BackupXMLFile()
         {
@@ -1374,9 +1410,9 @@ namespace TrayLauncher
             }
         }
 
-#endregion Backup XML data
+        #endregion Backup XML data
 
-#region Alternate row shading
+        #region Alternate row shading
         // Shade alternate rows of the datagrid in the main window
         private void AltRowShadingOff()
         {
@@ -1400,7 +1436,8 @@ namespace TrayLauncher
 
         #endregion Alternate row shading
 
-#endregion Helper methods
+        #endregion Helper methods
+
 
     }
 }

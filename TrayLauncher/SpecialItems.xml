@@ -7,6 +7,13 @@
     <Name>Separator</Name>
     <Path>Not Applicable</Path>
     <Args></Args>
+    <Type>S</Type>
+  </Shortcut>
+  <Shortcut>
+    <Name>Section Name</Name>
+    <Path>Section Header</Path>
+    <Args></Args>
+    <Type>H</Type>
   </Shortcut>
   <Shortcut>
     <Name>About Windows</Name>

@@ -109,7 +109,7 @@ namespace TrayLauncher.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("orange")]
+        [global::System.Configuration.DefaultSettingValueAttribute("red")]
         public string Icon {
             get {
                 return ((string)(this["Icon"]));
@@ -200,6 +200,18 @@ namespace TrayLauncher.Properties {
             }
             set {
                 this["SectionHeaderColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SectionHeaderBold {
+            get {
+                return ((bool)(this["SectionHeaderBold"]));
+            }
+            set {
+                this["SectionHeaderBold"] = value;
             }
         }
     }

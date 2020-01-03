@@ -7,9 +7,9 @@ using System.Linq;
 using System.Media;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using TKUtils;
 #endregion
@@ -36,8 +36,6 @@ namespace TrayLauncher
             itemType = itype;
             index = idx;
         }
-
-
 
         #region Read Settings
         private void ReadSettings()
@@ -137,6 +135,14 @@ namespace TrayLauncher
         {
             // Only digits
             e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
+        }
+
+        private void TbUpdatePosition_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btnUpdate.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
         }
         #endregion
 

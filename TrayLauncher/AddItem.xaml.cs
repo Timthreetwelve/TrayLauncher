@@ -1,23 +1,19 @@
-﻿//
-// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
-//
+﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
 #region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using System.Windows.Controls;
 using TKUtils;
-using System.Reflection;
-
 #endregion Using directives
 
 namespace TrayLauncher
@@ -25,18 +21,7 @@ namespace TrayLauncher
     // Logic for the AddItem dialog
     public partial class AddItem : Window
     {
-        #region Icon filename variables
-        //private const string blueIcon = "pack://application:,,,/Images/blue.ico";
-        //private const string blackIcon = "pack://application:,,,/Images/black.ico";
-        //private const string cyanIcon = "pack://application:,,,/Images/cyan.ico";
-        //private const string greenIcon = "pack://application:,,,/Images/green.ico";
-        //private const string orangeIcon = "pack://application:,,,/Images/orange.ico";
-        //private const string redIcon = "pack://application:,,,/Images/red.ico";
-        //private const string whiteIcon = "pack://application:,,,/Images/white.ico";
-        //private const string yellowIcon = "pack://application:,,,/Images/yellow.ico";
-        #endregion
-
-        SpecialMenuItems special;
+        private SpecialMenuItems special;
         private const string specItemsXML = "SpecialItems.xml";
         private string xmlMenuFile;
         private int addCount = 0;
@@ -77,7 +62,6 @@ namespace TrayLauncher
                 }
                 cmbSpecial.ItemsSource = cboxItems;
                 cmbSpecial.SelectedIndex = 0;
-
             }
             catch (Exception ex)
             {
@@ -87,7 +71,7 @@ namespace TrayLauncher
                 WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
-        #endregion
+        #endregion Load ComboBox
 
         #region Read Settings
         private void ReadSettings()
@@ -95,13 +79,13 @@ namespace TrayLauncher
             WriteLog.WriteTempFile("  Entering AddItem");
             lblStatus.Text = "Ready";
             lblStatus.Foreground = Brushes.SlateGray;
-
             xmlMenuFile = Properties.Settings.Default.XMLfile;
             FontSize = Properties.Settings.Default.FontSize;
         }
         #endregion Read Settings
 
         #region Buttons
+        // Add a menu item
         public void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             // Make sure that the required text boxes have been filled
@@ -152,7 +136,7 @@ namespace TrayLauncher
                     new XElement("AppPath", apppath),
                     new XElement("Arguments", args),
                     new XElement("ToolTip", ttip),
-                    new XElement("Type",itemType)));
+                    new XElement("Type", itemType)));
             xDoc.Save(xmlMenuFile);
 
             ReadyForNext();
@@ -179,11 +163,9 @@ namespace TrayLauncher
             WriteLog.WriteTempFile($"  Leaving AddItem, {addCount} items added");
             Close();
         }
-
         #endregion Buttons
 
         #region Text box events
-
         // Make sure size text box only accepts numbers
         private void TbAddPosition_PreviewTextInput_1(object sender,
             System.Windows.Input.TextCompositionEventArgs e)
@@ -192,10 +174,17 @@ namespace TrayLauncher
             e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
         }
 
+        // Enter will add item
+        private void TbAddPosition_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                btnAdd.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+        }
         #endregion Text box events
 
         #region Helper Methods
-
         private void ReadyForNext()
         {
             tbAddHeader.Text = string.Empty;
@@ -212,6 +201,7 @@ namespace TrayLauncher
             lblStatus.Foreground = Brushes.SlateGray;
             lblStatus.FontWeight = FontWeights.Normal;
 
+            cmbSpecial.SelectedIndex = 0;
             _ = tbAddHeader.Focus();
         }
 
@@ -221,7 +211,7 @@ namespace TrayLauncher
             DateTime dt = DateTime.Now;
             return $"Added {dt}";
         }
-        #endregion Helpers
+        #endregion Helper Methods
 
         #region ComboBox events
         private void CmbSpecial_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -246,14 +236,6 @@ namespace TrayLauncher
                 }
             }
         }
-        #endregion
-
-        private void TbAddPosition_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-                btnAdd.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            }
-        }
+        #endregion ComboBox events
     }
 }

@@ -1,0 +1,8 @@
+﻿0.2.x - Initial release
+
+0.3.x - Added section headers with color & bold options
+      - Changed Tray Icon Color menu & added additional icons
+      - In Add & Update windows, hitting enter in position field will add menu item.
+      - Fixed main window datagrid scrolling issue
+      - Fixed an issue with the Special Items drop-down in the Add window.
+      - Updated ReadMe file to reflect these changes.

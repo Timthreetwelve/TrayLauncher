@@ -24,7 +24,7 @@
       <Value Profile="(Default)">24</Value>
     </Setting>
     <Setting Name="Icon" Type="System.String" Scope="User">
-      <Value Profile="(Default)">orange</Value>
+      <Value Profile="(Default)">red</Value>
     </Setting>
     <Setting Name="StartWithWindows" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -46,6 +46,9 @@
     </Setting>
     <Setting Name="SectionHeaderColor" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="SectionHeaderBold" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

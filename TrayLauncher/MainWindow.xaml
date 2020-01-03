@@ -39,6 +39,12 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
 
         </Style>
+
+        <!--  Style to center text in the data grid header  -->
+        <Style x:Key="HeaderCenter" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
     </Window.Resources>
 
     <Grid>
@@ -139,16 +145,19 @@
                             Checked="MnuStartWW_Checked"
                             Header="Start with Windows"
                             IsCheckable="True"
+                            StaysOpenOnClick="True"
                             Unchecked="MnuStartWW_Unchecked" />
                         <MenuItem Name="mnuStartNotify"
                             Checked="MnuStartNotify_Checked"
                             Header="Startup Notification"
                             IsCheckable="True"
+                            StaysOpenOnClick="True"
                             Unchecked="MnuStartNotify_Unchecked" />
                         <MenuItem Name="mnuHideOnStart"
                             Checked="MnuHideOnStart_Checked"
                             Header="Hide Main Window on Start"
                             IsCheckable="True"
+                            StaysOpenOnClick="True"
                             Unchecked="MnuHideOnStart_Unchecked" />
                         <Separator />
                         <MenuItem x:Name="mnuFontIncrease"
@@ -202,21 +211,20 @@
                                 </ComboBox>
                             </StackPanel>
                         </MenuItem>
-                        <MenuItem Name="mnuHeaderColor"
-                                  Header="Section Header Color">
-                            <StackPanel Margin="-35,0,-50,0"
-                                        Orientation="Vertical">
+                        <MenuItem Name="mnuHeaderColor" Header="Section Header Color">
+                            <StackPanel Margin="-35,0,-50,0" Orientation="Vertical">
                                 <ComboBox Name="CmbHeader"
-                                          Width="190"
-                                          IsSynchronizedWithCurrentItem="True"
-                                          SelectionChanged="CmbHeader_SelectionChanged">
+                                    Width="190"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    SelectionChanged="CmbHeader_SelectionChanged">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Rectangle Width="24"
-                                                           Height="16"
-                                                           Margin="0,2,5,2"
-                                                           Fill="{Binding Name}" />
+                                                <Rectangle
+                                                    Width="24"
+                                                    Height="16"
+                                                    Margin="0,2,5,2"
+                                                    Fill="{Binding Name}" />
                                                 <TextBlock Text="{Binding Name}" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -224,6 +232,12 @@
                                 </ComboBox>
                             </StackPanel>
                         </MenuItem>
+                        <MenuItem x:Name="mnuHeaderBold"
+                            Checked="MnuHeaderBold_Checked"
+                            Header="Section Header Bold"
+                            IsCheckable="True"
+                            StaysOpenOnClick="True"
+                            Unchecked="MnuHeaderBold_Unchecked" />
                         <MenuItem Name="mnuSepColor" Header="Separator Color">
                             <StackPanel Margin="-35,0,-50,0" Orientation="Vertical">
                                 <ComboBox Name="CmbSeparator"
@@ -245,99 +259,204 @@
                                 </ComboBox>
                             </StackPanel>
                         </MenuItem>
-                        <MenuItem Header="Menu Color Preview">
-                            <TextBlock Name="tbColorSample"
-                                Width="150"
-                                Height="50"
-                                Margin="-35,0,-55,0"
-                                Padding="10,15"
-                                Text="Menu Color Preview"
-                                TextWrapping="Wrap" />
-                        </MenuItem>
+
                         <Separator />
                         <MenuItem Header="Tray Icon Color">
-                            <MenuItem Name="mnuBlueIco"
-                                Click="MnuBlueIco_Click"
-                                Header="Blue">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="LightSkyBlue" />
-                                </MenuItem.Icon>
-                            </MenuItem>
+
                             <MenuItem Name="mnuBlackIco"
-                                Click="MnuBlackIco_Click"
-                                Header="Black">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="Black" />
-                                </MenuItem.Icon>
+                                      Click="TrayIcoColor_Click"
+                                      IsCheckable="True"
+                                      StaysOpenOnClick="True"
+                                      Tag="Black">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="Black" />
+                                        <TextBlock Margin="10,0,0,0"
+                                                   Text="Black" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
+
+                            <MenuItem Name="mnuBlueIco"
+                                Click="TrayIcoColor_Click"
+                                IsCheckable="True"
+                                StaysOpenOnClick="True"
+                                Tag="Blue">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle
+                                            Width="16"
+                                            Height="16"
+                                            Fill="LightSkyBlue" />
+                                        <TextBlock Margin="10,0,0,0" Text="Blue" />
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Name="mnuBlue2Ico"
+                                      Click="TrayIcoColor_Click"
+                                      IsCheckable="True"
+                                      StaysOpenOnClick="True"
+                                      Tag="Blue2">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="DodgerBlue" />
+                                        <TextBlock Margin="10,0,0,0"
+                                                   Text="Blue2" />
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
                             <MenuItem Name="mnuCyanIco"
-                                Click="MnuCyanIco_Click"
-                                Header="Cyan">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="Cyan" />
-                                </MenuItem.Icon>
+                                Click="TrayIcoColor_Click"
+                                IsCheckable="True"
+                                StaysOpenOnClick="True"
+                                Tag="Cyan">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle
+                                            Width="16"
+                                            Height="16"
+                                            Fill="Cyan" />
+                                        <TextBlock Margin="10,0,0,0" Text="Cyan" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
+
+                            <MenuItem Name="mnuGrayIco"
+                                      Click="TrayIcoColor_Click"
+                                      IsCheckable="True"
+                                      StaysOpenOnClick="True"
+                                      Tag="Gray">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="LightGray" />
+                                        <TextBlock Margin="10,0,0,0"
+                                                   Text="Gray" />
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
                             <MenuItem Name="mnuGreenIco"
-                                Click="MnuGreenIco_Click"
-                                Header="Green">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="LimeGreen" />
-                                </MenuItem.Icon>
+                                Click="TrayIcoColor_Click"
+                                IsCheckable="True"
+                                StaysOpenOnClick="True"
+                                Tag="Green">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle
+                                            Width="16"
+                                            Height="16"
+                                            Fill="LawnGreen" />
+                                        <TextBlock Margin="10,0,0,0" Text="Green" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
+
+                            <MenuItem Name="mnuMagentaIco"
+                                      Click="TrayIcoColor_Click"
+                                      IsCheckable="True"
+                                      StaysOpenOnClick="True"
+                                      Tag="Magenta">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="Magenta" />
+                                        <TextBlock Margin="10,0,0,0"
+                                                   Text="Magenta" />
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
                             <MenuItem Name="mnuOrangeIco"
-                                Click="MnuOrangeIco_Click"
-                                Header="Orange">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="OrangeRed" />
-                                </MenuItem.Icon>
+                                Click="TrayIcoColor_Click"
+                                IsCheckable="True"
+                                StaysOpenOnClick="True"
+                                Tag="Orange">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle
+                                            Width="16"
+                                            Height="16"
+                                            Fill="#FF8000" />
+                                        <TextBlock Margin="10,0,0,0" Text="Orange" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
+
                             <MenuItem Name="mnuRedIco"
-                                Click="MnuRedIco_Click"
-                                Header="Red">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="Red" />
-                                </MenuItem.Icon>
+                                Click="TrayIcoColor_Click"
+                                IsCheckable="True"
+                                StaysOpenOnClick="True"
+                                Tag="Red">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle
+                                            Width="16"
+                                            Height="16"
+                                            Fill="Red" />
+                                        <TextBlock Margin="10,0,0,0" Text="Red" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
+
+                            <MenuItem Name="mnuTealIco"
+                                      Click="TrayIcoColor_Click"
+                                      IsCheckable="True"
+                                      StaysOpenOnClick="True"
+                                      Tag="Teal">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Width="16"
+                                                   Height="16"
+                                                   Fill="Teal" />
+                                        <TextBlock Margin="10,0,0,0"
+                                                   Text="Teal" />
+                                    </StackPanel>
+                                </MenuItem.Header>
+                            </MenuItem>
+
                             <MenuItem Name="mnuWhiteIco"
-                                Click="MnuWhiteIco_Click"
-                                Header="White">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="White" />
-                                </MenuItem.Icon>
+                                Click="TrayIcoColor_Click"
+                                IsCheckable="True"
+                                StaysOpenOnClick="True"
+                                Tag="White">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle
+                                            Width="16"
+                                            Height="16"
+                                            Fill="White" />
+                                        <TextBlock Margin="10,0,0,0" Text="White" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
+
                             <MenuItem Name="mnuYellowIco"
-                                Click="MnuYellowIco_Click"
-                                Header="Yellow">
-                                <MenuItem.Icon>
-                                    <Rectangle
-                                        Width="16"
-                                        Height="16"
-                                        Fill="Yellow" />
-                                </MenuItem.Icon>
+                                Click="TrayIcoColor_Click"
+                                IsCheckable="True"
+                                StaysOpenOnClick="True"
+                                Tag="Yellow">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle
+                                            Width="16"
+                                            Height="16"
+                                            Fill="Yellow" />
+                                        <TextBlock Margin="10,0,0,0" Text="Yellow" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
                         </MenuItem>
                     </MenuItem>
+
                     <!--  Help menu  -->
                     <MenuItem Header="_Help">
                         <MenuItem Name="mnuReadme"
@@ -353,108 +472,109 @@
         </StackPanel>
 
         <!--  theDataGrid  -->
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" />
-            <DataGrid x:Name="theDataGrid"
-                MinHeight="50"
-                Margin="10,30,10,20"
-                AlternatingRowBackground="WhiteSmoke"
-                AlternationCount="1"
-                AutoGenerateColumns="False"
-                BorderBrush="#E2E2E2"
-                CanUserAddRows="False"
-                CanUserSortColumns="False"
-                FrozenColumnCount="1"
-                HeadersVisibility="Column"
-                HorizontalGridLinesBrush="#E2E2E2"
-                HorizontalScrollBarVisibility="Auto"
-                IsReadOnly="True"
-                MouseDoubleClick="DataGridRow_MouseDoubleClick"
-                SelectionMode="Single"
-                SelectionUnit="FullRow"
-                VerticalGridLinesBrush="#E2E2E2">
+        <DataGrid x:Name="theDataGrid"
+            MinHeight="50"
+            Margin="10,30,10,20"
+            AlternatingRowBackground="WhiteSmoke"
+            AlternationCount="1"
+            AutoGenerateColumns="False"
+            BorderBrush="#E2E2E2"
+            CanUserAddRows="False"
+            CanUserSortColumns="False"
+            FrozenColumnCount="1"
+            HeadersVisibility="Column"
+            HorizontalGridLinesBrush="#E2E2E2"
+            HorizontalScrollBarVisibility="Auto"
+            IsReadOnly="True"
+            MouseDoubleClick="DataGridRow_MouseDoubleClick"
+            SelectionMode="Single"
+            SelectionUnit="FullRow"
+            VerticalGridLinesBrush="#E2E2E2"
+            VerticalScrollBarVisibility="Auto">
 
-                <!--  Style to show separators and headers in gray  -->
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Foreground" Value="Black" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ItemType}" Value="S">
-                                <Setter Property="Foreground" Value="DarkCyan" />
-                                <Setter Property="FontWeight" Value="Regular" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ItemType}" Value="H">
-                                <Setter Property="Foreground" Value="DarkCyan" />
-                                <Setter Property="FontWeight" Value="Regular" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
+            <!--  Style to show separators and headers in gray  -->
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ItemType}" Value="S">
+                            <Setter Property="Foreground" Value="Gray" />
+                            <Setter Property="FontWeight" Value="Regular" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemType}" Value="H">
+                            <Setter Property="Foreground" Value="Gray" />
+                            <Setter Property="FontWeight" Value="Regular" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
 
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Name="dgcmAdd"
-                            Click="MnuAdd_Click"
-                            Header="Add Menu Item" />
-                        <MenuItem Name="dgcmRemove"
-                            Click="MnuDel_Click"
-                            Header="Remove Selected Item" />
-                        <MenuItem Name="dgcmUpdate"
-                            Click="MnuUpdate_Click"
-                            Header="Update Selected Item" />
-                        <Separator />
-                        <MenuItem Name="dgcmTest"
-                            Click="MnuTest_Click"
-                            Header="Test Selected Item" />
-                        <Separator />
-                        <MenuItem Name="dgcmRefresh"
-                            Click="MnuRefresh_Click"
-                            Header="Refresh Menu List" />
 
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
 
-                <!--  Datagrid columns  -->
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="40"
-                        Binding="{Binding Pos}"
-                        ElementStyle="{StaticResource alignRight}"
-                        Header="Pos" />
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="120"
-                        Binding="{Binding Header}"
-                        ElementStyle="{StaticResource ColumnMargin5}"
-                        Header="Menu Text" />
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="120"
-                        Binding="{Binding AppPath}"
-                        ElementStyle="{StaticResource ColumnMargin5}"
-                        Header="Application Path" />
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="120"
-                        Binding="{Binding Arguments}"
-                        ElementStyle="{StaticResource ColumnMargin5}"
-                        Header="Arguments" />
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="120"
-                        Binding="{Binding ToolTip}"
-                        ElementStyle="{StaticResource ColumnMargin5}"
-                        Header="Tooltip" />
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="40"
-                        Binding="{Binding ItemType}"
-                        ElementStyle="{StaticResource ColumnCenter}"
-                        Header="Type" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+            <!--  Datagrid context menu  -->
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="dgcmAdd"
+                        Click="MnuAdd_Click"
+                        Header="Add Menu Item" />
+                    <MenuItem Name="dgcmRemove"
+                        Click="MnuDel_Click"
+                        Header="Remove Selected Item" />
+                    <MenuItem Name="dgcmUpdate"
+                        Click="MnuUpdate_Click"
+                        Header="Update Selected Item" />
+                    <Separator />
+                    <MenuItem Name="dgcmTest"
+                        Click="MnuTest_Click"
+                        Header="Test Selected Item" />
+                    <Separator />
+                    <MenuItem Name="dgcmRefresh"
+                        Click="MnuRefresh_Click"
+                        Header="Refresh Menu List" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <!--  Datagrid columns  -->
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="40"
+                    Binding="{Binding Pos}"
+                    ElementStyle="{StaticResource alignRight}"
+                    Header="Pos"
+                    HeaderStyle="{StaticResource HeaderCenter}" />
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="120"
+                    Binding="{Binding Header}"
+                    ElementStyle="{StaticResource ColumnMargin5}"
+                    Header="Menu Text" />
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="120"
+                    Binding="{Binding AppPath}"
+                    ElementStyle="{StaticResource ColumnMargin5}"
+                    Header="Application Path" />
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="120"
+                    Binding="{Binding Arguments}"
+                    ElementStyle="{StaticResource ColumnMargin5}"
+                    Header="Arguments" />
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="120"
+                    Binding="{Binding ToolTip}"
+                    ElementStyle="{StaticResource ColumnMargin5}"
+                    Header="Tooltip" />
+                <DataGridTextColumn
+                    Width="57"
+                    Binding="{Binding ItemType}"
+                    ElementStyle="{StaticResource ColumnCenter}"
+                    Header="Type" />
+            </DataGrid.Columns>
+        </DataGrid>
+
         <StackPanel Margin="10" />
     </Grid>
 </Window>

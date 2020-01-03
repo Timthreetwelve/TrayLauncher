@@ -26,8 +26,8 @@ Main Window
 ===========
 The main window is where you configure the tray menu. From there you can add, update, remove
 and test menu items. You can also change the menu text color, background color and the color
-of the menu separators. Additionally you can change the font size and the color of the tray
-icon.
+of the menu separators. Additionally you can change the font size of the menu items and the
+color of the tray icon.
 
 The grid below the menu contains the items that have been added to the TrayLauncher menu. Two
 additional items will always appear on the menu. "Manage" appears at the top of the menu. Clicking
@@ -48,11 +48,12 @@ on the tray menu. Every entry must have Menu Item Text.
 
 Next, in the Application Path field, enter the path of what you want to open. This can be the path
 to an application or batch file, the URL for a website, the path to a folder, or a windows setting.
-Every entry except the menu separator must have an application path.
+Every entry except menu separators and section headers must have an application path.
 
 The next field is Arguments. This is where parameters are passed to the application. For
 example if you wanted to have a menu entry for Device Manager, you would enter MMC.exe for the
-application path and devmgmt.msc for the argument. This field is optional.
+application path and devmgmt.msc for the argument. This field is only required if the application
+requires it.
 
 The ToolTip field is on optional field where you can specify text for a tooltip. A tooltip is
 that little box of text that briefly appears when you hover the mouse cursor over a UI element.
@@ -66,17 +67,17 @@ they will be displayed consecutively in the menu. The Refresh List item on the C
 will renumber the list, starting at 100 and incrementing each item by 10. The Position field is
 required for every menu item.
 
-You can separate menu items into groups by placing a Separator between items. To add a separator
-enter "Separator" in the Menu Item Text field and supply a value in the position field. Alternately
-use the predefined separator from the drop-down discussed in the next paragraph. The other fields
-are ignored for a separator. Note that tooltips are not visible for separators. Separators appear
-grayed out in the main window as a visual cue.
-
 Below the Position field is a drop-down list of predefined menu items. These items include folders,
-shortcuts to Control Panel items, system settings and some Windows accessories. To add an item from
-this list to the TrayLauncher menu, select the item from the drop-down and supply a position for
-that item. Add some tooltip text if desired. The entry for the menu separator is at the top of this
-list. The remaining items are sorted alphabetically.
+shortcuts to Control Panel items, system settings and some Windows accessories. To use one of these
+entries, simply click the drop-down labeled Select a menu item. Scroll to find the entry that you
+want and click that entry. With the exception of the Position field, the required fields will be
+filled in. Just add a position and click the Add button.
+
+The first two entries in the Special Items drop-down are Separator and Section Name. Menu items can
+be grouped into sections using separators and section headers. A separator is a thin horizontal line
+between menu items. To add a separator select it from the drop-down and give it a position number,
+all of the other fields are irrelevant. To add a section header select it and give it a position.
+Then change the text in the Menu Item Text field to reflect the name of the section you are creating.
 
 When you are ready, click the Add button. Multiple menu entries can be added in this manner. When
 you are done adding items, click the Done button.
@@ -106,17 +107,17 @@ context menu that appears when you right-click on a menu item.
 The Options Menu
 ================
 From the Options menu you can choose to have TrayLauncher start with windows so that it will always
-be available. You can choose to have a notification display when it starts. You can also choose to
-have the main window be hidden when TrayLauncher starts (recommended).
+be available (recommended). You can choose to have a notification display when it starts. You can
+also choose to have the main window be hidden when TrayLauncher starts (recommended).
 
 The next section of the Options menu allows you to increase or decrease the font size of both the
 TrayLauncher menu and the grid in the main window.
 
-The color of the menu text, the menu background and of any separators can be changed in the next
-section. There is also a menu item that shows a preview of the color choices. Choose a combination
-that suits your personal taste.
+The color of the menu text, the section headers, the menu background and separators can be changed
+in the next section. There is also a menu item that shows a preview of the color choices. Choose a
+combination that suits your personal taste.
 
-Finally, there is an option to change the color of the icon in the tray. There are eight colors to
+Finally, there is an option to change the color of the icon in the tray. There are twelve colors to
 choose from. This will change the icon in the tray, but due to a quirk/feature in Windows the icon
 displayed on the taskbar will stay the same as the icon used in the start menu.
 
@@ -153,9 +154,6 @@ in Program Files (x86) and then to the Images folder. Rename one of the icons. E
 existing icons or copy a new icon into that folder and name it the original name of the one that
 was renamed. Then select that icon from the Icon Color menu. Note that the new icon must be an ICO
 file and not another image format renamed to ICO.
-
-If the separators are showing on the menu as words instead of horizontal lines, check the spelling,
-that first "a" can be tricky.
 
 
 Diagnostics

@@ -141,6 +141,19 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Change List.txt" />
+    <Content Include="Images\blue2.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\gray.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\magenta.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\teal.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\white.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

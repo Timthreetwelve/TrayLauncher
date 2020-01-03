@@ -89,6 +89,7 @@
             Height="25"
             Margin="0,0,30,0"
             HorizontalAlignment="Left"
+            KeyUp="TbUpdatePosition_KeyUp"
             MaxLength="5"
             PreviewTextInput="TbUpdatePosition_PreviewTextInput" />
         <TextBlock x:Name="lblStatus"

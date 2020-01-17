@@ -38,6 +38,8 @@ namespace TrayLauncher
         private string xmlMenuFile;
         private MenuList XmlData;
         private bool explicitClose;
+        public MenuItem prevMenuItem;
+        private TLMenuItem prevItem;
 
         #region Icon filename variables
         private readonly string blackIcon = @"Images\black.ico";
@@ -382,7 +384,7 @@ namespace TrayLauncher
                 MenuItem mi = new MenuItem();
 
                 // If menu item is a Separator
-                if (item.ItemType == "S")
+                if (item.ItemType == "SEP")
                 {
                     Debug.WriteLine("Adding a separator");
                     Color selectedColor = (Color)(CmbSeparator.SelectedItem as PropertyInfo).
@@ -394,12 +396,11 @@ namespace TrayLauncher
                         BorderThickness = new Thickness(0, 1, 0, 0)
                     };
                     trayMenu.Items.Insert(itemCounter + itemOffset, sep);
-                    string ic = itemCounter.ToString("D2");
-                    WriteLog.WriteTempFile($"    Loaded: item {ic}, Separator");
+                    WriteLog.WriteTempFile($"    Loaded: ·Separator·");
                 }
 
                 // If menu item is a Section Header
-                else if (item.ItemType == "H")
+                else if (item.ItemType == "SH")
                 {
                     Debug.WriteLine("Adding a section header");
                     mi.Header = item.Header;
@@ -413,12 +414,22 @@ namespace TrayLauncher
                         mi.FontWeight = FontWeights.Bold;
                     }
                     trayMenu.Items.Insert(itemCounter + itemOffset, mi);
-                    string ic = itemCounter.ToString("D2");
-                    WriteLog.WriteTempFile($"    Loaded: item {ic}, Section header");
+                    WriteLog.WriteTempFile($"    Loaded: ·Section header·");
                 }
-                else
 
-                // otherwise a normal menu item
+                // Sub menu
+                else if(item.ItemType == "SM")
+                {
+                    mi.Header = item.Header;
+                    mi.Margin = new Thickness(5, 0, 0, 0);
+                    prevMenuItem = mi;
+                    trayMenu.Items.Insert(itemCounter + itemOffset, mi);
+                    Debug.WriteLine($"Adding a Sub menu: {item.Header}");
+                    WriteLog.WriteTempFile($"    Loaded: {item.Header}");
+                }
+
+                else
+                // normal & sub menu item
                 {
                     mi.Header = item.Header;
                     if (!string.IsNullOrEmpty(item.ToolTip))
@@ -427,12 +438,23 @@ namespace TrayLauncher
                     }
                     mi.Click += Mi_Click;
                     mi.Tag = item;
-                    mi.Margin = new Thickness(5, 0, 0, 0);
+                    if (item.ItemType == "SMI")
+                    {
+                        mi.Margin = new Thickness(-10, 0, -5, 0);
+                        prevMenuItem.Items.Add(mi);
+                        itemCounter--;
+                        WriteLog.WriteTempFile($"    Loaded: {prevMenuItem.Header} > {item.Header}");
+                    }
+                    else
+                    {
+                        mi.Margin = new Thickness(5, 0, 0, 0);
+                        trayMenu.Items.Insert(itemCounter + itemOffset, mi);
+                        WriteLog.WriteTempFile($"    Loaded: {item.Header}");
+                    }
                     Debug.WriteLine($"Adding item {item.Header}");
-                    trayMenu.Items.Insert(itemCounter + itemOffset, mi);
-                    string ic = itemCounter.ToString("D2");
-                    WriteLog.WriteTempFile($"    Loaded: item {ic}, {item.Header}");
+
                 }
+                prevItem = item;
             }
             WriteLog.WriteTempFile($"    Loading of menu items is complete");
             WriteLog.WriteTempFile("  Leaving LoadMenuItems");

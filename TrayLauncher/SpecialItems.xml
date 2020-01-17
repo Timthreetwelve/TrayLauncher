@@ -7,13 +7,32 @@
     <Name>Separator</Name>
     <Path>Not Applicable</Path>
     <Args></Args>
-    <Type>S</Type>
+    <Type>SEP</Type>
   </Shortcut>
   <Shortcut>
     <Name>Section Name</Name>
     <Path>Section Header</Path>
     <Args></Args>
-    <Type>H</Type>
+    <Type>SH</Type>
+  </Shortcut>
+  <Shortcut>
+    <Name>Sub Menu Name</Name>
+    <Path>Sub Menu</Path>
+    <Args></Args>
+    <Type>SM</Type>
+  </Shortcut>
+  <Shortcut>
+    <Name>Sub Menu Item</Name>
+    <Path></Path>
+    <Args></Args>
+    <Type>SMI</Type>
+  </Shortcut>
+  <Shortcut>
+    <!-- separator in list-->
+    <Name>.</Name>
+    <Path></Path>
+    <Args></Args>
+    <Type></Type>
   </Shortcut>
   <Shortcut>
     <Name>About Windows</Name>
@@ -151,7 +170,7 @@
     <Args>/name Microsoft.IndexingOptions</Args>
   </Shortcut>
   <Shortcut>
-    <Name>IProtocol Configuration</Name>
+    <Name>IP Configuration</Name>
     <Path>Cmd.exe</Path>
     <Args>/k %windir%\system32\ipconfig.exe</Args>
   </Shortcut>

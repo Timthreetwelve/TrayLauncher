@@ -5,9 +5,9 @@
     xmlns:local="clr-namespace:TrayLauncher"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Add a Menu Item"
+    Title="Add Menu Items"
     Width="800"
-    Height="300"
+    Height="400"
     MinWidth="590"
     FontSize="14"
     SizeToContent="Height"
@@ -17,6 +17,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
             <ColumnDefinition Width="125" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="20" />
@@ -29,8 +30,11 @@
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="10" />
         </Grid.RowDefinitions>
+
+        <!--  Menu item text  -->
         <TextBlock
             Grid.Row="1"
             Grid.Column="1"
@@ -44,6 +48,8 @@
             Height="25"
             Margin="0,0,0,0"
             MaxLength="260" />
+
+        <!--  App path  -->
         <TextBlock
             Grid.Row="2"
             Grid.Column="1"
@@ -57,6 +63,8 @@
             Height="25"
             Margin="0,0,0,0"
             MaxLength="260" />
+
+        <!--  Arguments  -->
         <TextBlock
             Grid.Row="3"
             Grid.Column="1"
@@ -70,6 +78,8 @@
             Height="25"
             Margin="0,0,0,0"
             MaxLength="260" />
+
+        <!--  Tooltip  -->
         <TextBlock
             Grid.Row="4"
             Grid.Column="1"
@@ -83,42 +93,109 @@
             Height="25"
             Margin="0,0,0,0"
             MaxLength="260" />
-        <TextBlock
+
+        <!--  Radio buttons  -->
+        <StackPanel
             Grid.Row="5"
             Grid.Column="1"
-            Margin="0,0,10,0"
-            VerticalAlignment="Center"
-            Text="Position" />
-        <TextBox x:Name="tbAddPosition"
-            Grid.Row="5"
-            Grid.Column="2"
-            Width="50"
-            Height="25"
-            Margin="0,0,30,0"
-            HorizontalAlignment="Left"
-            MaxLength="5"
-            PreviewTextInput="TbAddPosition_PreviewTextInput_1"
-                 KeyUp="TbAddPosition_KeyUp" />
-        <TextBlock
-            Grid.Row="6"
-            Grid.Column="1"
-            Margin="0,0,10,0"
-            VerticalAlignment="Center"
-            Text="Special Items" />
-        <ComboBox Name="cmbSpecial"
-            Grid.Row="6"
-            Grid.Column="2"
-            Width="200"
-            Height="25"
-            Margin="0,5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            VerticalContentAlignment="Center"
-            SelectedIndex="0"
-            SelectionChanged="CmbSpecial_SelectionChanged" />
+            Grid.ColumnSpan="4"
+            Orientation="Horizontal">
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="1"
+                Margin="0,0,55,0"
+                VerticalAlignment="Center"
+                Text="Item Type" />
+            <RadioButton x:Name="btnNormal"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Checked="RadioButton_Checked"
+                Content="Normal Item" />
+            <RadioButton x:Name="btnSep"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Checked="RadioButton_Checked"
+                Content="Separator" />
+            <RadioButton x:Name="btnSH"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Checked="RadioButton_Checked"
+                Content="Section Name" />
+            <RadioButton x:Name="btnSM"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Checked="RadioButton_Checked"
+                Content="Sub Menu" />
+            <RadioButton x:Name="btnSMI"
+                Margin="10,0"
+                VerticalAlignment="Center"
+                Checked="RadioButton_Checked"
+                Content="Sub Menu Item" />
+        </StackPanel>
+
+        <!--  Position & Special Items  -->
         <StackPanel
             Grid.Row="6"
-            Grid.Column="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,0,0"
+                VerticalAlignment="Center"
+                Text="Position" />
+            <TextBox x:Name="tbAddPosition"
+                Width="50"
+                Height="25"
+                Margin="77,0,0,0"
+                HorizontalAlignment="Left"
+                KeyUp="TbAddPosition_KeyUp"
+                MaxLength="5"
+                PreviewTextInput="TbAddPosition_PreviewTextInput_1" />
+            <TextBlock
+                Margin="40,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="Special Items" />
+            <ComboBox Name="cmbSpecial"
+                Width="200"
+                Height="25"
+                Margin="20,5,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                VerticalContentAlignment="Center"
+                SelectedIndex="0"
+                SelectionChanged="CmbSpecial_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ComboBoxItem}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Name}" Value=".">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                            <Separator
+                                                Margin="5,2,5,3"
+                                                HorizontalAlignment="Stretch"
+                                                Background="DarkGray"
+                                                IsEnabled="False" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+        </StackPanel>
+
+        <!--  Add & Done buttons  -->
+        <StackPanel
+            Grid.Row="7"
+            Grid.Column="4"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
             <Button x:Name="btnAdd"
@@ -134,10 +211,12 @@
                 Click="BtnExitAdd_Click"
                 Content="Done" />
         </StackPanel>
+
+        <!--  Status  -->
         <TextBlock x:Name="lblStatus"
-            Grid.Row="7"
-            Grid.Column="3"
-            Width="280"
+            Grid.Row="6"
+            Grid.Column="4"
+            Width="200"
             Height="35"
             Margin="0,5,3,5"
             HorizontalAlignment="Right"

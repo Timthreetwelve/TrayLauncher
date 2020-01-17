@@ -1,5 +1,6 @@
 ﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
 #region Using directives
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using TKUtils;
+
 #endregion Using directives
 
 namespace TrayLauncher
@@ -21,11 +23,11 @@ namespace TrayLauncher
     // Logic for the AddItem dialog
     public partial class AddItem : Window
     {
-        private SpecialMenuItems special;
         private const string specItemsXML = "SpecialItems.xml";
         private string xmlMenuFile;
         private int addCount = 0;
         private string itemType = string.Empty;
+        private readonly List<Shortcut> cboxItems = new List<Shortcut>();
 
         public AddItem()
         {
@@ -36,31 +38,52 @@ namespace TrayLauncher
             LoadComboBox();
         }
 
+        #region Read Settings
+
+        private void ReadSettings()
+        {
+            WriteLog.WriteTempFile("  Entering AddItem");
+            lblStatus.Text = "Ready";
+            lblStatus.Foreground = Brushes.SlateGray;
+            xmlMenuFile = Properties.Settings.Default.XMLfile;
+            FontSize = Properties.Settings.Default.FontSize;
+        }
+
+        #endregion Read Settings
+
         #region Load ComboBox
+
         public void LoadComboBox()
         {
             try
             {
+                // Location of XML file
                 string sourceXML = specItemsXML;
                 string currentFolder = Assembly.GetExecutingAssembly().Location;
                 string inputXML = Path.Combine(Path.GetDirectoryName(currentFolder), sourceXML);
 
+                // Deserialize the XML file
                 XmlSerializer deserializer = new XmlSerializer(typeof(SpecialMenuItems));
                 StreamReader reader = new StreamReader(inputXML);
-                special = (SpecialMenuItems)deserializer.Deserialize(reader);
+                SpecialMenuItems special = (SpecialMenuItems)deserializer.Deserialize(reader);
                 reader.Close();
 
-                List<string> cboxItems = new List<string>();
-                cboxItems.Add("Select a menu item");
+                // Add a placeholder to the top of the combo box
+                Shortcut ph = new Shortcut
+                {
+                    Name = "Select a menu item"
+                };
+                cboxItems.Add(ph);
+
+                // Add items to combo box
                 foreach (Shortcut item in special.shortcuts)
                 {
-                    if (!string.IsNullOrEmpty(item.Name))
-                    {
-                        cboxItems.Add(item.Name);
-                        Debug.WriteLine($"   {item.Name} = {item.Path}");
-                    }
+                    cboxItems.Add(item);
+                    Debug.WriteLine($"   {item.Name} = {item.Path}");
                 }
                 cmbSpecial.ItemsSource = cboxItems;
+
+                // set combo box to the first item
                 cmbSpecial.SelectedIndex = 0;
             }
             catch (Exception ex)
@@ -71,20 +94,11 @@ namespace TrayLauncher
                 WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
+
         #endregion Load ComboBox
 
-        #region Read Settings
-        private void ReadSettings()
-        {
-            WriteLog.WriteTempFile("  Entering AddItem");
-            lblStatus.Text = "Ready";
-            lblStatus.Foreground = Brushes.SlateGray;
-            xmlMenuFile = Properties.Settings.Default.XMLfile;
-            FontSize = Properties.Settings.Default.FontSize;
-        }
-        #endregion Read Settings
-
         #region Buttons
+
         // Add a menu item
         public void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -163,9 +177,11 @@ namespace TrayLauncher
             WriteLog.WriteTempFile($"  Leaving AddItem, {addCount} items added");
             Close();
         }
+
         #endregion Buttons
 
         #region Text box events
+
         // Make sure size text box only accepts numbers
         private void TbAddPosition_PreviewTextInput_1(object sender,
             System.Windows.Input.TextCompositionEventArgs e)
@@ -179,12 +195,88 @@ namespace TrayLauncher
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-                btnAdd.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                btnAdd.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             }
         }
+
         #endregion Text box events
 
+        #region ComboBox events
+
+        // Combo box selection changed
+        private void CmbSpecial_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CheckRadioButton("");
+            if (cmbSpecial.SelectedIndex == 0)
+            {
+                tbAddHeader.Text = string.Empty;
+                tbAddAppPath.Text = string.Empty;
+                tbAddArguments.Text = string.Empty;
+            }
+            else
+            {
+                Shortcut x = (Shortcut)cmbSpecial.SelectedItem;
+
+                foreach (Shortcut item in cboxItems)
+                {
+                    if (item.Name == x.Name)
+                    {
+                        tbAddHeader.Text = item.Name;
+                        tbAddAppPath.Text = item.Path;
+                        tbAddArguments.Text = item.Args;
+                        itemType = item.ItemType;
+                        // If item type isn't blank, check the appropriate radio button
+                        if (!string.IsNullOrEmpty(itemType))
+                        {
+                            CheckRadioButton(itemType.ToString());
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        #endregion ComboBox events
+
+        #region Radio buttons
+
+        // Check radio button based on itemType
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton x = sender as RadioButton;
+
+            switch (x.Name)
+            {
+                case "btnNormal":
+                    itemType = "";
+                    break;
+
+                case "btnSep":
+                    itemType = "SEP";
+                    break;
+
+                case "btnSH":
+                    itemType = "SH";
+                    break;
+
+                case "btnSM":
+                    itemType = "SM";
+                    break;
+
+                case "btnSMI":
+                    itemType = "SMI";
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        #endregion Radio buttons
+
         #region Helper Methods
+
+        // Blank text boxes and set color values to be ready for next item
         private void ReadyForNext()
         {
             tbAddHeader.Text = string.Empty;
@@ -211,31 +303,34 @@ namespace TrayLauncher
             DateTime dt = DateTime.Now;
             return $"Added {dt}";
         }
-        #endregion Helper Methods
 
-        #region ComboBox events
-        private void CmbSpecial_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // Method to check specified radio button
+        private void CheckRadioButton(string itype)
         {
-            if (cmbSpecial.SelectedIndex == 0)
+            switch (itype)
             {
-                tbAddHeader.Text = string.Empty;
-                tbAddAppPath.Text = string.Empty;
-                tbAddArguments.Text = string.Empty;
-            }
-            else
-            {
-                foreach (var item in special.shortcuts)
-                {
-                    if (item.Name == cmbSpecial.SelectedValue.ToString())
-                    {
-                        tbAddHeader.Text = item.Name;
-                        tbAddAppPath.Text = item.Path;
-                        tbAddArguments.Text = item.Args;
-                        itemType = item.ItemType;
-                    }
-                }
+                case "SEP":
+                    btnSep.IsChecked = true;
+                    break;
+
+                case "SH":
+                    btnSH.IsChecked = true;
+                    break;
+
+                case "SM":
+                    btnSM.IsChecked = true;
+                    break;
+
+                case "SMI":
+                    btnSMI.IsChecked = true;
+                    break;
+
+                default:
+                    btnNormal.IsChecked = true;
+                    break;
             }
         }
-        #endregion ComboBox events
+
+        #endregion Helper Methods
     }
 }

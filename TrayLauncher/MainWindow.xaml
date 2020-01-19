@@ -50,7 +50,7 @@
     <Grid>
         <!--  Taskbar Icon  -->
         <tb:TaskbarIcon x:Name="myNotifyIcon"
-            MenuActivation="RightClick"
+            MenuActivation="LeftOrRightClick"
             ToolTipText="TrayLauncher"
             TrayMouseDoubleClick="MyNotifyIcon_TrayMouseDoubleClick"
             Visibility="Visible">

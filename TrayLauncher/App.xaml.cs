@@ -36,5 +36,10 @@ namespace TrayLauncher
             base.OnStartup(e);
         }
         #endregion
+
+        private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
+        {
+            Voodoo.WindowsLogoffOrShutdown = true;
+        }
     }
 }

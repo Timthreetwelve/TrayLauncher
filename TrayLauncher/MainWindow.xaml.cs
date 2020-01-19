@@ -521,31 +521,39 @@ namespace TrayLauncher
         // Window closing
         protected override void OnClosing(CancelEventArgs e)
         {
-            // Intercept close from the X in the title bar or from the taskbar
-            // in case user didn't really mean to exit. Could change this to minimize.
-            if (!explicitClose)
+            // Is Windows shutting down?
+            if (!Voodoo.WindowsLogoffOrShutdown)
             {
-                MessageBoxResult result = MessageBox.Show("Do you want to exit TrayLauncher?",
-                                                          "Exit TrayLauncher?",
-                                                          MessageBoxButton.YesNo,
-                                                          MessageBoxImage.Question);
-                if (result == MessageBoxResult.No)
+                // Intercept close from the X in the title bar or from the taskbar
+                // in case user didn't really mean to exit. Could change this to minimize.
+                if (!explicitClose)
                 {
-                    e.Cancel = true;
+                    MessageBoxResult result = MessageBox.Show("Do you want to exit TrayLauncher?",
+                                                              "Exit TrayLauncher?",
+                                                              MessageBoxButton.YesNo,
+                                                              MessageBoxImage.Question);
+                    if (result == MessageBoxResult.No)
+                    {
+                        e.Cancel = true;
+                    }
+                    else
+                    {
+                        //clean up notify icon (would otherwise stay open until application finishes)
+                        myNotifyIcon.Dispose();
+                        base.OnClosing(e);
+                    }
                 }
+                // Exit selected from menu so don't ask intention
                 else
                 {
-                    //clean up notify icon (would otherwise stay open until application finishes)
+                    WriteLog.WriteTempFile("  Explicit exit");
                     myNotifyIcon.Dispose();
                     base.OnClosing(e);
                 }
             }
-            // Exit selected from menu so don't ask intention
             else
             {
-                WriteLog.WriteTempFile("  Explicit exit");
-                myNotifyIcon.Dispose();
-                base.OnClosing(e);
+                WriteLog.WriteTempFile("TrayLauncher is closing due to user logoff or Windows shutdown");
             }
         }
 

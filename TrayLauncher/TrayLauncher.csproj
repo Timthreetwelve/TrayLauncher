@@ -70,7 +70,7 @@
     <Compile Include="AddItem.xaml.cs">
       <DependentUpon>AddItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Raspberry.cs" />
+    <Compile Include="Voodoo.cs" />
     <Compile Include="SpecialMenuItems.cs" />
     <Compile Include="UpdateItem.xaml.cs">
       <DependentUpon>UpdateItem.xaml</DependentUpon>

@@ -214,5 +214,29 @@ namespace TrayLauncher.Properties {
                 this["SectionHeaderBold"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowItemType {
+            get {
+                return ((bool)(this["ShowItemType"]));
+            }
+            set {
+                this["ShowItemType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MinimizeToTrayOnExit {
+            get {
+                return ((bool)(this["MinimizeToTrayOnExit"]));
+            }
+            set {
+                this["MinimizeToTrayOnExit"] = value;
+            }
+        }
     }
 }

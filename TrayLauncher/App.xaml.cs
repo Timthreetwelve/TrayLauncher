@@ -21,8 +21,11 @@ namespace TrayLauncher
         /////////////////////////////////////////////////
         protected override void OnStartup(StartupEventArgs e)
         {
+        #if DEBUG   // Change name when debugging
+            const string appName = "TrayLauncher_Debug";
+        #else
             const string appName = "TrayLauncher";
-
+        #endif
             _mutex = new Mutex(true, appName, out bool createdNew);
 
             if (!createdNew)
@@ -37,9 +40,11 @@ namespace TrayLauncher
         }
         #endregion
 
+        #region Session ending
         private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
             Voodoo.WindowsLogoffOrShutdown = true;
         }
+        #endregion
     }
 }

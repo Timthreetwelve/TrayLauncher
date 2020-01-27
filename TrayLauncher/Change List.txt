@@ -6,3 +6,13 @@
       - Fixed main window datagrid scrolling issue
       - Fixed an issue with the Special Items drop-down in the Add window.
       - Updated ReadMe file to reflect these changes.
+
+0.4.x - Added capability to define sub-menus.
+      - Left-click on tray icon will now activate menu.
+      - Handle windows shutdown & log off gracefully.
+      - Added option to toggle visibility of Type column.
+      - Added option to minimize to tray on exit.
+      - New logic to set maximum height of main window.
+      - Added capability to run in 32 or 64 bit mode depending on OS.
+      - Changed the Update window to have all the options in the Add window.
+      - Updated ReadMe file to reflect these changes.

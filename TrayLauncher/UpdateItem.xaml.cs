@@ -3,14 +3,19 @@
 //
 #region using directives
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using TKUtils;
 #endregion
 
@@ -21,8 +26,10 @@ namespace TrayLauncher
     /// </summary>
     public partial class UpdateItem : Window
     {
+        private const string specItemsXML = "SpecialItems.xml";
         private string xmlMenuFile;
-        private readonly string itemType;
+        private string itemType = string.Empty;
+        private readonly List<Shortcut> cboxItems = new List<Shortcut>();
         private readonly int index;
 
         public UpdateItem(string header, string path, string args, string ttip, int pos, string itype, int idx)
@@ -31,7 +38,11 @@ namespace TrayLauncher
 
             ReadSettings();
 
+            LoadComboBox();
+
             PreFillTextboxes(header, path, args, ttip, pos);
+
+            CheckRadioButton(itype);
 
             itemType = itype;
             index = idx;
@@ -45,6 +56,53 @@ namespace TrayLauncher
             FontSize = Properties.Settings.Default.FontSize;
         }
         #endregion Read Settings
+
+        #region Load ComboBox
+
+        public void LoadComboBox()
+        {
+            try
+            {
+                // Location of XML file
+                string sourceXML = specItemsXML;
+                string currentFolder = Assembly.GetExecutingAssembly().Location;
+                string inputXML = Path.Combine(Path.GetDirectoryName(currentFolder), sourceXML);
+
+                // Deserialize the XML file
+                XmlSerializer deserializer = new XmlSerializer(typeof(SpecialMenuItems));
+                StreamReader reader = new StreamReader(inputXML);
+                SpecialMenuItems special = (SpecialMenuItems)deserializer.Deserialize(reader);
+                reader.Close();
+
+                // Add a placeholder to the top of the combo box
+                Shortcut ph = new Shortcut
+                {
+                    Name = "Select a menu item"
+                };
+                cboxItems.Add(ph);
+
+                // Add items to combo box
+                Debug.WriteLine($"  Adding items to ComboBox");
+                foreach (Shortcut item in special.shortcuts)
+                {
+                    cboxItems.Add(item);
+                    Debug.WriteLine($"   {item.Name} = {item.Path}");
+                }
+                cmbSpecial.ItemsSource = cboxItems;
+
+                // set combo box to the first item
+                cmbSpecial.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show($"Error reading or writing to special items file\n{ex.Message}",
+                    "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                WriteLog.WriteTempFile($"* Error reading or writing to special items file.");
+                WriteLog.WriteTempFile($"* {ex.Message}");
+            }
+        }
+
+        #endregion Load ComboBox
 
         #region Buttons
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
@@ -110,7 +168,8 @@ namespace TrayLauncher
                                        $"Position: {tbUpdatePosition.Text}, " +
                                        $"AppPath: {tbUpdateAppPath.Text}, " +
                                        $"Arguments: {tbUpdateArguments.Text}, " +
-                                       $"Tooltip: {tbUpdateToolTip.Text} ");
+                                       $"Tooltip: {tbUpdateToolTip.Text}, " +
+                                       $"Type: {itemType} ");
                 WriteLog.WriteTempFile("  Leaving UpdateItem");
                 Close();
             }
@@ -146,6 +205,83 @@ namespace TrayLauncher
         }
         #endregion
 
+        #region ComboBox events
+
+        // Combo box selection changed
+        private void CmbSpecial_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CheckRadioButton("");
+            if (cmbSpecial.SelectedIndex == 0)
+            {
+                tbUpdateHeader.Text = string.Empty;
+                tbUpdateAppPath.Text = string.Empty;
+                tbUpdateArguments.Text = string.Empty;
+            }
+            else
+            {
+                Shortcut x = (Shortcut)cmbSpecial.SelectedItem;
+
+                foreach (Shortcut item in cboxItems)
+                {
+                    if (item.Name == x.Name)
+                    {
+                        tbUpdateHeader.Text = item.Name;
+                        tbUpdateAppPath.Text = item.Path;
+                        tbUpdateArguments.Text = item.Args;
+                        itemType = item.ItemType;
+                        // If item type isn't blank, check the appropriate radio button
+                        if (!string.IsNullOrEmpty(itemType))
+                        {
+                            CheckRadioButton(itemType.ToString());
+                        }
+                        else
+                        {
+                            CheckRadioButton("");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        #endregion ComboBox events
+
+        #region Radio buttons
+
+        // Check radio button based on itemType
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton x = sender as RadioButton;
+
+            switch (x.Name)
+            {
+                case "btnNormal":
+                    itemType = "";
+                    break;
+
+                case "btnSep":
+                    itemType = "SEP";
+                    break;
+
+                case "btnSH":
+                    itemType = "SH";
+                    break;
+
+                case "btnSM":
+                    itemType = "SM";
+                    break;
+
+                case "btnSMI":
+                    itemType = "SMI";
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        #endregion Radio buttons
+
         #region Helper methods
         private string BuildComment()
         {
@@ -161,6 +297,33 @@ namespace TrayLauncher
             tbUpdateArguments.Text = ar;
             tbUpdateToolTip.Text = tt;
             tbUpdatePosition.Text = po.ToString();
+        }
+
+        // Method to check specified radio button
+        private void CheckRadioButton(string itype)
+        {
+            switch (itype)
+            {
+                case "SEP":
+                    btnSep.IsChecked = true;
+                    break;
+
+                case "SH":
+                    btnSH.IsChecked = true;
+                    break;
+
+                case "SM":
+                    btnSM.IsChecked = true;
+                    break;
+
+                case "SMI":
+                    btnSMI.IsChecked = true;
+                    break;
+
+                default:
+                    btnNormal.IsChecked = true;
+                    break;
+            }
         }
 
         #endregion

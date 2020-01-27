@@ -37,7 +37,6 @@
         <!--  Style to right align text in the data grid  -->
         <Style x:Key="ColumnCenter" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
-
         </Style>
 
         <!--  Style to center text in the data grid header  -->
@@ -80,14 +79,12 @@
                     <ContextMenu.Resources>
                         <Style TargetType="{x:Type MenuItem}">
                             <Setter Property="ItemsPanel" Value="{StaticResource MenuTPL}" />
-
                         </Style>
                     </ContextMenu.Resources>
                     <ContextMenu.Style>
                         <Style TargetType="{x:Type ContextMenu}">
                             <Setter Property="ItemsPanel" Value="{StaticResource MenuTPL}" />
                             <Setter Property="HorizontalOffset" Value="20" />
-
                         </Style>
                     </ContextMenu.Style>
                 </ContextMenu>
@@ -166,6 +163,19 @@
                             IsCheckable="True"
                             StaysOpenOnClick="True"
                             Unchecked="MnuHideOnStart_Unchecked" />
+                        <MenuItem Name="mnuMinimizeToTrayOnExit"
+                                  Checked="MnuMinimizeToTrayOnExit_Checked"
+                                  Header="Minimize to Tray on Exit"
+                                  IsCheckable="True"
+                                  StaysOpenOnClick="True"
+                                  Unchecked="MnuMinimizeToTrayOnExit_Unchecked" />
+                        <Separator />
+                        <MenuItem x:Name="mnuShowItemType"
+                            Checked="MnuShowItemType_Checked"
+                            Header="Show Item Type Column"
+                            IsCheckable="True"
+                            StaysOpenOnClick="True"
+                            Unchecked="MnuShowItemType_Unchecked" />
                         <Separator />
                         <MenuItem x:Name="mnuFontIncrease"
                             Click="MnuFontIncrease_Click"
@@ -266,7 +276,6 @@
                                 </ComboBox>
                             </StackPanel>
                         </MenuItem>
-
                         <Separator />
                         <MenuItem Header="Tray Icon Color">
 
@@ -473,6 +482,10 @@
                             Click="MnuAbout_Click"
                             Header="About"
                             InputGestureText="F1" />
+                        <MenuItem Name="mnuShowSettings"
+                                  Click="MnuShowSettings_Click"
+                                  Header="Show Settings"
+                                  InputGestureText="F2" />
                     </MenuItem>
                 </Menu>
             </DockPanel>

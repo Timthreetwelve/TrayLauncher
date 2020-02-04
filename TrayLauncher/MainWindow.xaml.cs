@@ -488,10 +488,14 @@ namespace TrayLauncher
 
         #region Notify icon events
 
+        // Show window and bring to the front.
         private void MyNotifyIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            this.Show();
-            this.WindowState = WindowState.Normal;
+            Show();
+            WindowState = WindowState.Normal;
+            Topmost = true;
+            Focus();
+            Topmost = false;
         }
 
 

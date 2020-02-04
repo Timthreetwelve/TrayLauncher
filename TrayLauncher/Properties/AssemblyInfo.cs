@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TrayLauncher")]
-[assembly: AssemblyDescription("TrayLauncher - A customizable tray menu to launch applications and folders.")]
+[assembly: AssemblyDescription("TrayLauncher is a customizable menu to launch applications, websites, documents, settings, and folders from the system tray.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TimCo")]
 [assembly: AssemblyProduct("TrayLauncher")]
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.4.94.0")]
-[assembly: AssemblyFileVersion("0.4.94.0")]
+[assembly: AssemblyVersion("0.4.100.0")]
+[assembly: AssemblyFileVersion("0.4.100.0")]

@@ -1,7 +1,7 @@
-﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
+﻿// TrayLauncher - TrayLauncher is a customizable menu to launch applications, websites, documents,
+// settings, and folders from the system tray.
 //
 // See App.xaml.cs for code that restricts app to one instance
-//
 
 #region using directives
 using Hardcodet.Wpf.TaskbarNotification;

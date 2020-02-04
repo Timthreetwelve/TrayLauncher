@@ -15,11 +15,10 @@ When TrayLauncher is first run is will put an icon in the system tray and open i
 will also show a message in the notification area. You can choose to disable the message and hide
 the main window in the Options menu if desired.
 
-Left-clicking the icon in the system tray will display the menu. This menu contains a few items to
-get you started. As you would expect, clicking on the menu item will launch the application
-associated with that item.
-
-TrayLauncher was built to run in x64 mode to be able to launch certain Windows applications.
+Clicking (left or right) the icon in the system tray will display the menu. This menu contains a few
+items to get you started. As you would expect, clicking on the menu item will launch the application
+associated with that item. Note that there is a slight delay when left-clicking. This delay is built
+into Windows and can be adjusted in Control Panel > Mouse Properties > Double-click speed.
 
 
 Main Window
@@ -59,6 +58,8 @@ The ToolTip field is on optional field where you can specify text for a tooltip.
 that little box of text that briefly appears when you hover the mouse cursor over a UI element.
 This field is usually used to supply a clue as to what the menu entry does.
 
+Under the Tooltip field is a row of radio buttons that indicate the item type. <<<< MORE NEEDED HERE
+
 The final field is Position. The position value is used to determine where in the menu an entry
 will be displayed. Generally speaking, lower values appear at the top of the menu and higher
 values appear at or near the bottom. Any integer from 0 through 99999 can be used. The Position
@@ -73,11 +74,23 @@ entries, simply click the drop-down labeled Select a menu item. Scroll to find t
 want and click that entry. With the exception of the Position field, the required fields will be
 filled in. Just add a position and click the Add button.
 
-The first two entries in the Special Items drop-down are Separator and Section Name. Menu items can
-be grouped into sections using separators and section headers. A separator is a thin horizontal line
+The first entry in the Special Items drop-down is Separator. A separator is a thin horizontal line
 between menu items. To add a separator select it from the drop-down and give it a position number,
-all of the other fields are irrelevant. To add a section header select it and give it a position.
-Then change the text in the Menu Item Text field to reflect the name of the section you are creating.
+all of the other fields are irrelevant.
+
+The next item is Section Name. Menu items can be grouped into sections using separators and section
+headers. To add a section header select it and give it a position. Then change the text in the Menu
+Item Text field to reflect the name of the section you are creating. 
+
+The next item is Sub Menu. A sub menu is a menu that branches off of the primary menu. To add a sub
+menu select it and give it a position. Then change the text in the Menu Item Text field to reflect
+the name of the sub menu you are creating.
+
+The next item is Sub Menu Item. Sub menu items are like normal items except that they will be shown
+in the sub menu. To add a sub menu item select it and give it a position. The position must be
+directly under a sub menu or another sub menu item.
+
+The remaining items are <<<< MORE NEEDED HERE
 
 When you are ready, click the Add button. Multiple menu entries can be added in this manner. When
 you are done adding items, click the Done button.
@@ -108,7 +121,11 @@ The Options Menu
 ================
 From the Options menu you can choose to have TrayLauncher start with windows so that it will always
 be available (recommended). You can choose to have a notification display when it starts. You can
-also choose to have the main window be hidden when TrayLauncher starts (recommended).
+also choose to have the main window be hidden when TrayLauncher starts (recommended). When selected,
+the "Minimize to Tray on Exit" option will hide the main window instead of exiting the application
+when the "X" on the title bar is clicked.
+
+The next item on the Options menu will show or hide the Type column in the main window. 
 
 The next section of the Options menu allows you to increase or decrease the font size of both the
 TrayLauncher menu and the grid in the main window.
@@ -158,7 +175,7 @@ file and not another image format renamed to ICO.
 
 Diagnostics
 ===========
-Press F2 to view the current settings. Pressing F3 will open the menu file in the default application
+Press Shift F1 to view the current settings. Pressing F3 will open the menu file in the default application
 for XML files. F4 will open the temp file which contains diagnostic messages. If TrayLauncher
 encounters an error, it will display an error message and also write messages to the temp file.
 
@@ -172,7 +189,7 @@ TrayLauncher uses Hardcodet.NotifyIcon.Wpf from Philipp Sumi.  http://www.hardco
 
 
 MIT License
-Copyright (c) 2019 Tim Kennedy
+Copyright (c) 2020 Tim Kennedy
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction, including

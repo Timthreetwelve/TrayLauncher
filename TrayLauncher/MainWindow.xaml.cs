@@ -2,7 +2,6 @@
 //
 // See App.xaml.cs for code that restricts app to one instance
 //
-//! Build as 64 bit!
 
 #region using directives
 using Hardcodet.Wpf.TaskbarNotification;
@@ -63,7 +62,6 @@ namespace TrayLauncher
             ReadSettings();
 
             ConstructMenu();
-
         }
 
         ////////////////////////////// XML file methods //////////////////////////////
@@ -486,7 +484,7 @@ namespace TrayLauncher
         }
         #endregion Remove an item
 
-        ///////////////////////////// NotifyIcon events /////////////////////////////
+        ///////////////////////////// NotifyIcon events //////////////////////////////
 
         #region Notify icon events
 
@@ -499,7 +497,7 @@ namespace TrayLauncher
 
         #endregion Notify icon events
 
-        ////////////////////////////// Tray menu events /////////////////////////////
+        ////////////////////////////// Tray menu events //////////////////////////////
 
         #region Tray Menu events
         // Set explicit shutdown flag and exit
@@ -582,6 +580,8 @@ namespace TrayLauncher
         {
             Properties.Settings.Default.WindowLeft = this.Left;
             Properties.Settings.Default.WindowTop = this.Top;
+            Properties.Settings.Default.WindowHeight = this.Height;
+            Properties.Settings.Default.WindowWidth = this.Width;
 
             // save the property settings
             Properties.Settings.Default.Save();
@@ -671,7 +671,15 @@ namespace TrayLauncher
         // Add
         private void MnuAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddItem add = new AddItem
+            int pos = -1;
+
+            if (theDataGrid.SelectedItem != null)
+            {
+                TLMenuItem x = (TLMenuItem)theDataGrid.SelectedItem;
+                pos = x.Pos;
+            }
+
+            AddItem add = new AddItem(pos)
             {
                 Owner = Application.Current.MainWindow
             };
@@ -1071,7 +1079,7 @@ namespace TrayLauncher
         }
         private void MnuShowSettings_Click(object sender, RoutedEventArgs e)
         {
-            ShowSettingsMessageBox();
+            ShowSettingsWindow();
         }
         #endregion region
 
@@ -1083,16 +1091,27 @@ namespace TrayLauncher
         // Handle keyboard events
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
+            // Del = Remove
+            if (e.Key == Key.Delete && (e.KeyboardDevice.Modifiers == ModifierKeys.None))
+            {
+                if (theDataGrid.SelectedItem != null)
+                {
+                    RemoveItem();
+                    trayMenu.Items.Clear();
+                    ConstructMenu();
+                }
+            }
+
             //F1 = About
-            if (e.Key == Key.F1)
+            if (e.Key == Key.F1 && (e.KeyboardDevice.Modifiers == ModifierKeys.None))
             {
                 mnuAbout.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
             }
 
-            //F2 = Show settings
-            if (e.Key == Key.F2 && (e.KeyboardDevice.Modifiers == ModifierKeys.None))
+            //Shift F1 = Show settings
+            if (e.Key == Key.F1 && (e.KeyboardDevice.Modifiers == ModifierKeys.Shift))
             {
-                ShowSettingsMessageBox();
+                ShowSettingsWindow();
             }
 
             // F3 = View temp file
@@ -1215,6 +1234,8 @@ namespace TrayLauncher
                 // Window position
                 Top = Properties.Settings.Default.WindowTop;
                 Left = Properties.Settings.Default.WindowLeft;
+                Width = Properties.Settings.Default.WindowWidth;
+                Height = Properties.Settings.Default.WindowHeight;
             }
 
             // XML menu filename
@@ -1646,51 +1667,19 @@ namespace TrayLauncher
 
         #endregion Alternate row shading
 
-        #region Show settings message box
+        #region Show settings
 
-        // Show settings in a message box
-        // ToDo: change this to use a custom window with listbox or datagrid
-        private static void ShowSettingsMessageBox()
+        // Show settings in a custom window
+        private static void ShowSettingsWindow()
         {
-            string bg;
-            string fg = ColorIndexToName(Properties.Settings.Default.ForeColor);
-            string hc = ColorIndexToName(Properties.Settings.Default.SectionHeaderColor);
-            string sc = ColorIndexToName(Properties.Settings.Default.SeparatorColor);
-
-            // Increment by 1 to account for Transparent being removed
-            if (Properties.Settings.Default.BackColor < 133)
+            ShowSettings showSettings = new ShowSettings
             {
-                bg = ColorIndexToName(Properties.Settings.Default.BackColor);
-            }
-            else
-            {
-                bg = ColorIndexToName(Properties.Settings.Default.BackColor + 1);
-
-            }
-            string settingsMsg = $"Current Settings:\n\n" +
-                                 $"  First Run = {Properties.Settings.Default.FirstRun}\n" +
-                                 $"  Window Top = {Properties.Settings.Default.WindowTop}\n" +
-                                 $"  Window Left = {Properties.Settings.Default.WindowLeft}\n" +
-                                 $"  Start with Windows = {Properties.Settings.Default.StartWithWindows}\n" +
-                                 $"  Startup Notification = {Properties.Settings.Default.StartNotification}\n" +
-                                 $"  Hide Main Window on Startup = {Properties.Settings.Default.HideOnStart}\n" +
-                                 $"  Minimize to Tray on Exit = {Properties.Settings.Default.MinimizeToTrayOnExit}\n" +
-                                 $"  Show Item Type Column = {Properties.Settings.Default.ShowItemType}\n" +
-                                 $"  Double-click Delay = {GetDoubleClickTime().ToString()} ms\n" +
-                                 $"  \n" +
-                                 $"  Background Color = {bg}\n" +
-                                 $"  Menu Text Color = {fg}\n" +
-                                 $"  Separator Color = {sc}\n" +
-                                 $"  Menu Section Header Color = {hc}\n" +
-                                 $"  Menu Section Header Bold = {Properties.Settings.Default.SectionHeaderBold}\n" +
-                                 $"  Font Size = {Properties.Settings.Default.FontSize}\n" +
-                                 $"  Icon Color = {Properties.Settings.Default.Icon}\n" +
-                                 $"  \n" +
-                                 $"Menu Filename = {Properties.Settings.Default.XMLfile}\n" +
-                                 $"";
-            MessageBox.Show(settingsMsg, "Settings");
+                Owner = Application.Current.MainWindow
+            };
+            showSettings.Show();
         }
 
+        // Convert color index to name
         public static string ColorIndexToName(int c)
         {
             var colors = typeof(Colors).GetProperties();
@@ -1703,5 +1692,6 @@ namespace TrayLauncher
         #endregion
 
         #endregion Helper methods
+
     }
 }

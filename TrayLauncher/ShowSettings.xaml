@@ -1,0 +1,69 @@
+﻿<Window x:Class="TrayLauncher.ShowSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TrayLauncher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Tray Launcher Settings Browser"
+    Width="800"
+    Height="450"
+        KeyUp="Window_KeyUp"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+        <!--  Style to "pad" text in cells in the data grid  -->
+        <Style x:Key="ColumnMargin5" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5,0,5,0" />
+        </Style>
+    </Window.Resources>
+    <Grid Background="GhostWhite">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="0"
+            Orientation="Vertical">
+            <DataGrid x:Name="dg1"
+                Margin="10"
+                AlternatingRowBackground="WhiteSmoke"
+                AlternationCount="1"
+                AutoGenerateColumns="False"
+                BorderBrush="#E2E2E2"
+                CanUserAddRows="False"
+                FontSize="14"
+                HeadersVisibility="Column"
+                HorizontalGridLinesBrush="#E2E2E2"
+                HorizontalScrollBarVisibility="Auto"
+                IsReadOnly="True"
+                VerticalGridLinesBrush="#E2E2E2"
+                VerticalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="80"
+                                        ElementStyle="{StaticResource ColumnMargin5}"
+                                        Binding="{Binding Name}"
+                        Header="Setting" />
+                    <DataGridTextColumn
+                        Width="auto"
+                        MinWidth="200"
+                                        ElementStyle="{StaticResource ColumnMargin5}"
+                                        Binding="{Binding Value}"
+                        Header="Value" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button x:Name="btnExit"
+                Width="60"
+                Height="35"
+                Margin="0,10,0,20"
+                Click="BtnExit_Click"
+                Content="Close" />
+        </StackPanel>
+    </Grid>
+</Window>

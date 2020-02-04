@@ -61,8 +61,16 @@
             Grid.Column="2"
             Grid.ColumnSpan="3"
             Height="25"
-            Margin="0,0,0,0"
+            Margin="0,0,30,0"
             MaxLength="260" />
+        <Button x:Name="btnOpenDlg"
+                Grid.Row="2"
+                Grid.Column="4"
+                Width="25"
+                Height="25"
+                HorizontalAlignment="Right"
+                Click="BtnOpenDlg_Click"
+                Content="..." />
 
         <!--  Arguments  -->
         <TextBlock

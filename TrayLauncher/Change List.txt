@@ -15,4 +15,9 @@
       - New logic to set maximum height of main window.
       - Added capability to run in 32 or 64 bit mode depending on OS.
       - Changed the Update window to have all the options in the Add window.
+      - Add Item window now prefills position field to value of selected item plus one.
+      - Delete key will now delete selected item.
+      - Show settings moved from F2 to shift-F1.
+      - Show settings now appears in custom window instead of a message box.
+      - Added file picker button to Add Item window.
       - Updated ReadMe file to reflect these changes.

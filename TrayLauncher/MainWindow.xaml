@@ -13,7 +13,6 @@
     MaxWidth="{x:Static SystemParameters.PrimaryScreenWidth}"
     Closing="Window_Closing"
     KeyUp="Window_KeyUp"
-    SizeToContent="WidthAndHeight"
     StateChanged="Window_StateChanged">
 
     <Window.Resources>
@@ -485,7 +484,7 @@
                         <MenuItem Name="mnuShowSettings"
                                   Click="MnuShowSettings_Click"
                                   Header="Show Settings"
-                                  InputGestureText="F2" />
+                                  InputGestureText="Shift+F1" />
                     </MenuItem>
                 </Menu>
             </DockPanel>

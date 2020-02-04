@@ -1,6 +1,5 @@
 ﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
 #region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +14,7 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using TKUtils;
-
+using Microsoft.Win32;
 #endregion Using directives
 
 namespace TrayLauncher
@@ -29,13 +28,15 @@ namespace TrayLauncher
         private string itemType = string.Empty;
         private readonly List<Shortcut> cboxItems = new List<Shortcut>();
 
-        public AddItem()
+        public AddItem(int pos)
         {
             InitializeComponent();
 
             ReadSettings();
 
             LoadComboBox();
+
+            NudgePosition(pos);
         }
 
         #region Read Settings
@@ -199,6 +200,24 @@ namespace TrayLauncher
             }
         }
 
+        // File picker
+        private void BtnOpenDlg_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlgOpen = new OpenFileDialog
+            {
+                Title = "Choose Application or Document",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false,
+                Filter = "All files|*.*"
+            };
+            var result = dlgOpen.ShowDialog();
+            if (result == true)
+            {
+                tbAddAppPath.Text = dlgOpen.FileName;
+            }
+        }
+
         #endregion Text box events
 
         #region ComboBox events
@@ -331,6 +350,13 @@ namespace TrayLauncher
             }
         }
 
+        private void NudgePosition(int pos)
+        {
+            if (pos >= 0)
+            {
+                tbAddPosition.Text = (pos + 1).ToString();
+            }
+        }
         #endregion Helper Methods
     }
 }

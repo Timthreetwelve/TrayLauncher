@@ -33,6 +33,7 @@ namespace TrayLauncher
                 //app is already running! Exiting the application
                 _ = MessageBox.Show("An instance of TrayLauncher is already running",
                                     "TrayLauncher", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                Voodoo.WindowsLogoffOrShutdown = true;
                 Current.Shutdown();
             }
 

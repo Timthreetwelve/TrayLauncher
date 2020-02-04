@@ -72,6 +72,10 @@
     <Compile Include="AddItem.xaml.cs">
       <DependentUpon>AddItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MySettings.cs" />
+    <Compile Include="ShowSettings.xaml.cs">
+      <DependentUpon>ShowSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Voodoo.cs" />
     <Compile Include="SpecialMenuItems.cs" />
     <Compile Include="UpdateItem.xaml.cs">
@@ -99,6 +103,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ShowSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UpdateItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

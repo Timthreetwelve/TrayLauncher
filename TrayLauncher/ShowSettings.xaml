@@ -8,7 +8,7 @@
     Title="Tray Launcher Settings Browser"
     Width="800"
     Height="450"
-        KeyUp="Window_KeyUp"
+    KeyUp="Window_KeyUp"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterOwner">
 
@@ -47,14 +47,14 @@
                     <DataGridTextColumn
                         Width="auto"
                         MinWidth="80"
-                                        ElementStyle="{StaticResource ColumnMargin5}"
-                                        Binding="{Binding Name}"
+                        Binding="{Binding Name}"
+                        ElementStyle="{StaticResource ColumnMargin5}"
                         Header="Setting" />
                     <DataGridTextColumn
                         Width="auto"
                         MinWidth="200"
-                                        ElementStyle="{StaticResource ColumnMargin5}"
-                                        Binding="{Binding Value}"
+                        Binding="{Binding Value}"
+                        ElementStyle="{StaticResource ColumnMargin5}"
                         Header="Value" />
                 </DataGrid.Columns>
             </DataGrid>

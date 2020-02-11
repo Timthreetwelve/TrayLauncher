@@ -114,20 +114,21 @@ namespace TrayLauncher
                 _ = tbUpdateHeader.Focus();
                 tbUpdateHeader.Background = Brushes.LemonChiffon;
                 lblStatus.Foreground = Brushes.Red;
-                lblStatus.FontWeight = FontWeights.Bold;
                 lblStatus.Text = "Menu Item Text can't be blank";
                 return;
             }
 
             if (string.IsNullOrEmpty(tbUpdateAppPath.Text))
             {
-                SystemSounds.Asterisk.Play();
-                _ = tbUpdateAppPath.Focus();
-                tbUpdateAppPath.Background = Brushes.LemonChiffon;
-                lblStatus.Foreground = Brushes.Red;
-                lblStatus.FontWeight = FontWeights.Bold;
-                lblStatus.Text = "Application Path can't be blank";
-                return;
+                if (string.IsNullOrEmpty(itemType) || itemType == "SMI")
+                {
+                    SystemSounds.Asterisk.Play();
+                    _ = tbUpdateAppPath.Focus();
+                    tbUpdateAppPath.Background = Brushes.LemonChiffon;
+                    lblStatus.Foreground = Brushes.Red;
+                    lblStatus.Text = "Application Path can't be blank";
+                    return;
+                }
             }
 
             if (string.IsNullOrEmpty(tbUpdatePosition.Text))
@@ -136,7 +137,6 @@ namespace TrayLauncher
                 _ = tbUpdatePosition.Focus();
                 tbUpdatePosition.Background = Brushes.LemonChiffon;
                 lblStatus.Foreground = Brushes.Red;
-                lblStatus.FontWeight = FontWeights.Bold;
                 lblStatus.Text = "Position can't be blank";
                 return;
             }

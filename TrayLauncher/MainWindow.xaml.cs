@@ -898,6 +898,7 @@ namespace TrayLauncher
             Color selectedColor = (Color)(CmbForeground.SelectedItem as PropertyInfo).
                 GetValue(null, null);
             trayMenu.Foreground = new SolidColorBrush(selectedColor);
+            tbToolTip.Foreground = new SolidColorBrush(selectedColor);
 
             //tbColorSample.Foreground = new SolidColorBrush(selectedColor);
             Properties.Settings.Default.ForeColor = CmbForeground.SelectedIndex;
@@ -1269,6 +1270,7 @@ namespace TrayLauncher
             Color selectedColor = (Color)(CmbForeground.SelectedItem as PropertyInfo)
                 .GetValue(null, null);
             trayMenu.Foreground = new SolidColorBrush(selectedColor);
+            tbToolTip.Foreground = new SolidColorBrush(selectedColor);
 
             // Menu Section Header color
             CmbHeader.SelectedIndex = Properties.Settings.Default.SectionHeaderColor;

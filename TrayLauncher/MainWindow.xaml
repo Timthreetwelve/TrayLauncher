@@ -58,12 +58,12 @@
                 <Border
                     Width="100"
                     Height="30"
-                    Background="WhiteSmoke"
+                    Background="{StaticResource ResourceKey=brush1}"
                     BorderBrush="Black"
                     BorderThickness="2"
                     CornerRadius="5"
                     Opacity=".9">
-                    <TextBlock
+                    <TextBlock x:Name="tbToolTip"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         FontWeight="Normal"
@@ -121,7 +121,7 @@
                     </MenuItem>
 
                     <!--  Action menu  -->
-                    <MenuItem Header="Configuration">
+                    <MenuItem Header="Menu Configuration">
                         <MenuItem Name="mnuAdd"
                             Click="MnuAdd_Click"
                             Header="Add Menu Item" />
@@ -163,11 +163,11 @@
                             StaysOpenOnClick="True"
                             Unchecked="MnuHideOnStart_Unchecked" />
                         <MenuItem Name="mnuMinimizeToTrayOnExit"
-                                  Checked="MnuMinimizeToTrayOnExit_Checked"
-                                  Header="Minimize to Tray on Exit"
-                                  IsCheckable="True"
-                                  StaysOpenOnClick="True"
-                                  Unchecked="MnuMinimizeToTrayOnExit_Unchecked" />
+                            Checked="MnuMinimizeToTrayOnExit_Checked"
+                            Header="Minimize to Tray on Exit"
+                            IsCheckable="True"
+                            StaysOpenOnClick="True"
+                            Unchecked="MnuMinimizeToTrayOnExit_Unchecked" />
                         <Separator />
                         <MenuItem x:Name="mnuShowItemType"
                             Checked="MnuShowItemType_Checked"
@@ -482,9 +482,9 @@
                             Header="About"
                             InputGestureText="F1" />
                         <MenuItem Name="mnuShowSettings"
-                                  Click="MnuShowSettings_Click"
-                                  Header="Show Settings"
-                                  InputGestureText="Shift+F1" />
+                            Click="MnuShowSettings_Click"
+                            Header="Show Settings"
+                            InputGestureText="Shift+F1" />
                     </MenuItem>
                 </Menu>
             </DockPanel>

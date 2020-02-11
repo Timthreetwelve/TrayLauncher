@@ -115,6 +115,11 @@ namespace TrayLauncher
             {
                 Refresh();
             }
+
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

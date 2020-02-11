@@ -116,12 +116,15 @@ namespace TrayLauncher
 
             if (string.IsNullOrEmpty(tbAddAppPath.Text))
             {
-                SystemSounds.Asterisk.Play();
-                _ = tbAddAppPath.Focus();
-                tbAddAppPath.Background = Brushes.LemonChiffon;
-                lblStatus.Foreground = Brushes.Red;
-                lblStatus.Text = "Application Path can't be blank";
-                return;
+                if (string.IsNullOrEmpty(itemType) || itemType == "SMI")
+                {
+                    SystemSounds.Asterisk.Play();
+                    _ = tbAddAppPath.Focus();
+                    tbAddAppPath.Background = Brushes.LemonChiffon;
+                    lblStatus.Foreground = Brushes.Red;
+                    lblStatus.Text = "Application Path can't be blank";
+                    return;
+                }
             }
 
             if (string.IsNullOrEmpty(tbAddPosition.Text))

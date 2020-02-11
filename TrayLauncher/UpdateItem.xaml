@@ -213,9 +213,12 @@
         <!--  Status  -->
         <TextBlock x:Name="lblStatus"
             Grid.Row="6"
-            Grid.Column="2"
-            Width="440"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center" />
+            Grid.Column="4"
+            Width="200"
+            Height="35"
+            Margin="0,5,3,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch"
+            TextAlignment="Right" />
     </Grid>
 </Window>

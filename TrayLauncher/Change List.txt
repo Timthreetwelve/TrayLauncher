@@ -20,4 +20,7 @@
       - Show settings moved from F2 to shift-F1.
       - Show settings now appears in custom window instead of a message box.
       - Added file picker button to Add Item window.
+      - Fixed: Update window not allowing mouse click in Position field.
+      - Application Path no longer required for Separator, Section Header & Sub-menu items.
+      - Tray icon tool tip colors are now the same colors as the tray menu.
       - Updated ReadMe file to reflect these changes.

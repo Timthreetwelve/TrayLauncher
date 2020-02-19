@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TrayLauncher.MainWindow">
+    <Position X="3.25" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>voA8ABAqQBGyIsAQABEBgAgBEAAAwqgdJ1LEAALjMIA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.356" />
+  </Class>
+  <Class Name="TrayLauncher.BooleanInverter">
+    <Position X="9.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BooleanInverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.196" />
+  </Class>
+  <Class Name="TrayLauncher.App">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAACAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.MenuList">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TLMenuItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.TLMenuItem">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAABAAAAAAAAAAgAAACAAAAAIAAAAAAAAgA=</HashCode>
+      <FileName>TLMenuItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.MySettings">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>MySettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.NativeMethods">
+    <Position X="0.5" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.Settings">
+    <Position X="9.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEACAAAAACABAAAkAAAAAAAAQAIAAAAAACACA=</HashCode>
+      <FileName>Settings.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrayLauncher.SpecialMenuItems">
+    <Position X="7.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecialMenuItems.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.Shortcut">
+    <Position X="5.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAQAAAAAAAAAAAAAAAAEAgA=</HashCode>
+      <FileName>SpecialMenuItems.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.ShowSettings">
+    <Position X="11.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAABAAAAAAgAAAAABAAAAAAAAAAAQAAAAAIA=</HashCode>
+      <FileName>ShowSettings.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TKUtils.WriteLog">
+    <Position X="0.5" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAEAAEAAAAACAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>WriteLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.Voodoo">
+    <Position X="3.25" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Voodoo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TrayLauncher.UpdateItem">
+    <Position X="3.25" Y="4" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIAgAAACAAEAJAAEABAAAAAABAAAAAACAAQSAgABgAA=</HashCode>
+      <FileName>UpdateItem.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrayLauncher.AddItem">
+    <Position X="3.25" Y="2.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QIEgAAACIBEABAAEABAAAAAAIAAgAAEAAAQSAgAAAAA=</HashCode>
+      <FileName>AddItem.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TrayLauncher.About">
+    <Position X="11.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAACAAAAABAAACAAA=</HashCode>
+      <FileName>About.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9.75" />
+</ClassDiagram>

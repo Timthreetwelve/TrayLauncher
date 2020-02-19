@@ -262,5 +262,17 @@ namespace TrayLauncher.Properties {
                 this["WindowWidth"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool VerifyExit {
+            get {
+                return ((bool)(this["VerifyExit"]));
+            }
+            set {
+                this["VerifyExit"] = value;
+            }
+        }
     }
 }

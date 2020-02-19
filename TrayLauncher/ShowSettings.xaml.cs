@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 
@@ -25,8 +24,6 @@ namespace TrayLauncher
 
             GetDoubleClick(settings);
 
-            //dg1.Items.Clear();
-
             dg1.ItemsSource = settings.OrderBy(x => x.Name);
         }
 
@@ -35,7 +32,7 @@ namespace TrayLauncher
             MySettings dd = new MySettings
             {
                 Name = "Double-click Delay",
-                Value = $"{GetDoubleClickTime().ToString()} ms"
+                Value = $"{NativeMethods.GetDoubleClickTime().ToString()} ms"
             };
             settings.Add(dd);
         }
@@ -104,10 +101,6 @@ namespace TrayLauncher
             var colors = typeof(Colors).GetProperties();
             return colors[c].Name;
         }
-
-        // Get double-click delay time in milliseconds
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern int GetDoubleClickTime();
 
         private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {

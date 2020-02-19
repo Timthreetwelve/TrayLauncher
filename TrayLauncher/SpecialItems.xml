@@ -200,6 +200,11 @@
     <Args>s</Args>
   </Shortcut>
   <Shortcut>
+    <Name>Microsoft Edge</Name>
+    <Path>msedge.exe/</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
     <Name>Microsoft Store</Name>
     <Path>ms-windows-store://home/</Path>
     <Args></Args>
@@ -308,6 +313,11 @@
     <Name>Power Options</Name>
     <Path>Control.exe</Path>
     <Args>powercfg.cpl</Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>PowerShell Core</Name>
+    <Path>Pwsh.exe</Path>
+    <Args></Args>
   </Shortcut>
   <Shortcut>
     <Name>Printers</Name>
@@ -512,6 +522,11 @@
   <Shortcut>
     <Name>Windows System Folder</Name>
     <Path>shell:System</Path>
+    <Args></Args>
+  </Shortcut>
+  <Shortcut>
+    <Name>Windows Terminal</Name>
+    <Path>wt.exe</Path>
     <Args></Args>
   </Shortcut>
   <Shortcut>

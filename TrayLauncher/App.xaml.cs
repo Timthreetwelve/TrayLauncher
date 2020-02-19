@@ -21,11 +21,11 @@ namespace TrayLauncher
         /////////////////////////////////////////////////
         protected override void OnStartup(StartupEventArgs e)
         {
-        #if DEBUG   // Change name when debugging
+#if DEBUG   // Change name when debugging
             const string appName = "TrayLauncher_Debug";
-        #else
+#else
             const string appName = "TrayLauncher";
-        #endif
+#endif
             _mutex = new Mutex(true, appName, out bool createdNew);
 
             if (!createdNew)

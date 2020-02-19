@@ -7,7 +7,7 @@
       - Fixed an issue with the Special Items drop-down in the Add window.
       - Updated ReadMe file to reflect these changes.
 
-0.4.x - Added capability to define sub-menus.
+0.4.x - Added capability to define sub-menus (one level).
       - Left-click on tray icon will now activate menu.
       - Handle windows shutdown & log off gracefully.
       - Added option to toggle visibility of Type column.
@@ -20,7 +20,20 @@
       - Show settings moved from F2 to shift-F1.
       - Show settings now appears in custom window instead of a message box.
       - Added file picker button to Add Item window.
-      - Fixed: Update window not allowing mouse click in Position field.
+      - Fixed Update window not allowing mouse click in Position field.
       - Application Path no longer required for Separator, Section Header & Sub-menu items.
       - Tray icon tool tip colors are now the same colors as the tray menu.
       - Updated ReadMe file to reflect these changes.
+
+0.5.x - Added MSEdge, PowerShell Core and Windows Terminal to the Special Items list.
+      - Replaced settings menu with a new Preferences dialog.
+      - Added setting to turn on/off confirmation when closing main window with X in title bar.
+      - Most preferences will change immediately and more efficiently.
+      - Ctrl + comma will open the Preferences dialog.
+      - Fixed Section Header display in datagrid.
+      - Certain menu items are now disabled if no row in the datagrid has been selected.
+      - Test failure messages are now displayed in a message box.
+      - Added a splash screen.
+      - Added option to view this change log.
+      - Updated ReadMe file to reflect these changes.
+

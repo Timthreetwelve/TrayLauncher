@@ -42,7 +42,7 @@ namespace TrayLauncher
 
         #region Icon filename variables
         private readonly string blackIcon = @"Images\black.ico";
-        private readonly string blue2Icon = @"Images\blue2.ico";
+        private readonly string mediumblueIcon = @"Images\mediumblue.ico";
         private readonly string blueIcon = @"Images\blue.ico";
         private readonly string cyanIcon = @"Images\cyan.ico";
         private readonly string grayIcon = @"Images\gray.ico";
@@ -64,7 +64,7 @@ namespace TrayLauncher
             ConstructMenu();
         }
 
-        ////////////////////////////// XML file methods //////////////////////////////
+        ////////////////////////////// XML file methods /////////////////////////////
 
         #region Get the menu XML file  <- determine path and see if file exists
         private string GetXmlFile()
@@ -173,6 +173,7 @@ namespace TrayLauncher
         #region Create XML Starter  <- creates starter menu items and separators
         private void CreateXMLStarter(string menuFile)
         {
+            // This will create a "starter" menu if none exists
             WriteLog.WriteTempFile("    Creating starter menu");
             DateTime dt = DateTime.Now;
             string comment = $"File created {dt}";
@@ -195,19 +196,22 @@ namespace TrayLauncher
                             new XElement("MenuHeader", "Command Prompt"),
                             new XElement("AppPath", @"C:\Windows\System32\Cmd.exe"),
                             new XElement("Arguments", "/k Echo Hello from TrayLauncher!"),
-                            new XElement("ToolTip", "This is an example menu item with arguments")),
+                            new XElement("ToolTip", "This is an example menu item with arguments"),
+                            new XElement("Type", "")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "300"),
                             new XElement("MenuHeader", "Calculator"),
                             new XElement("AppPath", "Calc.exe"),
                             new XElement("Arguments", ""),
-                            new XElement("ToolTip", "This is an app example")),
+                            new XElement("ToolTip", "This is an app example"),
+                            new XElement("Type", "")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "400"),
                             new XElement("MenuHeader", "Windows Folder"),
                             new XElement("AppPath", "Explorer.exe"),
                             new XElement("Arguments", "%WINDIR%"),
-                            new XElement("ToolTip", "This is a folder example")),
+                            new XElement("ToolTip", "This is a folder example"),
+                            new XElement("Type", "")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "500"),
                             new XElement("MenuHeader", "Separator"),
@@ -220,7 +224,8 @@ namespace TrayLauncher
                             new XElement("MenuHeader", "Search for Puppies"),
                             new XElement("AppPath", "www.bing.com/images/search?q=puppies"),
                             new XElement("Arguments", ""),
-                            new XElement("ToolTip", "It works for websites too")),
+                            new XElement("ToolTip", "It works for websites too"),
+                            new XElement("Type", "")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "700"),
                             new XElement("MenuHeader", "Separator"),
@@ -233,7 +238,8 @@ namespace TrayLauncher
                             new XElement("MenuHeader", "Taskbar Settings"),
                             new XElement("AppPath", "ms-settings:taskbar"),
                             new XElement("Arguments", ""),
-                            new XElement("ToolTip", "This is a settings example")),
+                            new XElement("ToolTip", "This is a settings example"),
+                            new XElement("Type", "")),
                         new XElement("TLMenuItem",
                             new XElement("Position", "900"),
                             new XElement("MenuHeader", "Separator"),
@@ -275,11 +281,11 @@ namespace TrayLauncher
             WriteLog.WriteTempFile("    Loaded: Default item - Manage");
 
             // Separator under Manage
-            Color selectedColor = (Color)(CmbSeparator.SelectedItem as PropertyInfo).
-                GetValue(null, null);
+            int sepIndex = Properties.Settings.Default.SeparatorColor;
+            Color sepColor = ColorIndexToColor(sepIndex);
             Separator sep = new Separator
             {
-                BorderBrush = new SolidColorBrush(selectedColor),
+                BorderBrush = new SolidColorBrush(sepColor),
                 BorderThickness = new Thickness(0, 1, 0, 0)
             };
             _ = trayMenu.Items.Add(sep);
@@ -316,6 +322,7 @@ namespace TrayLauncher
             {
                 try
                 {
+                    // Deserialize the XML file
                     XmlSerializer deserializer = new XmlSerializer(typeof(MenuList));
                     TextReader reader = new StreamReader(xmlMenuFile);
                     object obj = deserializer.Deserialize(reader);
@@ -331,6 +338,7 @@ namespace TrayLauncher
                     WriteLog.WriteTempFile($"* {ex.Message}");
                     WriteLog.WriteTempFile($"* Unable to continue. Shutting down.");
 
+                    // Bail out
                     Environment.Exit(-1);
                 }
                 LoadMenuDefaultItems();
@@ -386,12 +394,12 @@ namespace TrayLauncher
                 if (item.ItemType == "SEP")
                 {
                     Debug.WriteLine("Adding a separator");
-                    Color selectedColor = (Color)(CmbSeparator.SelectedItem as PropertyInfo).
-                        GetValue(null, null);
+                    int sepIndex = Properties.Settings.Default.SeparatorColor;
+                    Color sepColor = ColorIndexToColor(sepIndex);
 
                     Separator sep = new Separator
                     {
-                        BorderBrush = new SolidColorBrush(selectedColor),
+                        BorderBrush = new SolidColorBrush(sepColor),
                         BorderThickness = new Thickness(0, 1, 0, 0)
                     };
                     trayMenu.Items.Insert(itemCounter + itemOffset, sep);
@@ -403,11 +411,12 @@ namespace TrayLauncher
                 {
                     Debug.WriteLine("Adding a section header");
                     mi.Header = item.Header;
+                    mi.Tag = item.ItemType;
                     mi.IsHitTestVisible = false;
                     mi.Margin = new Thickness(-5, 0, 0, 0);
-                    Color selectedColor = (Color)(CmbHeader.SelectedItem as PropertyInfo).
-                        GetValue(null, null);
-                    mi.Foreground = new SolidColorBrush(selectedColor);
+                    int HeaderColorIndex = Properties.Settings.Default.SectionHeaderColor;
+                    Color headerColor = ColorIndexToColor(HeaderColorIndex);
+                    mi.Foreground = new SolidColorBrush(headerColor);
                     if (Properties.Settings.Default.SectionHeaderBold)
                     {
                         mi.FontWeight = FontWeights.Bold;
@@ -484,9 +493,9 @@ namespace TrayLauncher
         }
         #endregion Remove an item
 
-        ///////////////////////////// NotifyIcon events //////////////////////////////
+        ///////////////////////////// NotifyIcon events /////////////////////////////
 
-        #region Notify icon events
+        #region Tray icon events
 
         // Show window and bring to the front.
         private void MyNotifyIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
@@ -501,7 +510,7 @@ namespace TrayLauncher
 
         #endregion Notify icon events
 
-        ////////////////////////////// Tray menu events //////////////////////////////
+        ////////////////////////////// Tray menu events /////////////////////////////
 
         #region Tray Menu events
         // Set explicit shutdown flag and exit
@@ -540,19 +549,25 @@ namespace TrayLauncher
                     }
                     else
                     {
-                        // Ask user
-                        MessageBoxResult result = MessageBox.Show(
-                            "Do you want to exit TrayLauncher?",
-                            "Exit TrayLauncher?",
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Question);
-                        if (result == MessageBoxResult.No)
+                        if (Properties.Settings.Default.VerifyExit == true)
                         {
-                            e.Cancel = true;
+                            // Ask user
+                            MessageBoxResult result = MessageBox.Show(
+                                "Do you want to exit TrayLauncher?", "Exit TrayLauncher?",
+                                MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (result == MessageBoxResult.No)
+                            {
+                                e.Cancel = true;
+                            }
+                            else
+                            {
+                                //clean up notify icon (would otherwise stay after application finishes)
+                                myNotifyIcon.Dispose();
+                                base.OnClosing(e);
+                            }
                         }
                         else
                         {
-                            //clean up notify icon (would otherwise stay after application finishes)
                             myNotifyIcon.Dispose();
                             base.OnClosing(e);
                         }
@@ -605,7 +620,7 @@ namespace TrayLauncher
 
         ////////////////////////////// Menu events //////////////////////////////////
 
-        #region Menu click handler  <- this guy does the launching
+        #region Tray Menu click handler  <- this guy does the launching
         // Menu click event handler
         private void Mi_Click(object sender, RoutedEventArgs e)
         {
@@ -629,12 +644,22 @@ namespace TrayLauncher
                         // Resolve environmental variables
                         launch.StartInfo.FileName = Environment.ExpandEnvironmentVariables(x.AppPath);
                         launch.StartInfo.Arguments = Environment.ExpandEnvironmentVariables(x.Arguments);
+
                         // Next line does the magic.
                         launch.Start();
+                        string arg;
+                        if (string.IsNullOrEmpty(x.Arguments))
+                        {
+                            arg = "*none*";
+                        }
+                        else
+                        {
+                            arg = x.Arguments;
+                        }
                         WriteLog.WriteTempFile($"  Launching: {x.Header}," +
                                                $" Position: {x.Pos}," +
                                                $" AppPath: {x.AppPath}," +
-                                               $" Arguments: {x.Arguments},");
+                                               $" Arguments: {arg},");
                     }
                     catch (Exception ex)
                     {
@@ -653,10 +678,12 @@ namespace TrayLauncher
 
         //////////////////////// Main window menu events ////////////////////////////
 
-        #region Menu events  <- the other menu events
+        #region Main Menu events
 
         ////////////////////////////// File menu //////////////////////////////////
+
         #region File menu
+        // Exit
         private void MnuExit_Click(object sender, RoutedEventArgs e)
         {
             explicitClose = true;
@@ -671,7 +698,25 @@ namespace TrayLauncher
         #endregion
 
         ////////////////////////////// Configuration menu //////////////////////////
+
         #region Config menu
+        // Disable menu items if nothing in datagrid is selected
+        private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
+        {
+            if (theDataGrid.SelectedIndex == -1)
+            {
+                mnuDelete.IsEnabled = false;
+                mnuUpdate.IsEnabled = false;
+                mnuTest.IsEnabled = false;
+            }
+            else
+            {
+                mnuDelete.IsEnabled = true;
+                mnuUpdate.IsEnabled = true;
+                mnuTest.IsEnabled = true;
+            }
+        }
+
         // Add
         private void MnuAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -738,19 +783,17 @@ namespace TrayLauncher
                 using (Process launch = new Process())
                 {
                     TLMenuItem x = (TLMenuItem)theDataGrid.SelectedItem;
+
+                    if (x.ItemType == "SM" || x.ItemType == "SEP" || x.ItemType == "SH")
+                    {
+                        return;
+                    }
                     if (string.IsNullOrEmpty(x.AppPath))
                     {
-                        myNotifyIcon.ShowBalloonTip("Launch Error",
-                            $"{x.Header}\nAppPath cannot be empty",
-                            BalloonIcon.Warning);
+                        _ = MessageBox.Show($"{x.Header}\nAppPath cannot be empty", "Launch Error",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
                         WriteLog.WriteTempFile($"* Failed to launch {x.Header} ");
                         WriteLog.WriteTempFile($"* AppPath is empty.");
-                    }
-                    else if (x.ItemType == "S" || x.ItemType == "H")
-                    {
-                        myNotifyIcon.ShowBalloonTip("Test Launch Error",
-                            $"Cannot test a separator or\nsection header",
-                            BalloonIcon.Info);
                     }
                     else
                     {
@@ -767,9 +810,8 @@ namespace TrayLauncher
                         }
                         catch (Exception ex)
                         {
-                            myNotifyIcon.ShowBalloonTip("Test Launch Error",
-                                $"Failed to launch \"{x.Header} - {x.AppPath}\"\n{ex.Message}",
-                                BalloonIcon.Error);
+                            _ = MessageBox.Show($"Failed to launch \"{x.Header} - {x.AppPath}\"\n{ex.Message}",
+                                                "Test Launch Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             WriteLog.WriteTempFile($"* Failed to launch {x.Header} -  {x.AppPath}" +
                                 $" - {x.Arguments} ");
                             WriteLog.WriteTempFile($"* {ex.Message}");
@@ -789,287 +831,27 @@ namespace TrayLauncher
             ConstructMenu();
             WriteLog.WriteTempFile($"    Menu refreshed");
         }
+
+        // Preferences
+        private void MnuPreferences_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSettingsWindow();
+        }
         #endregion
 
-        ////////////////////////////// Options menu ///////////////////////////////
-        #region Options menu
-        //Star with Windows?
-        private void MnuStartWW_Checked(object sender, RoutedEventArgs e)
-        {
-            // No shortcut creation in debug mode
-#if !DEBUG
-            StartupShortcut("Create");
-            Properties.Settings.Default.StartWithWindows = true;
-#endif
-        }
-
-        private void MnuStartWW_Unchecked(object sender, RoutedEventArgs e)
-        {
-            // No shortcut deletion in debug mode
-#if !DEBUG
-            StartupShortcut("Delete");
-            Properties.Settings.Default.StartWithWindows = true;
-#endif
-        }
-
-        // Startup notification
-        private void MnuStartNotify_Checked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.StartNotification = true;
-            WriteLog.WriteTempFile($"    Startup notification set to True");
-        }
-
-        private void MnuStartNotify_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.StartNotification = false;
-            WriteLog.WriteTempFile($"    Startup notification set to False");
-        }
-
-        // Hide main window on startup
-        private void MnuHideOnStart_Checked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.HideOnStart = true;
-            WriteLog.WriteTempFile($"    Hide on startup set to True");
-        }
-
-        private void MnuHideOnStart_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.HideOnStart = false;
-            WriteLog.WriteTempFile($"    Hide on startup set to False");
-        }
-
-        // Minimize to tray
-        private void MnuMinimizeToTrayOnExit_Checked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.MinimizeToTrayOnExit = true;
-            WriteLog.WriteTempFile($"    Minimize to tray set to True");
-        }
-
-        private void MnuMinimizeToTrayOnExit_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.MinimizeToTrayOnExit = false;
-            WriteLog.WriteTempFile($"    Minimize to tray set to False");
-        }
-
-        // Show or Hide Type column
-        private void MnuShowItemType_Checked(object sender, RoutedEventArgs e)
-        {
-            theDataGrid.Columns[5].Visibility = Visibility.Visible;
-            Properties.Settings.Default.ShowItemType = true;
-        }
-
-        private void MnuShowItemType_Unchecked(object sender, RoutedEventArgs e)
-        {
-            theDataGrid.Columns[5].Visibility = Visibility.Collapsed;
-            Properties.Settings.Default.ShowItemType = false;
-        }
-
-        // Font size
-        private void MnuFontIncrease_Click(object sender, RoutedEventArgs e)
-        {
-            FontLarger();
-        }
-
-        private void MnuFontDecrease_Click(object sender, RoutedEventArgs e)
-        {
-            FontSmaller();
-        }
-
-        // Background color
-        private void CmbBackground_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Color selectedColor = (Color)(CmbBackground.SelectedItem as PropertyInfo).
-                GetValue(null, null);
-            SetMenuBackground(selectedColor);
-            //tbColorSample.Background = new SolidColorBrush(selectedColor);
-            Properties.Settings.Default.BackColor = CmbBackground.SelectedIndex;
-            if (Visibility == Visibility.Visible)
-            {
-                mnuBackColor.IsSubmenuOpen = false;
-            }
-            Debug.WriteLine($"Background SelectedIndex is {CmbBackground.SelectedIndex}");
-            WriteLog.WriteTempFile($"    Menu background color is {CmbBackground.SelectedItem}, " +
-                                   $"index is {CmbBackground.SelectedIndex}");
-        }
-
-        //Foreground (menu text) color
-        private void CmbForeground_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Color selectedColor = (Color)(CmbForeground.SelectedItem as PropertyInfo).
-                GetValue(null, null);
-            trayMenu.Foreground = new SolidColorBrush(selectedColor);
-            tbToolTip.Foreground = new SolidColorBrush(selectedColor);
-
-            //tbColorSample.Foreground = new SolidColorBrush(selectedColor);
-            Properties.Settings.Default.ForeColor = CmbForeground.SelectedIndex;
-
-            if (Visibility == Visibility.Visible)
-            {
-                mnuTextColor.IsSubmenuOpen = false;
-            }
-
-            Debug.WriteLine($"Foreground SelectedIndex is {CmbForeground.SelectedIndex}");
-            WriteLog.WriteTempFile($"    Menu text color is {CmbForeground.SelectedItem.ToString()}, " +
-                                   $"index is {CmbForeground.SelectedIndex}");
-        }
-
-        // Section header color
-        private void CmbHeader_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Properties.Settings.Default.SectionHeaderColor = CmbHeader.SelectedIndex;
-
-            if (Visibility == Visibility.Visible)
-            {
-                trayMenu.Items.Clear();
-                SortXMLFile();
-                ConstructMenu();
-                mnuHeaderColor.IsSubmenuOpen = false;
-            }
-
-            Debug.WriteLine($"Section Header SelectedIndex is {CmbHeader.SelectedIndex}");
-            WriteLog.WriteTempFile($"    Menu section header color is {CmbHeader.SelectedItem.ToString()}, " +
-                                   $"index is {CmbHeader.SelectedIndex}");
-        }
-
-        // Section header bold?
-        private void MnuHeaderBold_Checked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.SectionHeaderBold = true;
-
-            if (Visibility == Visibility.Visible)
-            {
-                trayMenu.Items.Clear();
-                //RefreshMenu();
-                ConstructMenu();
-            }
-        }
-
-        private void MnuHeaderBold_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.SectionHeaderBold = false;
-            trayMenu.Items.Clear();
-            //RefreshMenu();
-            ConstructMenu();
-        }
-
-        // Separator color
-        private void CmbSeparator_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Properties.Settings.Default.SeparatorColor = CmbSeparator.SelectedIndex;
-            if (Visibility == Visibility.Visible)
-            {
-                trayMenu.Items.Clear();
-                SortXMLFile();
-                ConstructMenu();
-                mnuSepColor.IsSubmenuOpen = false;
-            }
-            Debug.WriteLine($"Separator SelectedIndex is {CmbSeparator.SelectedIndex}");
-            WriteLog.WriteTempFile($"    Separator color is {CmbSeparator.SelectedItem.ToString()}, " +
-                                   $"index is {CmbSeparator.SelectedIndex}");
-        }
-
-        // Tray icon color
-        private void TrayIcoColor_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem trayIconColor = e.Source as MenuItem;
-
-            // uncheck all
-            mnuBlueIco.IsChecked = false;
-            mnuBlue2Ico.IsChecked = false;
-            mnuBlackIco.IsChecked = false;
-            mnuCyanIco.IsChecked = false;
-            mnuGrayIco.IsChecked = false;
-            mnuGreenIco.IsChecked = false;
-            mnuOrangeIco.IsChecked = false;
-            mnuRedIco.IsChecked = false;
-            mnuTealIco.IsChecked = false;
-            mnuWhiteIco.IsChecked = false;
-            mnuYellowIco.IsChecked = false;
-            mnuMagentaIco.IsChecked = false;
-
-            // check the one we want
-            trayIconColor.IsChecked = true;
-
-            // change the icon
-            string icoColor = trayIconColor.Tag.ToString().ToLower();
-            Properties.Settings.Default.Icon = icoColor;
-            switch (icoColor)
-            {
-                case "blue":
-                    {
-                        IconFromFile(blueIcon);
-                        break;
-                    }
-                case "blue2":
-                    {
-                        IconFromFile(blue2Icon);
-                        break;
-                    }
-                case "black":
-                    {
-                        IconFromFile(blackIcon);
-                        break;
-                    }
-                case "cyan":
-                    {
-                        IconFromFile(cyanIcon);
-                        break;
-                    }
-                case "gray":
-                    {
-                        IconFromFile(grayIcon);
-                        break;
-                    }
-                case "green":
-                    {
-                        IconFromFile(greenIcon);
-                        break;
-                    }
-                case "red":
-                    {
-                        IconFromFile(redIcon);
-                        break;
-                    }
-                case "white":
-                    {
-                        IconFromFile(whiteIcon);
-                        break;
-                    }
-                case "teal":
-                    {
-                        IconFromFile(tealIcon);
-                        break;
-                    }
-                case "yellow":
-                    {
-                        IconFromFile(yellowIcon);
-                        break;
-                    }
-                case "magenta":
-                    {
-                        IconFromFile(magentaIcon);
-                        break;
-                    }
-                case "orange":
-                    {
-                        IconFromFile(orangeIcon);
-                        break;
-                    }
-                default:
-                    {
-                        IconFromFile(whiteIcon);
-                        break;
-                    }
-            }
-        }
-        #endregion region
-
         ////////////////////////////// Help menu //////////////////////////////////
+
         #region Help menu
         // Readme
         private void MnuReadme_Click(object sender, RoutedEventArgs e)
         {
             _ = Process.Start(@".\ReadMe.txt");
+        }
+
+        // Change log
+        private void MnuChange_Click(object sender, RoutedEventArgs e)
+        {
+            _ = Process.Start(@".\ChangeLog.txt");
         }
 
         // About
@@ -1082,13 +864,27 @@ namespace TrayLauncher
             };
             _ = about.ShowDialog();
         }
+
+        // Show settings
         private void MnuShowSettings_Click(object sender, RoutedEventArgs e)
         {
             ShowSettingsWindow();
         }
+
+        // View menu file
+        private void MnuViewMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ViewMenuFile();
+        }
+
+        // View temp/log file
+        private void MnuViewLog_Click(object sender, RoutedEventArgs e)
+        {
+            ViewTempFile();
+        }
         #endregion region
 
-        #endregion Menu events  <- the other menu events
+        #endregion Menu events
 
         ////////////////////////////// Keyboard events //////////////////////////////
 
@@ -1096,6 +892,12 @@ namespace TrayLauncher
         // Handle keyboard events
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
+            // Ctrl+Comma = Preferences
+            if (e.Key == Key.OemComma && (e.KeyboardDevice.Modifiers == ModifierKeys.Control))
+            {
+                OpenSettingsWindow();
+            }
+
             // Del = Remove
             if (e.Key == Key.Delete && (e.KeyboardDevice.Modifiers == ModifierKeys.None))
             {
@@ -1119,55 +921,16 @@ namespace TrayLauncher
                 ShowSettingsWindow();
             }
 
-            // F3 = View temp file
+            // F3 = View menu file
             if (e.Key == Key.F3)
             {
-                if (File.Exists(xmlMenuFile))
-                {
-                    try
-                    {
-                        using (Process fileExp = new Process())
-                        {
-                            fileExp.StartInfo.FileName = xmlMenuFile;
-                            fileExp.StartInfo.UseShellExecute = true;
-                            fileExp.StartInfo.ErrorDialog = false;
-                            fileExp.Start();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _ = MessageBox.Show($"Unable to start default application used to open" +
-                            $" {xmlMenuFile}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        WriteLog.WriteTempFile($"* Unable to open {xmlMenuFile}");
-                        WriteLog.WriteTempFile($"* {ex.Message}");
-                    }
-                }
+                ViewMenuFile();
             }
 
             // F4 = View temp file
             if (e.Key == Key.F4)
             {
-                string path = WriteLog.GetTempFile();
-                if (File.Exists(path))
-                {
-                    try
-                    {
-                        using (Process fileExp = new Process())
-                        {
-                            fileExp.StartInfo.FileName = path;
-                            fileExp.StartInfo.UseShellExecute = true;
-                            fileExp.StartInfo.ErrorDialog = false;
-                            fileExp.Start();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _ = MessageBox.Show($"Unable to start default application used to open" +
-                            $" {path}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        WriteLog.WriteTempFile($"* Unable to open {path}");
-                        WriteLog.WriteTempFile($"* {ex.Message}");
-                    }
-                }
+                ViewTempFile();
             }
 
             // F5 = Refresh
@@ -1197,21 +960,160 @@ namespace TrayLauncher
                 {
                     AltRowShadingOff();
                     altRows = false;
+                    Properties.Settings.Default.ShadeAltRows = false;
                 }
                 else
                 {
                     AltRowShadingOn();
                     altRows = true;
+                    Properties.Settings.Default.ShadeAltRows = true;
                 }
             }
         }
+
         #endregion Keyboard events
+
+        ////////////////////////////// Settings events //////////////////////////////
+
+        #region Settings change events
+        private void SettingChanging(object sender, SettingChangingEventArgs e)
+        {
+            // Certain settings changes need to take effect immediately
+            // Those not handled below can wait for the next app startup
+            switch (e.SettingName)
+            {
+                case "FontSize":
+                    {
+                        theDataGrid.FontSize = (double)e.NewValue;
+                        trayMenu.FontSize = (double)e.NewValue;
+                        break;
+                    }
+                case "ShowItemType":
+                    {
+                        if ((bool)e.NewValue == true)
+                        {
+                            theDataGrid.Columns[5].Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            theDataGrid.Columns[5].Visibility = Visibility.Collapsed;
+                        }
+                        break;
+                    }
+                case "ShadeAltRows":
+                    {
+                        if ((bool)e.NewValue == true)
+                        {
+                            AltRowShadingOn();
+                        }
+                        else
+                        {
+                            AltRowShadingOff();
+                        }
+                        break;
+                    }
+                case "Icon":
+                    {
+                        SetTrayIcon(e.NewValue.ToString());
+                        break;
+                    }
+                case "ForeColor":
+                    {
+                        Color textColor = ColorIndexToColor((int)e.NewValue);
+                        trayMenu.Foreground = new SolidColorBrush(textColor);
+                        tbToolTip.Foreground = new SolidColorBrush(textColor);
+                        break;
+                    }
+                case "BackColor":
+                    {
+                        Color backColor = ColorIndexToColor((int)e.NewValue);
+                        SetMenuBackground(backColor);
+                        break;
+                    }
+                case "SectionHeaderBold":
+                    {
+                        foreach (var item in trayMenu.Items)
+                        {
+                            if (item.GetType() == typeof(MenuItem))
+                            {
+                                var x = (MenuItem)item;
+                                if (x.Tag != null && x.Tag.ToString() == "SH")
+                                {
+                                    if ((bool)e.NewValue == true)
+                                    {
+                                        x.FontWeight = FontWeights.Bold;
+                                    }
+                                    else
+                                    {
+                                        x.FontWeight = FontWeights.Normal;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case "SectionHeaderColor":
+                    {
+                        foreach (var item in trayMenu.Items)
+                        {
+                            if (item.GetType() == typeof(MenuItem))
+                            {
+                                var x = (MenuItem)item;
+                                if (x.Tag != null && x.Tag.ToString() == "SH")
+                                {
+                                    Color headerColor = ColorIndexToColor((int)e.NewValue);
+                                    x.Foreground = new SolidColorBrush(headerColor);
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case "SeparatorColor":
+                    {
+                        foreach (var item in trayMenu.Items)
+                        {
+                            if (item.GetType() == typeof(Separator))
+                            {
+                                var x = (Separator)item;
+                                Color sepColor = ColorIndexToColor((int)e.NewValue);
+                                x.BorderBrush = new SolidColorBrush(sepColor);
+                            }
+                        }
+                        break;
+                    }
+                case "StartWithWindows":
+                    {
+                        if (Debugger.IsAttached == false)
+                        {
+                            if ((bool)e.NewValue == true)
+                            {
+                                StartupShortcut("Create");
+                            }
+                            else
+                            {
+                                StartupShortcut("Delete");
+                            }
+                        }
+                        break;
+                    }
+
+                default:
+                    break;
+            }
+
+            Debug.WriteLine($"*** Changing {e.SettingName} new value {e.NewValue}");
+            WriteLog.WriteTempFile($"    Setting {e.SettingName} changed to {e.NewValue}");
+        }
+        #endregion
 
         ////////////////////////////// Read Settings ///////////////////////////////
 
         #region Settings file
         private void ReadSettings()
         {
+            //! Important - this should only be executed once!
+            Properties.Settings.Default.SettingChanging += SettingChanging;
+
             WriteLog.WriteTempFile(" ");
             WriteLog.WriteTempFile("TrayLauncher is starting up");
             WriteLog.WriteTempFile($"  Application architecture is " +
@@ -1250,172 +1152,45 @@ namespace TrayLauncher
             // Put version number in title bar
             WindowTitleVersion();
 
-            // Background color - all except Transparent
-            CmbBackground.SelectedIndex = Properties.Settings.Default.BackColor;
-            var x = typeof(Colors).GetProperties();
-            List<PropertyInfo> bkColor = new List<PropertyInfo>();
-            foreach (var item in x)
-            {
-                if (item.Name.ToLower() == "transparent")
-                {
-                    continue;
-                }
-                bkColor.Add(item);
-            }
-            CmbBackground.ItemsSource = bkColor;
-
-            // Menu text color
-            CmbForeground.SelectedIndex = Properties.Settings.Default.ForeColor;
-            CmbForeground.ItemsSource = typeof(Colors).GetProperties();
-            Color selectedColor = (Color)(CmbForeground.SelectedItem as PropertyInfo)
-                .GetValue(null, null);
-            trayMenu.Foreground = new SolidColorBrush(selectedColor);
-            tbToolTip.Foreground = new SolidColorBrush(selectedColor);
-
-            // Menu Section Header color
-            CmbHeader.SelectedIndex = Properties.Settings.Default.SectionHeaderColor;
-            CmbHeader.ItemsSource = typeof(Colors).GetProperties();
-
-            // Menu Section Header bold
-            if (Properties.Settings.Default.SectionHeaderBold)
-            {
-                mnuHeaderBold.IsChecked = true;
-            }
-            else
-            {
-                mnuHeaderBold.IsChecked = false;
-            }
-            WriteLog.WriteTempFile($"    Menu section header bold is {Properties.Settings.Default.SectionHeaderBold}");
-
-            // Menu separator color
-            CmbSeparator.SelectedIndex = Properties.Settings.Default.SeparatorColor;
-            CmbSeparator.ItemsSource = typeof(Colors).GetProperties();
-
-            // Start with Windows
-            if (Properties.Settings.Default.StartWithWindows == true)
-            {
-                mnuStartWW.IsChecked = true;
-            }
-            else
-            {
-                mnuStartWW.IsChecked = false;
-            }
-            WriteLog.WriteTempFile($"    Start with Windows is {mnuStartWW.IsChecked}");
+            // Max height for main window
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 20;
+            WriteLog.WriteTempFile($"    Max screen height is: {MaxHeight}");
 
             // Startup Notification
             if (Properties.Settings.Default.StartNotification == true)
             {
                 myNotifyIcon.ShowBalloonTip("TrayLauncher is Running",
                     "Right-click for launch menu", BalloonIcon.Info);
-                mnuStartNotify.IsChecked = true;
             }
-            else
-            {
-                mnuStartNotify.IsChecked = false;
-            }
-            WriteLog.WriteTempFile($"    Startup notification is {mnuStartNotify.IsChecked}");
+            WriteLog.WriteTempFile($"    Startup notification is: {Properties.Settings.Default.StartNotification}");
+
+            // Background color
+            int bkColorIndex = Properties.Settings.Default.BackColor;
+            Color bkColor = ColorIndexToColor(bkColorIndex);
+            SetMenuBackground(bkColor);
+            WriteLog.WriteTempFile($"    Background color is: {Properties.Settings.Default.BackColor}");
+
+            // Menu text color
+            int textColorIndex = Properties.Settings.Default.ForeColor;
+            Color textColor = ColorIndexToColor(textColorIndex);
+            trayMenu.Foreground = new SolidColorBrush(textColor);
+            tbToolTip.Foreground = new SolidColorBrush(textColor);
+            WriteLog.WriteTempFile($"    Menu text color is: {Properties.Settings.Default.ForeColor}");
 
             // Datagrid font size
             theDataGrid.FontSize = Properties.Settings.Default.FontSize;
             trayMenu.FontSize = Properties.Settings.Default.FontSize;
+            WriteLog.WriteTempFile($"    Font size is: {Properties.Settings.Default.FontSize}");
 
             // Icon file
             string iconFile = Properties.Settings.Default.Icon;
-            switch (iconFile.ToLower())
-            {
-                case "blue":
-                    {
-                        IconFromFile(blueIcon);
-                        mnuBlueIco.IsChecked = true;
-                        break;
-                    }
-                case "blue2":
-                    {
-                        IconFromFile(blue2Icon);
-                        mnuBlue2Ico.IsChecked = true;
-                        break;
-                    }
-                case "black":
-                    {
-                        IconFromFile(blackIcon);
-                        mnuBlackIco.IsChecked = true;
-                        break;
-                    }
-                case "cyan":
-                    {
-                        IconFromFile(cyanIcon);
-                        mnuCyanIco.IsChecked = true;
-                        break;
-                    }
-                case "gray":
-                    {
-                        IconFromFile(grayIcon);
-                        mnuGrayIco.IsChecked = true;
-                        break;
-                    }
-                case "green":
-                    {
-                        IconFromFile(greenIcon);
-                        mnuGreenIco.IsChecked = true;
-                        break;
-                    }
-                case "orange":
-                    {
-                        IconFromFile(orangeIcon);
-                        mnuOrangeIco.IsChecked = true;
-                        break;
-                    }
-                case "red":
-                    {
-                        IconFromFile(redIcon);
-                        mnuRedIco.IsChecked = true;
-                        break;
-                    }
-                case "teal":
-                    {
-                        IconFromFile(tealIcon);
-                        mnuTealIco.IsChecked = true;
-                        break;
-                    }
-                case "white":
-                    {
-                        IconFromFile(whiteIcon);
-                        mnuWhiteIco.IsChecked = true;
-                        break;
-                    }
-                case "yellow":
-                    {
-                        IconFromFile(yellowIcon);
-                        mnuYellowIco.IsChecked = true;
-                        break;
-                    }
-                case "magenta":
-                    {
-                        IconFromFile(magentaIcon);
-                        mnuMagentaIco.IsChecked = true;
-                        break;
-                    }
-                default:
-                    {
-                        IconFromFile(whiteIcon);
-                        mnuWhiteIco.IsChecked = true;
-                        break;
-                    }
-            }
-            WriteLog.WriteTempFile($"    Icon color is {iconFile}");
+            SetTrayIcon(iconFile);
 
             // Hide main window on startup
             if (Properties.Settings.Default.HideOnStart == true)
             {
-                mnuHideOnStart.IsChecked = true;
                 Hide();
                 WriteLog.WriteTempFile($"    Main window is hidden on startup");
-            }
-            else
-            {
-                mnuHideOnStart.IsChecked = false;
-                Show();
-                WriteLog.WriteTempFile($"    Main window is shown on startup");
             }
 
             // Alternate row shading
@@ -1435,28 +1210,12 @@ namespace TrayLauncher
             if (Properties.Settings.Default.ShowItemType == true)
             {
                 theDataGrid.Columns[5].Visibility = Visibility.Visible;
-                mnuShowItemType.IsChecked = true;
             }
             else
             {
                 theDataGrid.Columns[5].Visibility = Visibility.Collapsed;
-                mnuShowItemType.IsChecked = false;
             }
-            WriteLog.WriteTempFile($"    Show item type column is {mnuShowItemType.IsChecked}");
-
-            // Minimize to tray on exit
-            if (Properties.Settings.Default.MinimizeToTrayOnExit == true)
-            {
-                mnuMinimizeToTrayOnExit.IsChecked = true;
-            }
-            else
-            {
-                mnuMinimizeToTrayOnExit.IsChecked = false;
-            }
-            WriteLog.WriteTempFile($"    Minimize to tray on exit is {mnuMinimizeToTrayOnExit.IsChecked}");
-
-            // Max height for main window
-            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 20;
+            WriteLog.WriteTempFile($"    Show item type column is {Properties.Settings.Default.ShowItemType}");
 
             // End of settings
             WriteLog.WriteTempFile("  Leaving ReadSettings");
@@ -1465,7 +1224,6 @@ namespace TrayLauncher
         #endregion Settings file
 
         ////////////////////////////// Helper Methods ///////////////////////////////
-        #region Helper methods
 
         #region Title version
         public void WindowTitleVersion()
@@ -1516,7 +1274,7 @@ namespace TrayLauncher
                     catch (Exception ex)
                     {
                         _ = MessageBox.Show($"Error creating shortcut\n{ex.Message}",
-                                                "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                                             "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                         WriteLog.WriteTempFile($"* Error creating shortcut.");
                         WriteLog.WriteTempFile($"* {ex.Message}");
                     }
@@ -1534,7 +1292,7 @@ namespace TrayLauncher
                     catch (Exception ex)
                     {
                         _ = MessageBox.Show($"Error deleting shortcut\n{ex.Message}",
-                                                "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                                             "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                         WriteLog.WriteTempFile($"* Error deleting shortcut.");
                         WriteLog.WriteTempFile($"* {ex.Message}");
                     }
@@ -1572,10 +1330,87 @@ namespace TrayLauncher
         }
         #endregion Get icon from Images folder
 
+        #region Set tray icon color
+        // Set Tray Icon
+        private void SetTrayIcon(string iconFile)
+        {
+            switch (iconFile.ToLower())
+            {
+                case "lightskyblue":
+                    {
+                        IconFromFile(blueIcon);
+                        break;
+                    }
+                case "dodgerblue":
+                    {
+                        IconFromFile(mediumblueIcon);
+                        break;
+                    }
+                case "black":
+                    {
+                        IconFromFile(blackIcon);
+                        break;
+                    }
+                case "cyan":
+                    {
+                        IconFromFile(cyanIcon);
+                        break;
+                    }
+                case "lightgray":
+                    {
+                        IconFromFile(grayIcon);
+                        break;
+                    }
+                case "lawngreen":
+                    {
+                        IconFromFile(greenIcon);
+                        break;
+                    }
+                case "darkorange":
+                    {
+                        IconFromFile(orangeIcon);
+                        break;
+                    }
+                case "red":
+                    {
+                        IconFromFile(redIcon);
+                        break;
+                    }
+                case "teal":
+                    {
+                        IconFromFile(tealIcon);
+                        break;
+                    }
+                case "white":
+                    {
+                        IconFromFile(whiteIcon);
+                        break;
+                    }
+                case "yellow":
+                    {
+                        IconFromFile(yellowIcon);
+                        break;
+                    }
+                case "magenta":
+                    {
+                        IconFromFile(magentaIcon);
+                        break;
+                    }
+                default:
+                    {
+                        IconFromFile(whiteIcon);
+                        break;
+                    }
+            }
+            WriteLog.WriteTempFile($"    Icon color is {iconFile}");
+        }
+        #endregion
+
         #region Set Menu background color
         public void SetMenuBackground(Color selectedColor)
         {
-            // Set the background color of the tray menu from https://www.dotnetcurry.com/wpf/1142/resources-wpf-static-dynamic-difference
+            // Set the background color of the tray menu from
+            // https://www.dotnetcurry.com/wpf/1142/resources-wpf-static-dynamic-difference
 
             SolidColorBrush findsolidColorBrush = FindResource("brush1") as SolidColorBrush;
             findsolidColorBrush.Color = selectedColor;
@@ -1586,7 +1421,7 @@ namespace TrayLauncher
 
         #region Font size
 
-        // Increase / Decrease font size
+        // Increase / Decrease font size - change datagrid row height so things don't look weird
         private void FontSmaller()
         {
             if (trayMenu.FontSize > 10)
@@ -1639,7 +1474,7 @@ namespace TrayLauncher
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Backup failed\n{ex.Message}", "ERROR",
+                    _ = MessageBox.Show($"Backup failed\n{ex.Message}", "ERROR",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                     WriteLog.WriteTempFile($"* Backup failed.");
                     WriteLog.WriteTempFile($"* {ex.Message}");
@@ -1656,21 +1491,18 @@ namespace TrayLauncher
             theDataGrid.RowBackground = new SolidColorBrush(Colors.White);
             theDataGrid.AlternatingRowBackground = new SolidColorBrush(Colors.White);
             theDataGrid.Items.Refresh();
-            Properties.Settings.Default.ShadeAltRows = false;
+            //Properties.Settings.Default.ShadeAltRows = false;
             altRows = false;
         }
-
         private void AltRowShadingOn()
         {
             theDataGrid.AlternationCount = 1;
             theDataGrid.RowBackground = new SolidColorBrush(Colors.White);
             theDataGrid.AlternatingRowBackground = new SolidColorBrush(Colors.WhiteSmoke);
             theDataGrid.Items.Refresh();
-            Properties.Settings.Default.ShadeAltRows = true;
+            //Properties.Settings.Default.ShadeAltRows = true;
             altRows = true;
         }
-
-
         #endregion Alternate row shading
 
         #region Show settings
@@ -1684,20 +1516,95 @@ namespace TrayLauncher
             };
             showSettings.Show();
         }
-
-        // Convert color index to name
-        public static string ColorIndexToName(int c)
-        {
-            var colors = typeof(Colors).GetProperties();
-            return colors[c].Name;
-        }
-
-        // Get double-click delay time in milliseconds
-        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern int GetDoubleClickTime();
         #endregion
 
-        #endregion Helper methods
+        #region Color index to color name
+        // Convert color index to name
+        public static Color ColorIndexToColor(int c)
+        {
+            var colors = typeof(Colors).GetProperties();
+            return (Color)ColorConverter.ConvertFromString(colors[c].Name);
+            //return colors[c].Name;
+        }
+        #endregion
+
+        #region Double click delay
+        // Get double-click delay time in milliseconds
+        //[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        //public static extern int GetDoubleClickTime();
+        #endregion
+
+        #region Settings window
+        private void OpenSettingsWindow()
+        {
+            Settings settings = new Settings();
+            settings.Closed += SettingsClosed;
+            settings.Owner = this;
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            settings.Topmost = true;
+            settings.Show();
+        }
+
+        // Don't really need this. Possible future use.
+        private void SettingsClosed(object sender, EventArgs e)
+        {
+            (sender as Window).Closed -= SettingsClosed;
+            Debug.WriteLine("*** Settings window closed");
+        }
+        #endregion
+
+        #region View files
+        // View the temp/log file
+        private static void ViewTempFile()
+        {
+            string path = WriteLog.GetTempFile();
+            if (File.Exists(path))
+            {
+                try
+                {
+                    using (Process fileExp = new Process())
+                    {
+                        fileExp.StartInfo.FileName = path;
+                        fileExp.StartInfo.UseShellExecute = true;
+                        fileExp.StartInfo.ErrorDialog = false;
+                        fileExp.Start();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show($"Unable to start default application used to open" +
+                        $" {path}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    WriteLog.WriteTempFile($"* Unable to open {path}");
+                    WriteLog.WriteTempFile($"* {ex.Message}");
+                }
+            }
+        }
+
+        // View the Menu file
+        private void ViewMenuFile()
+        {
+            if (File.Exists(xmlMenuFile))
+            {
+                try
+                {
+                    using (Process fileExp = new Process())
+                    {
+                        fileExp.StartInfo.FileName = xmlMenuFile;
+                        fileExp.StartInfo.UseShellExecute = true;
+                        fileExp.StartInfo.ErrorDialog = false;
+                        fileExp.Start();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show($"Unable to start default application used to open" +
+                        $" {xmlMenuFile}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    WriteLog.WriteTempFile($"* Unable to open {xmlMenuFile}");
+                    WriteLog.WriteTempFile($"* {ex.Message}");
+                }
+            }
+        }
+        #endregion
 
     }
 }

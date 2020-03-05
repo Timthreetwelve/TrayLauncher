@@ -174,6 +174,7 @@
     <Content Include="Images\mediumblue.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="ReadMe.md" />
     <SplashScreen Include="Images\Splash.png" />
     <Content Include="Images\teal.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

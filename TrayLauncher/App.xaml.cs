@@ -1,56 +1,59 @@
-﻿//
-// TrayLauncher - A customizable tray menu to launch applications and folders.
-//
+﻿// TrayLauncher - A customizable tray menu to launch applications and folders.
 #region using directives
-using System.Threading;
+
+using System;
+using System.Diagnostics;
 using System.Windows;
 using TKUtils;
-#endregion
+
+#endregion using directives
 
 namespace TrayLauncher
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
-        #region Change name if debugging
-#if DEBUG   // Change name when debugging
-            const string appName = "TrayLauncher_Debug";
-#else
-        const string appName = "TrayLauncher";
-#endif
-        #endregion
-
         #region Only One Instance
-        /////////////////////////////////////////////////
-        // Make sure that only one instance is running //
-        /////////////////////////////////////////////////
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            _ = new Mutex(true, appName, out bool createdNew);
+            Process currentProcess = Process.GetCurrentProcess();
+            Debug.WriteLine($"+++ Current process = {currentProcess.ProcessName} {currentProcess.Id}");
 
-            if (!createdNew)
+            foreach (var AllProcesses in Process.GetProcesses())
             {
-                //app is already running! Exiting the application
-                WriteLog.WriteTempFile("");
-                WriteLog.WriteTempFile("* An instance of TrayLauncher is already running!  Shutting this one down.");
-                _ = MessageBox.Show("An instance of TrayLauncher is already running",
-                                    "TrayLauncher", MessageBoxButton.OK, MessageBoxImage.Exclamation,
-                                    MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
-                Voodoo.WindowsLogoffOrShutdown = true;
-                Current.Shutdown();
-            }
+                if (AllProcesses.Id != currentProcess.Id && AllProcesses.ProcessName == currentProcess.ProcessName)
+                {
+                    WriteLog.WriteTempFile("");
+                    string msg = $"* I am  {currentProcess.ProcessName} {currentProcess.Id}. " +
+                                 $"- {AllProcesses.ProcessName} {AllProcesses.Id} is also running.";
+                    WriteLog.WriteTempFile(msg);
+                    WriteLog.WriteTempFile("* An instance of TrayLauncher is already running!  Shutting this one down.");
+                    WriteLog.WriteTempFile("");
 
+                    _ = MessageBox.Show("An instance of TrayLauncher is already running",
+                                        "TrayLauncher",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Exclamation,
+                                        MessageBoxResult.OK,
+                                        MessageBoxOptions.DefaultDesktopOnly);
+
+                    Voodoo.WindowsLogoffOrShutdown = true;
+                    Environment.Exit(1);
+                    break;
+                }
+            }
             base.OnStartup(e);
         }
-        #endregion
+
+        #endregion Only One Instance
 
         #region Session ending
+
         private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
             Voodoo.WindowsLogoffOrShutdown = true;
         }
-        #endregion
+
+        #endregion Session ending
     }
 }

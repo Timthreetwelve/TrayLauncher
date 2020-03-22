@@ -17,18 +17,16 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using TKUtils;
-#endregion
+#endregion using directives
 
 namespace TrayLauncher
 {
-    /// <summary>
-    /// Interaction logic for UpdateItem.xaml
-    /// </summary>
+    // Interaction logic for UpdateItem.xaml
     public partial class UpdateItem : Window
     {
         private const string specItemsXML = "SpecialItems.xml";
         private string xmlMenuFile;
-        private string itemType = string.Empty;
+        private string itemType;
         private readonly List<Shortcut> cboxItems = new List<Shortcut>();
         private readonly int index;
 
@@ -54,6 +52,14 @@ namespace TrayLauncher
             WriteLog.WriteTempFile("  Entering UpdateItem");
             xmlMenuFile = Properties.Settings.Default.XMLfile;
             FontSize = Properties.Settings.Default.FontSize;
+            if (FontSize > 16)
+            {
+                FontSize = 16;
+            }
+            if (FontSize < 12)
+            {
+                FontSize = 12;
+            }
         }
         #endregion Read Settings
 
@@ -118,17 +124,14 @@ namespace TrayLauncher
                 return;
             }
 
-            if (string.IsNullOrEmpty(tbUpdateAppPath.Text))
+            if (string.IsNullOrEmpty(tbUpdateAppPath.Text) && (string.IsNullOrEmpty(itemType) || itemType == "SMI"))
             {
-                if (string.IsNullOrEmpty(itemType) || itemType == "SMI")
-                {
-                    SystemSounds.Asterisk.Play();
-                    _ = tbUpdateAppPath.Focus();
-                    tbUpdateAppPath.Background = Brushes.LemonChiffon;
-                    lblStatus.Foreground = Brushes.Red;
-                    lblStatus.Text = "Application Path can't be blank";
-                    return;
-                }
+                SystemSounds.Asterisk.Play();
+                _ = tbUpdateAppPath.Focus();
+                tbUpdateAppPath.Background = Brushes.LemonChiffon;
+                lblStatus.Foreground = Brushes.Red;
+                lblStatus.Text = "Application Path can't be blank";
+                return;
             }
 
             if (string.IsNullOrEmpty(tbUpdatePosition.Text))
@@ -171,6 +174,7 @@ namespace TrayLauncher
                                        $"Tooltip: {tbUpdateToolTip.Text}, " +
                                        $"Type: {itemType} ");
                 WriteLog.WriteTempFile("  Leaving UpdateItem");
+                DialogResult = true;
                 Close();
             }
             catch (Exception ex)
@@ -185,9 +189,10 @@ namespace TrayLauncher
         private void BtnExitUpdate_Click(object sender, RoutedEventArgs e)
         {
             WriteLog.WriteTempFile("  Leaving UpdateItem");
+            DialogResult = false;
             Close();
         }
-        #endregion
+        #endregion Buttons
 
         #region Text Box events
         private void TbUpdatePosition_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -257,27 +262,52 @@ namespace TrayLauncher
             {
                 case "btnNormal":
                     itemType = "";
+                    TextBoxNormal();
                     break;
 
                 case "btnSep":
                     itemType = "SEP";
+                    TextBoxDisable();
                     break;
 
                 case "btnSH":
                     itemType = "SH";
+                    TextBoxDisable();
                     break;
 
                 case "btnSM":
                     itemType = "SM";
+                    TextBoxDisable();
                     break;
 
                 case "btnSMI":
                     itemType = "SMI";
+                    TextBoxNormal();
                     break;
 
                 default:
                     break;
             }
+        }
+
+        private void TextBoxDisable()
+        {
+            tbUpdateAppPath.Background = Brushes.WhiteSmoke;
+            tbUpdateArguments.Background = Brushes.WhiteSmoke;
+            tbUpdateToolTip.Background = Brushes.WhiteSmoke;
+            tbUpdateAppPath.IsEnabled = false;
+            tbUpdateArguments.IsEnabled = false;
+            tbUpdateToolTip.IsEnabled = false;
+        }
+
+        private void TextBoxNormal()
+        {
+            tbUpdateAppPath.Background = Brushes.White;
+            tbUpdateArguments.Background = Brushes.White;
+            tbUpdateToolTip.Background = Brushes.White;
+            tbUpdateAppPath.IsEnabled = true;
+            tbUpdateArguments.IsEnabled = true;
+            tbUpdateToolTip.IsEnabled = true;
         }
 
         #endregion Radio buttons
@@ -326,6 +356,6 @@ namespace TrayLauncher
             }
         }
 
-        #endregion
+        #endregion Helper methods
     }
 }

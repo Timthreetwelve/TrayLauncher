@@ -19,7 +19,7 @@
         <!--  This provides a way to change the menu background in code  -->
         <SolidColorBrush x:Key="brush1" Color="White" />
         <ItemsPanelTemplate x:Key="MenuTPL">
-            <StackPanel Margin="-8,0,0,0" Background="{StaticResource ResourceKey=brush1}" />
+            <StackPanel Margin="0,0,0,0" Background="{StaticResource ResourceKey=brush1}" />
         </ItemsPanelTemplate>
 
         <!--  Style to right align text in the data grid  -->
@@ -83,7 +83,6 @@
                     <ContextMenu.Style>
                         <Style TargetType="{x:Type ContextMenu}">
                             <Setter Property="ItemsPanel" Value="{StaticResource MenuTPL}" />
-                            <Setter Property="HorizontalOffset" Value="20" />
                         </Style>
                     </ContextMenu.Style>
                 </ContextMenu>
@@ -126,6 +125,9 @@
                         <MenuItem Name="mnuAdd"
                             Click="MnuAdd_Click"
                             Header="Add Menu Item" />
+                        <MenuItem Name="mnuCopy"
+                            Click="MnuCopy_Click"
+                            Header="Copy Menu Item" />
                         <MenuItem Name="mnuDelete"
                             Click="MnuDel_Click"
                             Header="Remove Selected Item" />
@@ -214,14 +216,15 @@
                 </Style>
             </DataGrid.RowStyle>
 
-
-
             <!--  Datagrid context menu  -->
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Name="dgcmAdd"
                         Click="MnuAdd_Click"
                         Header="Add Menu Item" />
+                    <MenuItem Name="dgcmCopy"
+                        Click="MnuCopy_Click"
+                        Header="Copy Menu Item" />
                     <MenuItem Name="dgcmRemove"
                         Click="MnuDel_Click"
                         Header="Remove Selected Item" />
@@ -246,8 +249,14 @@
                     MinWidth="40"
                     Binding="{Binding Pos}"
                     ElementStyle="{StaticResource alignRight}"
-                    Header="Pos"
-                    HeaderStyle="{StaticResource HeaderCenter}" />
+                    Header="Pos" />
+                <!-- HeaderStyle="{StaticResource HeaderCenter}" -->
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="40"
+                    Binding="{Binding ItemType}"
+                    ElementStyle="{StaticResource ColumnCenter}"
+                    Header="Type" />
                 <DataGridTextColumn
                     Width="auto"
                     MinWidth="120"
@@ -272,11 +281,6 @@
                     Binding="{Binding ToolTip}"
                     ElementStyle="{StaticResource ColumnMargin5}"
                     Header="Tooltip" />
-                <DataGridTextColumn
-                    Width="57"
-                    Binding="{Binding ItemType}"
-                    ElementStyle="{StaticResource ColumnCenter}"
-                    Header="Type" />
             </DataGrid.Columns>
         </DataGrid>
 

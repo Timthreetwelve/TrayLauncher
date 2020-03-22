@@ -1,18 +1,17 @@
-﻿<Window x:Class="TrayLauncher.AddItem"
+﻿<Window x:Class="TrayLauncher.CopyItem"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TrayLauncher"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Add Menu Items"
+    Title="Copy Menu Item"
     Width="815"
     Height="400"
     MinWidth="590"
     FontSize="14"
-    SizeToContent="Height"
+    SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterOwner">
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -41,7 +40,7 @@
             Margin="0,0,10,0"
             VerticalAlignment="Center"
             Text="Menu Item Text" />
-        <TextBox x:Name="tbAddHeader"
+        <TextBox x:Name="tbCopyHeader"
             Grid.Row="1"
             Grid.Column="2"
             Grid.ColumnSpan="3"
@@ -56,21 +55,13 @@
             Margin="0,0,10,0"
             VerticalAlignment="Center"
             Text="Application Path" />
-        <TextBox x:Name="tbAddAppPath"
+        <TextBox x:Name="tbCopyAppPath"
             Grid.Row="2"
             Grid.Column="2"
             Grid.ColumnSpan="3"
             Height="25"
-            Margin="0,0,30,0"
+            Margin="0,0,0,0"
             MaxLength="260" />
-        <Button x:Name="btnOpenDlg"
-            Grid.Row="2"
-            Grid.Column="4"
-            Width="25"
-            Height="25"
-            HorizontalAlignment="Right"
-            Click="BtnOpenDlg_Click"
-            Content="..." />
 
         <!--  Arguments  -->
         <TextBlock
@@ -79,7 +70,7 @@
             Margin="0,0,10,0"
             VerticalAlignment="Center"
             Text="Arguments" />
-        <TextBox x:Name="tbAddArguments"
+        <TextBox x:Name="tbCopyArguments"
             Grid.Row="3"
             Grid.Column="2"
             Grid.ColumnSpan="3"
@@ -94,7 +85,7 @@
             Margin="0,0,10,0"
             VerticalAlignment="Center"
             Text="ToolTip" />
-        <TextBox x:Name="tbAddToolTip"
+        <TextBox x:Name="tbCopyToolTip"
             Grid.Row="4"
             Grid.Column="2"
             Grid.ColumnSpan="3"
@@ -151,14 +142,14 @@
             Grid.Column="2"
             Grid.ColumnSpan="3"
             Orientation="Horizontal">
-            <TextBox x:Name="tbAddPosition"
+            <TextBox x:Name="tbCopyPosition"
                 Width="50"
                 Height="25"
                 Margin="0,0,0,0"
                 HorizontalAlignment="Left"
-                KeyUp="TbAddPosition_KeyUp"
+                KeyUp="TbCopyPosition_KeyUp"
                 MaxLength="5"
-                PreviewTextInput="TbAddPosition_PreviewTextInput_1"
+                PreviewTextInput="TbCopyPosition_PreviewTextInput"
                 TextAlignment="Center" />
             <TextBlock
                 Margin="40,0,0,0"
@@ -201,24 +192,24 @@
             </ComboBox>
         </StackPanel>
 
-        <!--  Add & Done buttons  -->
+        <!--  Copy & Done buttons  -->
         <StackPanel
             Grid.Row="6"
             Grid.Column="4"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
-            <Button x:Name="btnAdd"
+            <Button x:Name="btnCopy"
                 Width="70"
                 Height="25"
                 Margin="2,2,15,2"
-                Click="BtnAdd_Click"
-                Content="Add" />
-            <Button x:Name="btnExitAdd"
+                Click="BtnCopy_Click"
+                Content="Copy" />
+            <Button x:Name="btnExitCopy"
                 Width="70"
                 Height="25"
                 Margin="2"
-                Click="BtnExitAdd_Click"
-                Content="Done" />
+                Click="BtnExitCopy_Click"
+                Content="Cancel" />
         </StackPanel>
 
         <!--  Status  -->

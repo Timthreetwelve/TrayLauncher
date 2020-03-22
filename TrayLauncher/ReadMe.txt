@@ -104,6 +104,13 @@ After the item has been added you can test the item from the main window by sele
 item from the Configuration menu.
 
 
+Copying Entries
+===============
+To copy a menu item, highlight its entry in the main window and then select Copy Menu Item from the
+Configuration menu. An item may also be updated by double-clicking that item. After making the desired
+changes, click the Copy button in the Copy window.
+
+
 Changing Entries
 ================
 To change or update a menu item, highlight its entry in the main window and then select Update

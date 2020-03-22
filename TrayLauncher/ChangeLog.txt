@@ -36,4 +36,13 @@
       - Added a splash screen.
       - Added option to view this change log.
       - Updated ReadMe file to reflect these changes.
+      - Fixed gap between sub menu and menu when sub menu appears on left of the tray menu.
+      - Added check for mouse presence.
+      - Added additional details in View Settings window.
+      - The Add dialog will now increment the Position field by 1 after each Add.
 
+0.6.x - Added capability top copy an entry.
+      - Moved status message field in the Add & Update windows to facilitate longer messages.
+      - Added a check for position value conflict in Add & Copy windows.
+      - Changed Item Type column location.
+      - Added five values to View Settings.

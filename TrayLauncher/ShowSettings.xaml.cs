@@ -24,6 +24,8 @@ namespace TrayLauncher
 
             GetDoubleClick(settings);
 
+            GetSystemParameters(settings);
+
             dg1.ItemsSource = settings.OrderBy(x => x.Name);
         }
 
@@ -37,6 +39,44 @@ namespace TrayLauncher
             settings.Add(dd);
         }
 
+        private static void GetSystemParameters(List<MySettings> settings)
+        {
+            MySettings sp1 = new MySettings
+            {
+                Name = "Mouse Present",
+                Value = $"{SystemParameters.IsMousePresent.ToString()}"
+            };
+            settings.Add(sp1);
+
+            MySettings sp2 = new MySettings
+            {
+                Name = "Menu Delay",
+                Value = $"{SystemParameters.MenuShowDelay.ToString()} ms"
+            };
+            settings.Add(sp2);
+
+            MySettings sp3 = new MySettings
+            {
+                Name = "Main Window Max Height",
+                Value = $"{(SystemParameters.PrimaryScreenHeight -20).ToString()}"
+            };
+            settings.Add(sp3);
+
+            MySettings sp4 = new MySettings
+            {
+                Name = "Primary Screen Height",
+                Value = $"{SystemParameters.PrimaryScreenHeight.ToString()}"
+            };
+            settings.Add(sp4);
+
+            MySettings sp5 = new MySettings
+            {
+                Name = "Primary Screen Width",
+                Value = $"{SystemParameters.PrimaryScreenWidth.ToString()}"
+            };
+            settings.Add(sp5);
+        }
+
         private static List<MySettings> ReadSettings()
         {
             List<MySettings> settings = new List<MySettings>();
@@ -47,17 +87,8 @@ namespace TrayLauncher
                 {
                     case "BackColor":
                         {
-                            // adjust for removal of Transparent
-                            if ((int)property.PropertyValue < 133)
-                            {
-                                show.Value = $"Index {property.PropertyValue} = " +
+                            show.Value = $"Index {property.PropertyValue} = " +
                                 $"{ColorIndexToName((int)property.PropertyValue)}";
-                            }
-                            else
-                            {
-                                show.Value = $"Index {property.PropertyValue} = " +
-                                $"{ColorIndexToName((int)property.PropertyValue + 1)}";
-                            }
                             break;
                         }
                     case "ForeColor":

@@ -73,6 +73,9 @@
       <DependentUpon>AddItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="BooleanInverter.cs" />
+    <Compile Include="CopyItem.xaml.cs">
+      <DependentUpon>CopyItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MySettings.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Settings.xaml.cs">
@@ -92,6 +95,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="AddItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CopyItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,25 +12,25 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using TKUtils;
-using Microsoft.Win32;
 #endregion using directives
 
 namespace TrayLauncher
 {
-    // Logic for the AddItem dialog
-    public partial class AddItem : Window
+    // Interaction logic for CopyItem.xaml
+    public partial class CopyItem : Window
     {
         private const string specItemsXML = "SpecialItems.xml";
         private string xmlMenuFile;
-        private int addCount = 0;
-        private string itemType = string.Empty;
+        private string itemType;
         private readonly List<Shortcut> cboxItems = new List<Shortcut>();
+        private readonly int index;
 
-        public AddItem(int pos)
+        public CopyItem(string header, string path, string args, string ttip, int pos, string itype, int idx)
         {
             InitializeComponent();
 
@@ -38,16 +38,43 @@ namespace TrayLauncher
 
             LoadComboBox();
 
+            PreFillTextboxes(header, path, args, ttip, pos);
+
             CheckPos(pos);
+
+            CheckRadioButton(itype);
+
+            itemType = itype;
+            index = idx;
         }
 
-        #region Read Settings
+        #region Check Position
 
+        private void CheckPos(int pos)
+        {
+            // Deserialize the XML file
+            XmlSerializer deserializer = new XmlSerializer(typeof(MenuList));
+            StreamReader reader = new StreamReader(xmlMenuFile);
+            MenuList items = (MenuList)deserializer.Deserialize(reader);
+            reader.Close();
+
+            foreach (TLMenuItem item in items.menuList)
+            {
+                if (item.Pos == pos)
+                {
+                    lblStatus.Text = $"Position {pos} already in use";
+                    lblStatus.Foreground = Brushes.Red;
+                    tbCopyPosition.Background = Brushes.LemonChiffon;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Read Settings
         private void ReadSettings()
         {
-            WriteLog.WriteTempFile("  Entering AddItem");
-            lblStatus.Text = "Ready";
-            lblStatus.Foreground = Brushes.SlateGray;
+            WriteLog.WriteTempFile("  Entering CopyItem");
             xmlMenuFile = Properties.Settings.Default.XMLfile;
             FontSize = Properties.Settings.Default.FontSize;
             if (FontSize > 16)
@@ -59,7 +86,6 @@ namespace TrayLauncher
                 FontSize = 12;
             }
         }
-
         #endregion Read Settings
 
         #region Load ComboBox
@@ -111,135 +137,100 @@ namespace TrayLauncher
 
         #region Buttons
 
-        // Add a menu item
-        public void BtnAdd_Click(object sender, RoutedEventArgs e)
+        private void BtnCopy_Click(object sender, RoutedEventArgs e)
         {
             // Make sure that the required text boxes have been filled
-            if (string.IsNullOrEmpty(tbAddHeader.Text))
+            if (string.IsNullOrEmpty(tbCopyHeader.Text))
             {
                 SystemSounds.Asterisk.Play();
-                _ = tbAddHeader.Focus();
-                tbAddHeader.Background = Brushes.LemonChiffon;
+                _ = tbCopyHeader.Focus();
+                tbCopyHeader.Background = Brushes.LemonChiffon;
                 lblStatus.Foreground = Brushes.Red;
                 lblStatus.Text = "Menu Item Text can't be blank";
                 return;
             }
 
-            if (string.IsNullOrEmpty(tbAddAppPath.Text) && (string.IsNullOrEmpty(itemType) || itemType == "SMI"))
+            if (string.IsNullOrEmpty(tbCopyAppPath.Text) && (string.IsNullOrEmpty(itemType) || itemType == "SMI"))
             {
                 SystemSounds.Asterisk.Play();
-                _ = tbAddAppPath.Focus();
-                tbAddAppPath.Background = Brushes.LemonChiffon;
+                _ = tbCopyAppPath.Focus();
+                tbCopyAppPath.Background = Brushes.LemonChiffon;
                 lblStatus.Foreground = Brushes.Red;
                 lblStatus.Text = "Application Path can't be blank";
                 return;
             }
 
-            if (string.IsNullOrEmpty(tbAddPosition.Text))
+            if (string.IsNullOrEmpty(tbCopyPosition.Text))
             {
                 SystemSounds.Asterisk.Play();
-                _ = tbAddPosition.Focus();
-                tbAddPosition.Background = Brushes.LemonChiffon;
+                _ = tbCopyPosition.Focus();
+                tbCopyPosition.Background = Brushes.LemonChiffon;
                 lblStatus.Foreground = Brushes.Red;
                 lblStatus.Text = "Position can't be blank";
                 return;
             }
 
-            string comment = BuildComment();
-            string pos = tbAddPosition.Text;
-            string header = tbAddHeader.Text;
-            string apppath = tbAddAppPath.Text;
-            string args = tbAddArguments.Text;
-            string ttip = tbAddToolTip.Text;
-
-            // Add to XML file
-            XDocument xDoc = XDocument.Load(xmlMenuFile);
-            xDoc.Elements("MenuList").First().Add(
-                new XElement("TLMenuItem",
-                    new XComment(comment),
-                    new XElement("Position", pos),
-                    new XElement("MenuHeader", header),
-                    new XElement("AppPath", apppath),
-                    new XElement("Arguments", args),
-                    new XElement("ToolTip", ttip),
-                    new XElement("Type", itemType)));
-            xDoc.Save(xmlMenuFile);
-
-            ReadyForNext(pos);
-
-            WriteLog.WriteTempFile($"    Added menu item: Header: {header}, " +
-                                   $"Position: {pos}, " +
-                                   $"AppPath: {apppath}, " +
-                                   $"Arguments: {args}, " +
-                                   $"Tooltip: {ttip}, " +
-                                   $"Type: {itemType}");
-            addCount++;
-            if (addCount == 1)
+            try
             {
-                lblStatus.Text = "1 item added";
+                string comment = BuildComment();
+
+                XDocument xDoc = XDocument.Load(xmlMenuFile);
+
+                // Then add the Copied item
+                xDoc.Elements("MenuList").First().Add(
+                    new XElement("TLMenuItem",
+                        new XComment(comment),
+                        new XElement("Position", tbCopyPosition.Text),
+                        new XElement("MenuHeader", tbCopyHeader.Text),
+                        new XElement("AppPath", tbCopyAppPath.Text),
+                        new XElement("Arguments", tbCopyArguments.Text),
+                        new XElement("ToolTip", tbCopyToolTip.Text),
+                        new XElement("Type", itemType)));
+                xDoc.Save(xmlMenuFile);
+
+                WriteLog.WriteTempFile($"    Copied menu item at index {index} ");
+                WriteLog.WriteTempFile($"    Updated menu item: Header: {tbCopyHeader.Text}, " +
+                                       $"Position: {tbCopyPosition.Text}, " +
+                                       $"AppPath: {tbCopyAppPath.Text}, " +
+                                       $"Arguments: {tbCopyArguments.Text}, " +
+                                       $"Tooltip: {tbCopyToolTip.Text}, " +
+                                       $"Type: {itemType} ");
+                WriteLog.WriteTempFile("  Leaving CopyItem");
+                DialogResult = true;
+                Close();
             }
-            else
+            catch (Exception ex)
             {
-                lblStatus.Text = $"{addCount} items added";
+                _ = MessageBox.Show($"Error reading or writing to menu file\n{ex.Message}",
+                                     "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                WriteLog.WriteTempFile($"* Error reading or writing to menu file.");
+                WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
 
-        // Close window when Exit button clicked
-        private void BtnExitAdd_Click(object sender, RoutedEventArgs e)
+        private void BtnExitCopy_Click(object sender, RoutedEventArgs e)
         {
-            switch (addCount)
-            {
-                case 0:
-                    DialogResult = false;
-                    break;
-                default:
-                    DialogResult = true;
-                    break;
-            }
-            WriteLog.WriteTempFile($"  Leaving AddItem, {addCount} items added");
+            WriteLog.WriteTempFile("  Leaving CopyItem");
+            DialogResult = false;
             Close();
         }
-
         #endregion Buttons
 
-        #region Text box events
-
-        // Make sure size text box only accepts numbers
-        private void TbAddPosition_PreviewTextInput_1(object sender,
-            System.Windows.Input.TextCompositionEventArgs e)
+        #region Text Box events
+        private void TbCopyPosition_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Only digits
             e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
         }
 
-        // Enter will add item
-        private void TbAddPosition_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void TbCopyPosition_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter)
             {
-                btnAdd.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
+                btnCopy.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
         }
-
-        // File picker
-        private void BtnOpenDlg_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog dlgOpen = new OpenFileDialog
-            {
-                Title = "Choose Application or Document",
-                CheckFileExists = true,
-                CheckPathExists = true,
-                Multiselect = false,
-                Filter = "All files|*.*"
-            };
-            var result = dlgOpen.ShowDialog();
-            if (result == true)
-            {
-                tbAddAppPath.Text = dlgOpen.FileName;
-            }
-        }
-
-        #endregion Text box events
+        #endregion
 
         #region ComboBox events
 
@@ -249,9 +240,9 @@ namespace TrayLauncher
             CheckRadioButton("");
             if (cmbSpecial.SelectedIndex == 0)
             {
-                tbAddHeader.Text = string.Empty;
-                tbAddAppPath.Text = string.Empty;
-                tbAddArguments.Text = string.Empty;
+                tbCopyHeader.Text = string.Empty;
+                tbCopyAppPath.Text = string.Empty;
+                tbCopyArguments.Text = string.Empty;
             }
             else
             {
@@ -261,14 +252,18 @@ namespace TrayLauncher
                 {
                     if (item.Name == x.Name)
                     {
-                        tbAddHeader.Text = item.Name;
-                        tbAddAppPath.Text = item.Path;
-                        tbAddArguments.Text = item.Args;
+                        tbCopyHeader.Text = item.Name;
+                        tbCopyAppPath.Text = item.Path;
+                        tbCopyArguments.Text = item.Args;
                         itemType = item.ItemType;
                         // If item type isn't blank, check the appropriate radio button
                         if (!string.IsNullOrEmpty(itemType))
                         {
                             CheckRadioButton(itemType.ToString());
+                        }
+                        else
+                        {
+                            CheckRadioButton("");
                         }
                         break;
                     }
@@ -319,57 +314,41 @@ namespace TrayLauncher
 
         private void TextBoxDisable()
         {
-            tbAddAppPath.Background = Brushes.WhiteSmoke;
-            tbAddArguments.Background = Brushes.WhiteSmoke;
-            tbAddToolTip.Background = Brushes.WhiteSmoke;
-            tbAddAppPath.IsEnabled = false;
-            tbAddArguments.IsEnabled = false;
-            tbAddToolTip.IsEnabled = false;
-            btnOpenDlg.IsEnabled = false;
+            tbCopyAppPath.Background = Brushes.WhiteSmoke;
+            tbCopyArguments.Background = Brushes.WhiteSmoke;
+            tbCopyToolTip.Background = Brushes.WhiteSmoke;
+            tbCopyAppPath.IsEnabled = false;
+            tbCopyArguments.IsEnabled = false;
+            tbCopyToolTip.IsEnabled = false;
         }
 
         private void TextBoxNormal()
         {
-            tbAddAppPath.Background = Brushes.White;
-            tbAddArguments.Background = Brushes.White;
-            tbAddToolTip.Background = Brushes.White;
-            tbAddAppPath.IsEnabled = true;
-            tbAddArguments.IsEnabled = true;
-            tbAddToolTip.IsEnabled = true;
-            btnOpenDlg.IsEnabled = true;
+            tbCopyAppPath.Background = Brushes.White;
+            tbCopyArguments.Background = Brushes.White;
+            tbCopyToolTip.Background = Brushes.White;
+            tbCopyAppPath.IsEnabled = true;
+            tbCopyArguments.IsEnabled = true;
+            tbCopyToolTip.IsEnabled = true;
         }
 
         #endregion Radio buttons
 
-        #region Helper Methods
-
-        // Blank text boxes and set color values to be ready for next item
-        private void ReadyForNext(string p)
-        {
-            int newPos = int.Parse(p) + 1;
-            tbAddPosition.Text = newPos.ToString();
-            tbAddHeader.Text = string.Empty;
-            tbAddAppPath.Text = string.Empty;
-            tbAddArguments.Text = string.Empty;
-            tbAddToolTip.Text = string.Empty;
-            itemType = string.Empty;
-            lblStatus.Text = string.Empty;
-
-            tbAddHeader.Background = Brushes.White;
-            tbAddAppPath.Background = Brushes.White;
-            tbAddPosition.Background = Brushes.White;
-            lblStatus.Foreground = Brushes.SlateGray;
-            lblStatus.FontWeight = FontWeights.Normal;
-
-            cmbSpecial.SelectedIndex = 0;
-            _ = tbAddHeader.Focus();
-        }
-
+        #region Helper methods
         private string BuildComment()
         {
             // Build comment
             DateTime dt = DateTime.Now;
-            return $"Added {dt}";
+            return $"Updated {dt}";
+        }
+
+        private void PreFillTextboxes(string he, string pa, string ar, string tt, int po)
+        {
+            tbCopyHeader.Text = he;
+            tbCopyAppPath.Text = pa;
+            tbCopyArguments.Text = ar;
+            tbCopyToolTip.Text = tt;
+            tbCopyPosition.Text = po.ToString();
         }
 
         // Method to check specified radio button
@@ -399,30 +378,6 @@ namespace TrayLauncher
             }
         }
 
-
-        private void CheckPos(int pos)
-        {
-            int newPos = pos + 1;
-
-            tbAddPosition.Text = newPos.ToString();
-
-            // Deserialize the XML file
-            XmlSerializer deserializer = new XmlSerializer(typeof(MenuList));
-            StreamReader reader = new StreamReader(xmlMenuFile);
-            MenuList items = (MenuList)deserializer.Deserialize(reader);
-            reader.Close();
-
-            foreach (TLMenuItem item in items.menuList)
-            {
-                if (item.Pos == newPos)
-                {
-                    lblStatus.Text = $"Position {newPos} already in use";
-                    lblStatus.Foreground = Brushes.Red;
-                    tbAddPosition.Background = Brushes.LemonChiffon;
-                }
-            }
-        }
-
-        #endregion Helper Methods
+        #endregion Helper methods
     }
 }

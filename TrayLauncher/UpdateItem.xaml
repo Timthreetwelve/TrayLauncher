@@ -6,30 +6,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Update Menu Item"
-    Width="800"
+    Width="815"
     Height="400"
     MinWidth="590"
     FontSize="14"
     SizeToContent="Height"
     WindowStartupLocation="CenterOwner">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="125" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
-            <RowDefinition Height="35" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
@@ -100,8 +101,6 @@
             Grid.ColumnSpan="4"
             Orientation="Horizontal">
             <TextBlock
-                Grid.Row="6"
-                Grid.Column="1"
                 Margin="0,0,55,0"
                 VerticalAlignment="Center"
                 Text="Item Type" />
@@ -133,31 +132,33 @@
         </StackPanel>
 
         <!--  Position & Special Items  -->
-        <StackPanel
+        <TextBlock
             Grid.Row="6"
             Grid.Column="1"
+            Margin="0,0,0,0"
+            VerticalAlignment="Center"
+            Text="Position" />
+        <StackPanel
+            Grid.Row="6"
+            Grid.Column="2"
             Grid.ColumnSpan="3"
             Orientation="Horizontal">
-            <TextBlock
-                Margin="0,0,0,0"
-                VerticalAlignment="Center"
-                Text="Position" />
             <TextBox x:Name="tbUpdatePosition"
                 Width="50"
                 Height="25"
-                Margin="77,0,0,0"
+                Margin="0,0,0,0"
                 HorizontalAlignment="Left"
                 KeyUp="TbUpdatePosition_KeyUp"
                 MaxLength="5"
-                PreviewTextInput="TbUpdatePosition_PreviewTextInput" />
-
+                PreviewTextInput="TbUpdatePosition_PreviewTextInput"
+                TextAlignment="Center" />
             <TextBlock
                 Margin="40,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Text="Special Items" />
             <ComboBox Name="cmbSpecial"
-                Width="200"
+                Width="220"
                 Height="25"
                 Margin="20,5,0,0"
                 HorizontalAlignment="Left"
@@ -194,17 +195,19 @@
 
         <!--  Update & Done buttons  -->
         <StackPanel
-            Grid.Row="7"
+            Grid.Row="6"
             Grid.Column="4"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
             <Button x:Name="btnUpdate"
                 Width="70"
+                Height="25"
                 Margin="2,2,15,2"
                 Click="BtnUpdate_Click"
                 Content="Update" />
             <Button x:Name="btnExitUpdate"
                 Width="70"
+                Height="25"
                 Margin="2"
                 Click="BtnExitUpdate_Click"
                 Content="Cancel" />
@@ -212,13 +215,10 @@
 
         <!--  Status  -->
         <TextBlock x:Name="lblStatus"
-            Grid.Row="6"
-            Grid.Column="4"
-            Width="200"
-            Height="35"
-            Margin="0,5,3,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Stretch"
+            Grid.Row="7"
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            Margin="0,8,0,0"
             TextAlignment="Right" />
     </Grid>
 </Window>

@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -26,19 +25,18 @@ using System.Xml.Serialization;
 using TKUtils;
 using File = System.IO.File;
 using Path = System.IO.Path;
+//using System.Data;
 #endregion using directives
 
 namespace TrayLauncher
 {
     public partial class MainWindow : Window
     {
-        private static bool firstRun;
-        public static bool altRows;
+        private bool altRows;
+        private bool explicitClose;
         private string xmlMenuFile;
         private MenuList XmlData;
-        private bool explicitClose;
-        public MenuItem prevMenuItem;
-        private TLMenuItem prevItem;
+        private MenuItem prevMenuItem;
 
         #region Icon filename variables
         private readonly string blackIcon = @"Images\black.ico";
@@ -83,6 +81,7 @@ namespace TrayLauncher
                 // If the menu file doesn't exist, create a new one and seed it with one record
                 if (!File.Exists(menuFile))
                 {
+                    WriteLog.WriteTempFile($"    Creating new XML menu file");
                     File.Create(menuFile).Dispose();
                     CreateXMLStarter(menuFile);
                 }
@@ -314,7 +313,7 @@ namespace TrayLauncher
             if (!File.Exists(xmlMenuFile))
             {
                 _ = MessageBox.Show("The menu XML file cannot be found.",
-                    "ERROR", MessageBoxButton.OK, MessageBoxImage.Error); ;
+                    "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 WriteLog.WriteTempFile("* The menu XML file cannot be found.");
                 Show();
             }
@@ -357,14 +356,14 @@ namespace TrayLauncher
             //Sort the list for the data grid
             List<TLMenuItem> sortedList = XmlData.menuList.OrderBy(z => z.Pos).ToList();
 
-                    // This is equivalent to the line above
-                    //var query = from MenuList in XmlData.menuList
-                    //            orderby MenuList.Pos
-                    //            select MenuList;
-                    //List<TLMenuItem> sortedList = query.ToList();
+            // This is equivalent to the line above
+            //var query = from MenuList in XmlData.menuList
+            //            orderby MenuList.Pos
+            //            select MenuList;
+            //List<TLMenuItem> sortedList = query.ToList();
 
             theDataGrid.ItemsSource = sortedList;
-            WriteLog.WriteTempFile($"    Loaded {sortedList.Count()} items");
+            WriteLog.WriteTempFile($"    Loaded {sortedList.Count} items");
             WriteLog.WriteTempFile("  Leaving LoadDataGrid");
             return sortedList;
         }
@@ -462,7 +461,6 @@ namespace TrayLauncher
                     Debug.WriteLine($"Adding item {item.Header}");
 
                 }
-                prevItem = item;
             }
             WriteLog.WriteTempFile($"    Loading of menu items is complete");
             WriteLog.WriteTempFile("  Leaving LoadMenuItems");
@@ -516,8 +514,7 @@ namespace TrayLauncher
         // Set explicit shutdown flag and exit
         private void TbcmExit_Click(object sender, RoutedEventArgs e)
         {
-            explicitClose = true;
-            Application.Current.Shutdown();
+            ExplicitShutdown();
         }
 
         // This is the "Manage" item at the top of the context menu
@@ -542,14 +539,14 @@ namespace TrayLauncher
                 if (!explicitClose)
                 {
                     // Is option set to minimize to tray?
-                    if (Properties.Settings.Default.MinimizeToTrayOnExit == true)
+                    if (Properties.Settings.Default.MinimizeToTrayOnExit)
                     {
                         Hide();
                         e.Cancel = true;
                     }
                     else
                     {
-                        if (Properties.Settings.Default.VerifyExit == true)
+                        if (Properties.Settings.Default.VerifyExit)
                         {
                             // Ask user
                             MessageBoxResult result = MessageBox.Show(
@@ -583,7 +580,7 @@ namespace TrayLauncher
             }
             else
             {
-                WriteLog.WriteTempFile("TrayLauncher is closing due to user logoff or Windows shutdown");
+                WriteLog.WriteTempFile("TrayLauncher is closing due to user log off or Windows shutdown");
             }
         }
 
@@ -686,8 +683,7 @@ namespace TrayLauncher
         // Exit
         private void MnuExit_Click(object sender, RoutedEventArgs e)
         {
-            explicitClose = true;
-            Application.Current.Shutdown();
+            ExplicitShutdown();
         }
 
         // Backup the menu file
@@ -708,12 +704,14 @@ namespace TrayLauncher
                 mnuDelete.IsEnabled = false;
                 mnuUpdate.IsEnabled = false;
                 mnuTest.IsEnabled = false;
+                mnuCopy.IsEnabled = false;
             }
             else
             {
                 mnuDelete.IsEnabled = true;
                 mnuUpdate.IsEnabled = true;
                 mnuTest.IsEnabled = true;
+                mnuCopy.IsEnabled = true;
             }
         }
 
@@ -733,12 +731,55 @@ namespace TrayLauncher
                 Owner = Application.Current.MainWindow
             };
             add.ShowDialog();
-            SortXMLFile();
-            trayMenu.Items.Clear();
-            ConstructMenu();
+            if (add.DialogResult.HasValue && add.DialogResult.Value)
+            {
+                SortXMLFile();
+                trayMenu.Items.Clear();
+                ConstructMenu();
+                Debug.WriteLine($"*** ShowDialog result is true");
+            }
+            else
+            {
+                Debug.WriteLine($"+++ ShowDialog result is false");
+            }
         }
 
-        // Add
+        // Copy
+        private void MnuCopy_Click(object sender, RoutedEventArgs e)
+        {
+            if (theDataGrid.SelectedItem != null)
+            {
+                TLMenuItem x = (TLMenuItem)theDataGrid.SelectedItem;
+                string header = x.Header;
+                string appPath = x.AppPath;
+                string args = x.Arguments;
+                string ttip = x.ToolTip;
+                string iType = x.ItemType;
+                int index = theDataGrid.SelectedIndex;
+                int NewPos = x.Pos + 1;
+
+                CopyItem cpy = new CopyItem(header, appPath, args, ttip, NewPos, iType, index)
+                {
+                    Owner = this
+                };
+                cpy.ShowDialog();
+
+                if (cpy.DialogResult.HasValue && cpy.DialogResult.Value)
+                {
+                    SortXMLFile();
+                    trayMenu.Items.Clear();
+                    ConstructMenu();
+                    Debug.WriteLine($"*** ShowDialog result is true");
+                }
+                else
+                {
+                    Debug.WriteLine($"+++ ShowDialog result is false");
+                }
+
+            }
+        }
+
+        // Delete
         private void MnuDel_Click(object sender, RoutedEventArgs e)
         {
             if (theDataGrid.SelectedItem != null)
@@ -769,9 +810,17 @@ namespace TrayLauncher
                     Owner = this
                 };
                 update.ShowDialog();
-                SortXMLFile();
-                trayMenu.Items.Clear();
-                ConstructMenu();
+                if (update.DialogResult.HasValue && update.DialogResult.Value)
+                {
+                    SortXMLFile();
+                    trayMenu.Items.Clear();
+                    ConstructMenu();
+                    Debug.WriteLine($"*** ShowDialog result is true");
+                }
+                else
+                {
+                    Debug.WriteLine($"+++ ShowDialog result is false");
+                }
             }
         }
 
@@ -899,14 +948,11 @@ namespace TrayLauncher
             }
 
             // Del = Remove
-            if (e.Key == Key.Delete && (e.KeyboardDevice.Modifiers == ModifierKeys.None))
+            if (e.Key == Key.Delete && (e.KeyboardDevice.Modifiers == ModifierKeys.None) && theDataGrid.SelectedItem != null)
             {
-                if (theDataGrid.SelectedItem != null)
-                {
-                    RemoveItem();
-                    trayMenu.Items.Clear();
-                    ConstructMenu();
-                }
+                RemoveItem();
+                trayMenu.Items.Clear();
+                ConstructMenu();
             }
 
             //F1 = About
@@ -990,19 +1036,19 @@ namespace TrayLauncher
                     }
                 case "ShowItemType":
                     {
-                        if ((bool)e.NewValue == true)
+                        if ((bool)e.NewValue)
                         {
-                            theDataGrid.Columns[5].Visibility = Visibility.Visible;
+                            theDataGrid.Columns[1].Visibility = Visibility.Visible;
                         }
                         else
                         {
-                            theDataGrid.Columns[5].Visibility = Visibility.Collapsed;
+                            theDataGrid.Columns[1].Visibility = Visibility.Collapsed;
                         }
                         break;
                     }
                 case "ShadeAltRows":
                     {
-                        if ((bool)e.NewValue == true)
+                        if ((bool)e.NewValue)
                         {
                             AltRowShadingOn();
                         }
@@ -1039,7 +1085,7 @@ namespace TrayLauncher
                                 var x = (MenuItem)item;
                                 if (x.Tag != null && x.Tag.ToString() == "SH")
                                 {
-                                    if ((bool)e.NewValue == true)
+                                    if ((bool)e.NewValue)
                                     {
                                         x.FontWeight = FontWeights.Bold;
                                     }
@@ -1083,9 +1129,9 @@ namespace TrayLauncher
                     }
                 case "StartWithWindows":
                     {
-                        if (Debugger.IsAttached == false)
+                        if (!Debugger.IsAttached)
                         {
-                            if ((bool)e.NewValue == true)
+                            if ((bool)e.NewValue)
                             {
                                 StartupShortcut("Create");
                             }
@@ -1101,8 +1147,8 @@ namespace TrayLauncher
                     break;
             }
 
-            Debug.WriteLine($"*** Changing {e.SettingName} new value {e.NewValue}");
-            WriteLog.WriteTempFile($"    Setting {e.SettingName} changed to {e.NewValue}");
+            Debug.WriteLine($"*** Changing {e.SettingName}, new value: {e.NewValue}");
+            WriteLog.WriteTempFile($"    Changing {e.SettingName} to {e.NewValue}");
         }
         #endregion
 
@@ -1111,14 +1157,23 @@ namespace TrayLauncher
         #region Settings file
         private void ReadSettings()
         {
+            //!
             //! Important - this should only be executed once!
+            //!
             Properties.Settings.Default.SettingChanging += SettingChanging;
 
             WriteLog.WriteTempFile(" ");
             WriteLog.WriteTempFile("TrayLauncher is starting up");
-            WriteLog.WriteTempFile($"  Application architecture is " +
-                                   $"{RuntimeInformation.ProcessArchitecture.ToString()} ");
             WriteLog.WriteTempFile("  Entering ReadSettings");
+            WriteLog.WriteTempFile($"    Application architecture: " +
+                                   $"{RuntimeInformation.ProcessArchitecture} ");
+            WriteLog.WriteTempFile($"    Slow Machine: {SystemParameters.IsSlowMachine}");
+            WriteLog.WriteTempFile($"    Mouse is present: {SystemParameters.IsMousePresent}");
+
+            if (!SystemParameters.IsMousePresent)
+            {
+                Console.WriteLine("* Systems parameters indicate no mouse is present!") ;
+            }
 
             // Settings upgrade if needed
             if (Properties.Settings.Default.SettingsUpgradeRequired)
@@ -1129,12 +1184,11 @@ namespace TrayLauncher
             }
 
             // First time?
-            firstRun = Properties.Settings.Default.FirstRun;
+            bool firstRun = Properties.Settings.Default.FirstRun;
             WriteLog.WriteTempFile($"    FirstRun is {firstRun}");
             if (firstRun)
             {
                 Properties.Settings.Default.FirstRun = false;
-                //Show();
             }
             else
             {
@@ -1154,10 +1208,12 @@ namespace TrayLauncher
 
             // Max height for main window
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 20;
-            WriteLog.WriteTempFile($"    Max screen height is: {MaxHeight}");
+            WriteLog.WriteTempFile($"    Primary screen height is: {SystemParameters.PrimaryScreenHeight}");
+            WriteLog.WriteTempFile($"    Primary screen width is: {SystemParameters.PrimaryScreenWidth}");
+            WriteLog.WriteTempFile($"    Max MainWindow height is: {MaxHeight}");
 
             // Startup Notification
-            if (Properties.Settings.Default.StartNotification == true)
+            if (Properties.Settings.Default.StartNotification)
             {
                 myNotifyIcon.ShowBalloonTip("TrayLauncher is Running",
                     "Right-click for launch menu", BalloonIcon.Info);
@@ -1187,14 +1243,14 @@ namespace TrayLauncher
             SetTrayIcon(iconFile);
 
             // Hide main window on startup
-            if (Properties.Settings.Default.HideOnStart == true)
+            if (Properties.Settings.Default.HideOnStart)
             {
                 Hide();
                 WriteLog.WriteTempFile($"    Main window is hidden on startup");
             }
 
             // Alternate row shading
-            if (Properties.Settings.Default.ShadeAltRows == true)
+            if (Properties.Settings.Default.ShadeAltRows)
             {
                 altRows = true;
                 AltRowShadingOn();
@@ -1207,13 +1263,13 @@ namespace TrayLauncher
             WriteLog.WriteTempFile($"    Shade Alternate Rows is {altRows}");
 
             // Show Item type column
-            if (Properties.Settings.Default.ShowItemType == true)
+            if (Properties.Settings.Default.ShowItemType)
             {
-                theDataGrid.Columns[5].Visibility = Visibility.Visible;
+                theDataGrid.Columns[1].Visibility = Visibility.Visible;
             }
             else
             {
-                theDataGrid.Columns[5].Visibility = Visibility.Collapsed;
+                theDataGrid.Columns[1].Visibility = Visibility.Collapsed;
             }
             WriteLog.WriteTempFile($"    Show item type column is {Properties.Settings.Default.ShowItemType}");
 
@@ -1250,52 +1306,46 @@ namespace TrayLauncher
             string startupfolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
             string myName = Process.GetCurrentProcess().ProcessName;
             string myExe = Assembly.GetEntryAssembly().Location;
-            string shortcutPath = System.IO.Path.Combine(startupfolder, myName + ".lnk");
+            string shortcutPath = Path.Combine(startupfolder, myName + ".lnk");
 
-            if (mode.ToLower() == "create")
+            if (mode.ToLower() == "create" && !File.Exists(shortcutPath))
             {
-                if (!File.Exists(shortcutPath))
+                try
                 {
-                    try
-                    {
-                        // WshShell requires a Reference and using statement
-                        // Add Reference > COM > Windows Script Host Object Model
-                        // using IWshRuntimeLibrary;
-                        WshShell shell = new WshShell();
-                        IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
-                        shortcut.Description = "Shortcut for TrayLauncher";
-                        shortcut.TargetPath = myExe;
-                        //shortcut.Hotkey =
-                        //shortcut.WorkingDirectory =
-                        //shortcut.IconLocation =
-                        shortcut.Save();
-                        WriteLog.WriteTempFile($"  Shortcut saved to {shortcutPath}");
-                    }
-                    catch (Exception ex)
-                    {
-                        _ = MessageBox.Show($"Error creating shortcut\n{ex.Message}",
-                                             "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                        WriteLog.WriteTempFile($"* Error creating shortcut.");
-                        WriteLog.WriteTempFile($"* {ex.Message}");
-                    }
+                    // WshShell requires a Reference and using statement
+                    // Add Reference > COM > Windows Script Host Object Model &
+                    // using IWshRuntimeLibrary;
+                    WshShell shell = new WshShell();
+                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+                    shortcut.Description = "Shortcut for TrayLauncher";
+                    shortcut.TargetPath = myExe;
+                    //shortcut.Hotkey =
+                    //shortcut.WorkingDirectory =
+                    //shortcut.IconLocation =
+                    shortcut.Save();
+                    WriteLog.WriteTempFile($"  Shortcut saved to {shortcutPath}");
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show($"Error creating shortcut\n{ex.Message}",
+                                            "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    WriteLog.WriteTempFile($"* Error creating shortcut.");
+                    WriteLog.WriteTempFile($"* {ex.Message}");
                 }
             }
 
-            if (mode.ToLower() == "delete")
+            if (mode.ToLower() == "delete" && File.Exists(shortcutPath))
             {
-                if (File.Exists(shortcutPath))
+                try
                 {
-                    try
-                    {
-                        File.Delete(shortcutPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        _ = MessageBox.Show($"Error deleting shortcut\n{ex.Message}",
-                                             "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                        WriteLog.WriteTempFile($"* Error deleting shortcut.");
-                        WriteLog.WriteTempFile($"* {ex.Message}");
-                    }
+                    File.Delete(shortcutPath);
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show($"Error deleting shortcut\n{ex.Message}",
+                                            "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    WriteLog.WriteTempFile($"* Error deleting shortcut.");
+                    WriteLog.WriteTempFile($"* {ex.Message}");
                 }
                 WriteLog.WriteTempFile($"  Shortcut removed from {shortcutPath}");
             }
@@ -1313,7 +1363,7 @@ namespace TrayLauncher
                 try
                 {
                     myNotifyIcon.Icon = new System.Drawing.Icon(myIcon);
-                    WriteLog.WriteTempFile($"    Setting tray icon to {myIcon}");
+                    WriteLog.WriteTempFile($"    Tray icon file is {myIcon}");
                 }
                 catch (Exception ex)
                 {
@@ -1325,6 +1375,8 @@ namespace TrayLauncher
             }
             else
             {
+                _ = MessageBox.Show($"{myIcon} was not found.", "Icon File Missing",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 WriteLog.WriteTempFile($"* {myIcon} was not found.");
             }
         }
@@ -1402,7 +1454,7 @@ namespace TrayLauncher
                         break;
                     }
             }
-            WriteLog.WriteTempFile($"    Icon color is {iconFile}");
+            Debug.WriteLine($"*** SetTrayIcon: Icon color is {iconFile}");
         }
         #endregion
 
@@ -1424,7 +1476,7 @@ namespace TrayLauncher
         // Increase / Decrease font size - change datagrid row height so things don't look weird
         private void FontSmaller()
         {
-            if (trayMenu.FontSize > 10)
+            if (trayMenu.FontSize > 12)
             {
                 trayMenu.FontSize -= 1;
                 theDataGrid.FontSize -= 1;
@@ -1491,7 +1543,6 @@ namespace TrayLauncher
             theDataGrid.RowBackground = new SolidColorBrush(Colors.White);
             theDataGrid.AlternatingRowBackground = new SolidColorBrush(Colors.White);
             theDataGrid.Items.Refresh();
-            //Properties.Settings.Default.ShadeAltRows = false;
             altRows = false;
         }
         private void AltRowShadingOn()
@@ -1500,7 +1551,6 @@ namespace TrayLauncher
             theDataGrid.RowBackground = new SolidColorBrush(Colors.White);
             theDataGrid.AlternatingRowBackground = new SolidColorBrush(Colors.WhiteSmoke);
             theDataGrid.Items.Refresh();
-            //Properties.Settings.Default.ShadeAltRows = true;
             altRows = true;
         }
         #endregion Alternate row shading
@@ -1524,14 +1574,11 @@ namespace TrayLauncher
         {
             var colors = typeof(Colors).GetProperties();
             return (Color)ColorConverter.ConvertFromString(colors[c].Name);
-            //return colors[c].Name;
         }
         #endregion
 
         #region Double click delay
-        // Get double-click delay time in milliseconds
-        //[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        //public static extern int GetDoubleClickTime();
+        // double-click delay time has moved to NativeMethods.cs
         #endregion
 
         #region Settings window
@@ -1605,6 +1652,15 @@ namespace TrayLauncher
             }
         }
         #endregion
+
+        #region Explicit Shutdown
+        private void ExplicitShutdown()
+        {
+            explicitClose = true;
+            Application.Current.Shutdown();
+        }
+        #endregion
+
 
     }
 }

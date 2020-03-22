@@ -14,7 +14,7 @@
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight">
 
-    <!-- Converter -->
+    <!--  Converter  -->
     <Window.Resources>
         <local:BooleanInverter x:Key="boolInverter" />
     </Window.Resources>
@@ -102,7 +102,7 @@
                             IsMoveToPointEnabled="True"
                             IsSnapToTickEnabled="True"
                             Maximum="18"
-                            Minimum="10"
+                            Minimum="12"
                             Orientation="Horizontal"
                             TickPlacement="Both"
                             ToolTip="Font size can also be adjusted by Ctrl plus Num+ / Num– in the main window"

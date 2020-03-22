@@ -24,46 +24,45 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="0"
-            Grid.Column="0"
-            Orientation="Vertical">
-            <DataGrid x:Name="dg1"
-                Margin="10"
-                AlternatingRowBackground="WhiteSmoke"
-                AlternationCount="1"
-                AutoGenerateColumns="False"
-                BorderBrush="#E2E2E2"
-                CanUserAddRows="False"
-                FontSize="14"
-                HeadersVisibility="Column"
-                HorizontalGridLinesBrush="#E2E2E2"
-                HorizontalScrollBarVisibility="Auto"
-                IsReadOnly="True"
-                VerticalGridLinesBrush="#E2E2E2"
-                VerticalScrollBarVisibility="Auto">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="80"
-                        Binding="{Binding Name}"
-                        ElementStyle="{StaticResource ColumnMargin5}"
-                        Header="Setting" />
-                    <DataGridTextColumn
-                        Width="auto"
-                        MinWidth="200"
-                        Binding="{Binding Value}"
-                        ElementStyle="{StaticResource ColumnMargin5}"
-                        Header="Value" />
-                </DataGrid.Columns>
-            </DataGrid>
+
+        <DataGrid x:Name="dg1"
+            Margin="10"
+            AlternatingRowBackground="WhiteSmoke"
+            AlternationCount="1"
+            AutoGenerateColumns="False"
+            BorderBrush="#E2E2E2"
+            CanUserAddRows="False"
+            FontSize="13"
+            HeadersVisibility="Column"
+            HorizontalGridLinesBrush="#E2E2E2"
+            HorizontalScrollBarVisibility="Auto"
+            IsReadOnly="True"
+            VerticalGridLinesBrush="#E2E2E2"
+            VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="80"
+                    Binding="{Binding Name}"
+                    ElementStyle="{StaticResource ColumnMargin5}"
+                    Header="Setting" />
+                <DataGridTextColumn
+                    Width="auto"
+                    MinWidth="200"
+                    Binding="{Binding Value}"
+                    ElementStyle="{StaticResource ColumnMargin5}"
+                    Header="Value" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <DockPanel Grid.Column="0" Grid.Row="1">
             <Button x:Name="btnExit"
                 Width="60"
-                Height="35"
-                Margin="0,10,0,20"
+                Height="30"
+                Margin="0,5,0,10"
                 Click="BtnExit_Click"
                 Content="Close" />
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

@@ -112,7 +112,6 @@
                         <MenuItem Name="mnuBackupXML"
                             Click="MnuBackupXML_Click"
                             Header="Backup Menu File" />
-
                         <Separator />
                         <MenuItem Name="mnuExit"
                             Click="MnuExit_Click"
@@ -121,7 +120,7 @@
                     </MenuItem>
 
                     <!--  Configuration menu  -->
-                    <MenuItem Header="Menu Configuration" SubmenuOpened="MenuItem_SubmenuOpened">
+                    <MenuItem Header="_Menu Configuration" SubmenuOpened="MenuItem_SubmenuOpened">
                         <MenuItem Name="mnuAdd"
                             Click="MnuAdd_Click"
                             Header="Add Menu Item" />

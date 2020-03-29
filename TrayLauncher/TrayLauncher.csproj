@@ -84,6 +84,9 @@
     <Compile Include="ShowSettings.xaml.cs">
       <DependentUpon>ShowSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Splash.xaml.cs">
+      <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Voodoo.cs" />
     <Compile Include="SpecialMenuItems.cs" />
     <Compile Include="UpdateItem.xaml.cs">
@@ -120,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ShowSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -184,7 +191,6 @@
     <Content Include="ReadMe.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <SplashScreen Include="Images\Splash.png" />
     <Content Include="Images\teal.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

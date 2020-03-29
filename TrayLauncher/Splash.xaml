@@ -1,0 +1,74 @@
+﻿<Window x:Class="TrayLauncher.Splash"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TrayLauncher"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Splash"
+    Width="480"
+    Height="140"
+    AllowsTransparency="True"
+    Background="Transparent"
+    BorderBrush="Transparent"
+    BorderThickness="1"
+    Closing="Window_Closing"
+    Loaded="Window_Loaded"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None">
+
+    <Grid x:Name="grdGrid">
+        <Grid.Triggers>
+            <!--  Animate SplashScreen  -->
+            <EventTrigger RoutedEvent="Window.Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <!--  Fade in the grid  -->
+                        <DoubleAnimation
+                            BeginTime="0:0:0"
+                            Storyboard.TargetName="grdGrid"
+                            Storyboard.TargetProperty="Opacity"
+                            From="0.1"
+                            To="1.0"
+                            Duration="0:0:1.5" />
+                        <!--  Fade in the textblock  -->
+                        <DoubleAnimation
+                            BeginTime="0:0:1"
+                            Storyboard.TargetName="tbTimCo"
+                            Storyboard.TargetProperty="Opacity"
+                            From="0.1"
+                            To="1.0"
+                            Duration="0:0:1.5" />
+                        <!--  Fade out the grid  -->
+                        <DoubleAnimation
+                            BeginTime="0:0:4"
+                            Storyboard.TargetName="grdGrid"
+                            Storyboard.TargetProperty="Opacity"
+                            To="0"
+                            Duration="0:0:1" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
+
+        <StackPanel Orientation="Vertical">
+            <TextBlock x:Name="tbDemo"
+                HorizontalAlignment="Center"
+                FontSize="72"
+                FontWeight="Bold"
+                Foreground="Red"
+                Text="TrayLauncher" />
+            <!--  Set Opacity to 0 and let animation fade it in  -->
+            <TextBlock x:Name="tbTimCo"
+                HorizontalAlignment="Center"
+                FontSize="24"
+                FontWeight="Regular"
+                Foreground="Red"
+                Opacity="0"
+                Text="by TimCo" />
+        </StackPanel>
+    </Grid>
+
+</Window>

@@ -1,7 +1,7 @@
-﻿//
-// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
-//
+﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
 #region using directives
+
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,14 +9,16 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using TKUtils;
-using Microsoft.Win32;
+
 #endregion using directives
 
 namespace TrayLauncher
@@ -58,6 +60,7 @@ namespace TrayLauncher
             {
                 FontSize = 12;
             }
+            _ = tbAddHeader.Focus();
         }
 
         #endregion Read Settings
@@ -192,6 +195,7 @@ namespace TrayLauncher
                 case 0:
                     DialogResult = false;
                     break;
+
                 default:
                     DialogResult = true;
                     break;
@@ -204,18 +208,23 @@ namespace TrayLauncher
 
         #region Text box events
 
+        // Change single underscore character to two in menu header
+        private void TbAddHeader_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HandleUnderscore((TextBox)sender);
+        }
+
         // Make sure size text box only accepts numbers
-        private void TbAddPosition_PreviewTextInput_1(object sender,
-            System.Windows.Input.TextCompositionEventArgs e)
+        private void TbAddPosition_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Only digits
             e.Handled = Regex.IsMatch(e.Text, "[^0-9]+");
         }
 
         // Enter will add item
-        private void TbAddPosition_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void TbAddPosition_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 btnAdd.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Primitives.ButtonBase.ClickEvent));
             }
@@ -399,7 +408,6 @@ namespace TrayLauncher
             }
         }
 
-
         private void CheckPos(int pos)
         {
             int newPos = pos + 1;
@@ -423,6 +431,55 @@ namespace TrayLauncher
             }
         }
 
+        // Change a single underscore to two but leave existing consecutive underscores alone
+        private void HandleUnderscore(TextBox box)
+        {
+            if (box.Text.Contains("_"))
+            {
+                char[] array = box.Text.ToCharArray();
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    sb.Append(array[i]);
+
+                    if ((i < array.Length - 1) && (i > 0))  // Not First or last character
+                    {
+                        if (array[i] == '_' && array[i + 1] != '_' && array[i - 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"Not first or last: {array[i - 1]} {array[i]} {array[i + 1]}");
+                        }
+                    }
+                    else if ((i == array.Length - 1) && (i > 0)) // Last character of many
+                    {
+                        if (array[i] == '_' && array[i - 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"last of many: {array[i - 1]} {array[i]}");
+                        }
+                    }
+                    else if ((i != array.Length - 1) && (i == 0)) // First character of many
+                    {
+                        if (array[i] == '_' && array[i + 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"first of many: {array[i]} {array[i + 1]} ");
+                        }
+                    }
+                    else if (array.Length == 1) // Only character
+                    {
+                        sb.Append("_");
+                        Debug.WriteLine($"Only: {array[i]}");
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"No action: {array[i]}");
+                    }
+                }
+                box.Text = sb.ToString();
+            }
+        }
         #endregion Helper Methods
     }
 }

@@ -1661,6 +1661,5 @@ namespace TrayLauncher
         }
         #endregion
 
-
     }
 }

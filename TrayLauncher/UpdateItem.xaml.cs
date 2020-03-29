@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,6 +61,8 @@ namespace TrayLauncher
             {
                 FontSize = 12;
             }
+
+            _ = tbUpdateHeader.Focus();
         }
         #endregion Read Settings
 
@@ -195,6 +198,12 @@ namespace TrayLauncher
         #endregion Buttons
 
         #region Text Box events
+
+        private void TbUpdateHeader_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HandleUnderscore((TextBox)sender);
+        }
+
         private void TbUpdatePosition_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Only digits
@@ -313,13 +322,14 @@ namespace TrayLauncher
         #endregion Radio buttons
 
         #region Helper methods
+        // Build comment text
         private string BuildComment()
         {
-            // Build comment
             DateTime dt = DateTime.Now;
             return $"Updated {dt}";
         }
 
+        // Plug passed parameters into the appropriate text boxes
         private void PreFillTextboxes(string he, string pa, string ar, string tt, int po)
         {
             tbUpdateHeader.Text = he;
@@ -353,6 +363,56 @@ namespace TrayLauncher
                 default:
                     btnNormal.IsChecked = true;
                     break;
+            }
+        }
+
+        // Change a single underscore to two but leave existing consecutive underscores alone
+        private void HandleUnderscore(TextBox box)
+        {
+            if (box.Text.Contains("_"))
+            {
+                char[] array = box.Text.ToCharArray();
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    sb.Append(array[i]);
+
+                    if ((i < array.Length - 1) && (i > 0))  // Not First or last character
+                    {
+                        if (array[i] == '_' && array[i + 1] != '_' && array[i - 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"Not first or last: {array[i - 1]} {array[i]} {array[i + 1]}");
+                        }
+                    }
+                    else if ((i == array.Length - 1) && (i > 0)) // Last character of many
+                    {
+                        if (array[i] == '_' && array[i - 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"last of many: {array[i - 1]} {array[i]}");
+                        }
+                    }
+                    else if ((i != array.Length - 1) && (i == 0)) // First character of many
+                    {
+                        if (array[i] == '_' && array[i + 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"first of many: {array[i]} {array[i + 1]} ");
+                        }
+                    }
+                    else if (array.Length == 1) // Only character
+                    {
+                        sb.Append("_");
+                        Debug.WriteLine($"Only: {array[i]}");
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"No action: {array[i]}");
+                    }
+                }
+                box.Text = sb.ToString();
             }
         }
 

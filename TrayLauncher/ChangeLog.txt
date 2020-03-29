@@ -49,3 +49,10 @@
       - Fixed warning message disappearing when second instance is started.
       - Added ReadMe.md, a markdown version of the ReadMe file.
       - Updated ReadMe files.
+
+0.7.x - Updated the splash screen.
+      - Added logic to handle underscore characters in menu item text. See ReadMe files.
+      - The Menu Item Text text box will have focus after opening the Add, Copy or Update window.
+      - Added the previously missing keyboard accelerator for the Menu Configuration menu.
+      - Updated ReadMe files.
+

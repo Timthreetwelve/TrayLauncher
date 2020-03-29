@@ -48,6 +48,11 @@ A window will open.
 Enter the name of the menu item in the Menu Item Text field. This is the text that will be displayed
 on the tray menu. Use a name that distinctive but short. Every entry must have Menu Item Text.
 
+Note that the underscore character "_" has a special meaning in Windows menus. To provide the
+expected result, TrayLauncher will convert a single underscore to two consecutive underscore
+characters in the Add Item window, however menu will display a single underscore. This behavior
+applies to the Copy and Update windows as well.
+
 Next, in the Application Path field, enter the path of what you want to open. This can be the path
 to an application or document, the URL for a website, the path to a folder, or a Windows setting.
 Every entry except menu separators and section headers must have an application path. Click the [...]
@@ -87,8 +92,8 @@ The next item is Section Name. Menu items can be grouped into sections using sep
 headers. To add a section header select it and give it a position. Then change the text in the Menu
 Item Text field to reflect the name of the section you are creating.
 
-The next item is Sub Menu. A sub menu is a menu that branches off from the primary menu. To add
-a sub menu select it and give it a position. Then change the text in the Menu Item Text field to reflect
+The next item is Sub Menu. A sub menu is a menu that branches off from the primary menu. To add a
+sub menu select it and give it a position. Then change the text in the Menu Item Text field to reflect
 the name of the sub menu you are creating.
 
 The next item is Sub Menu Item. Sub menu items are like normal items except that they will be shown
@@ -237,15 +242,15 @@ Copyright (c) 2019 - 2020 Tim Kennedy
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
-following conditions:
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject
+to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial
 portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
-EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-USE OR OTHER DEALINGS IN THE SOFTWARE.
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

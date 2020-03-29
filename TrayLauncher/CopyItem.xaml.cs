@@ -1,7 +1,6 @@
-﻿//
-// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
-//
+﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
 #region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using TKUtils;
+
 #endregion using directives
 
 namespace TrayLauncher
@@ -69,9 +70,10 @@ namespace TrayLauncher
             }
         }
 
-        #endregion
+        #endregion Check Position
 
         #region Read Settings
+
         private void ReadSettings()
         {
             WriteLog.WriteTempFile("  Entering CopyItem");
@@ -85,7 +87,9 @@ namespace TrayLauncher
             {
                 FontSize = 12;
             }
+            _ = tbCopyHeader.Focus();
         }
+
         #endregion Read Settings
 
         #region Load ComboBox
@@ -214,9 +218,16 @@ namespace TrayLauncher
             DialogResult = false;
             Close();
         }
+
         #endregion Buttons
 
         #region Text Box events
+
+        private void TbCopyHeader_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HandleUnderscore((TextBox)sender);
+        }
+
         private void TbCopyPosition_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Only digits
@@ -230,7 +241,8 @@ namespace TrayLauncher
                 btnCopy.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
         }
-        #endregion
+
+        #endregion Text Box events
 
         #region ComboBox events
 
@@ -335,6 +347,7 @@ namespace TrayLauncher
         #endregion Radio buttons
 
         #region Helper methods
+
         private string BuildComment()
         {
             // Build comment
@@ -375,6 +388,55 @@ namespace TrayLauncher
                 default:
                     btnNormal.IsChecked = true;
                     break;
+            }
+        }
+
+        private void HandleUnderscore(TextBox box)
+        {
+            if (box.Text.Contains("_"))
+            {
+                char[] array = box.Text.ToCharArray();
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    sb.Append(array[i]);
+
+                    if ((i < array.Length - 1) && (i > 0))  // Not First or last character
+                    {
+                        if (array[i] == '_' && array[i + 1] != '_' && array[i - 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"Not first or last: {array[i - 1]} {array[i]} {array[i + 1]}");
+                        }
+                    }
+                    else if ((i == array.Length - 1) && (i > 0)) // Last character of many
+                    {
+                        if (array[i] == '_' && array[i - 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"last of many: {array[i - 1]} {array[i]}");
+                        }
+                    }
+                    else if ((i != array.Length - 1) && (i == 0)) // First character of many
+                    {
+                        if (array[i] == '_' && array[i + 1] != '_')
+                        {
+                            sb.Append("_");
+                            Debug.WriteLine($"first of many: {array[i]} {array[i + 1]} ");
+                        }
+                    }
+                    else if (array.Length == 1) // Only character
+                    {
+                        sb.Append("_");
+                        Debug.WriteLine($"Only: {array[i]}");
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"No action: {array[i]}");
+                    }
+                }
+                box.Text = sb.ToString();
             }
         }
 

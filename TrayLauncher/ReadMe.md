@@ -1,4 +1,4 @@
-## The TrayLauncher ReadMe file
+# The TrayLauncher ReadMe file
 
 
 
@@ -32,6 +32,8 @@ To add a menu entry, select Menu Configuration in the main window and then selec
 
 Enter the name of the menu item in the **Menu Item Text** field. This is the text that will be displayed on the tray menu. Use a name that distinctive but short. Every entry must have Menu Item Text.
 
+Note that the underscore character **"_"** has a special meaning in Windows menus. To provide the expected result, TrayLauncher will convert a single underscore to two consecutive underscore characters in the Add Item window, however menu will display a single underscore. This behavior applies to the Copy and Update windows as well.
+
 Next, in the **Application Path** field, enter the path of what you want to open. This can be the path to an application or document, the URL for a website, the path to a folder, or a Windows setting. Every entry except menu separators and section headers must have an application path. Click the [...] button to the right of the field to use the open file dialog for applications or documents.
 
 The next field is **Arguments**. This is where parameters are passed to the application. For example if you wanted to have a menu entry for Device Manager, you would enter MMC.exe for the application path and devmgmt.msc for the argument. This field is only required if the application requires it.
@@ -61,8 +63,7 @@ After the item has been added you can test the item from the main window by sele
 #### Copying Entries
 
 To copy a menu item, highlight its entry in the main window and then select Copy Menu Item from the 
-Configuration menu. An item may also be updated by double-clicking that item. After making the desired
-changes, click the Copy button in the Copy window.
+Configuration menu. After making the desired changes, click the Copy button in the Copy window.
 
 #### Changing Entries
 

@@ -10,7 +10,7 @@
     Height="400"
     MinWidth="590"
     FontSize="14"
-    SizeToContent="WidthAndHeight"
+    SizeToContent="Height"
     WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>

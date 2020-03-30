@@ -326,20 +326,16 @@ namespace TrayLauncher
 
         private void TextBoxDisable()
         {
-            tbCopyAppPath.Background = Brushes.WhiteSmoke;
             tbCopyArguments.Background = Brushes.WhiteSmoke;
             tbCopyToolTip.Background = Brushes.WhiteSmoke;
-            tbCopyAppPath.IsEnabled = false;
             tbCopyArguments.IsEnabled = false;
             tbCopyToolTip.IsEnabled = false;
         }
 
         private void TextBoxNormal()
         {
-            tbCopyAppPath.Background = Brushes.White;
             tbCopyArguments.Background = Brushes.White;
             tbCopyToolTip.Background = Brushes.White;
-            tbCopyAppPath.IsEnabled = true;
             tbCopyArguments.IsEnabled = true;
             tbCopyToolTip.IsEnabled = true;
         }

@@ -301,20 +301,16 @@ namespace TrayLauncher
 
         private void TextBoxDisable()
         {
-            tbUpdateAppPath.Background = Brushes.WhiteSmoke;
             tbUpdateArguments.Background = Brushes.WhiteSmoke;
             tbUpdateToolTip.Background = Brushes.WhiteSmoke;
-            tbUpdateAppPath.IsEnabled = false;
             tbUpdateArguments.IsEnabled = false;
             tbUpdateToolTip.IsEnabled = false;
         }
 
         private void TextBoxNormal()
         {
-            tbUpdateAppPath.Background = Brushes.White;
             tbUpdateArguments.Background = Brushes.White;
             tbUpdateToolTip.Background = Brushes.White;
-            tbUpdateAppPath.IsEnabled = true;
             tbUpdateArguments.IsEnabled = true;
             tbUpdateToolTip.IsEnabled = true;
         }

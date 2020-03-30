@@ -76,6 +76,7 @@
     <Compile Include="CopyItem.xaml.cs">
       <DependentUpon>CopyItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ItemTypeConverter.cs" />
     <Compile Include="MySettings.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Settings.xaml.cs">

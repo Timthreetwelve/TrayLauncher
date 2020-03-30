@@ -328,10 +328,8 @@ namespace TrayLauncher
 
         private void TextBoxDisable()
         {
-            tbAddAppPath.Background = Brushes.WhiteSmoke;
             tbAddArguments.Background = Brushes.WhiteSmoke;
             tbAddToolTip.Background = Brushes.WhiteSmoke;
-            tbAddAppPath.IsEnabled = false;
             tbAddArguments.IsEnabled = false;
             tbAddToolTip.IsEnabled = false;
             btnOpenDlg.IsEnabled = false;
@@ -339,10 +337,8 @@ namespace TrayLauncher
 
         private void TextBoxNormal()
         {
-            tbAddAppPath.Background = Brushes.White;
             tbAddArguments.Background = Brushes.White;
             tbAddToolTip.Background = Brushes.White;
-            tbAddAppPath.IsEnabled = true;
             tbAddArguments.IsEnabled = true;
             tbAddToolTip.IsEnabled = true;
             btnOpenDlg.IsEnabled = true;

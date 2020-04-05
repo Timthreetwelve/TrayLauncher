@@ -58,4 +58,5 @@
       - Added item type color coding for the main window.
       - The item types display is now more user friendly.
       - Fixed misaligned combo box in the Copy Item window.
+      - Added menu file restore function.
 

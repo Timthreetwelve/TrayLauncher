@@ -105,6 +105,9 @@
                         <MenuItem Name="mnuBackupXML"
                             Click="MnuBackupXML_Click"
                             Header="Backup Menu File" />
+                        <MenuItem Name="mnuRestoreXML"
+                            Click="MnuRestoreXML_Click"
+                            Header="Restore Menu File" />
                         <Separator />
                         <MenuItem Name="mnuExit"
                             Click="MnuExit_Click"

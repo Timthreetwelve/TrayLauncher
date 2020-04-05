@@ -1535,6 +1535,37 @@ namespace TrayLauncher
         }
         #endregion Backup XML data
 
+        #region Restore XML date
+        private void MnuRestoreXML_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlgOpen = new OpenFileDialog
+            {
+                Title = "Choose file to restore",
+                CheckFileExists = true,
+                Filter = "XML (*.xml|*.XML| All files (*.*)|*.*"
+            };
+
+            if (dlgOpen.ShowDialog() == true)
+            {
+                try
+                {
+                    File.Copy(dlgOpen.FileName, xmlMenuFile, true);
+                    WriteLog.WriteTempFile($"  Menu file restored from {dlgOpen.FileName} ");
+                    SortXMLFile();
+                    trayMenu.Items.Clear();
+                    ConstructMenu();
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show($"Restore failed\n{ex.Message}", "ERROR",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    WriteLog.WriteTempFile($"* Menu restore from {dlgOpen.FileName} failed.");
+                    WriteLog.WriteTempFile($"* {ex.Message}");
+                }
+            }
+        }
+        #endregion
+
         #region Alternate row shading
         // Shade alternate rows of the datagrid in the main window
         private void AltRowShadingOff()
@@ -1660,6 +1691,7 @@ namespace TrayLauncher
             Application.Current.Shutdown();
         }
         #endregion
+
 
     }
 }

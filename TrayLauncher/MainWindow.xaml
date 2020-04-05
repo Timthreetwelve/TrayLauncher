@@ -33,15 +33,8 @@
             <Setter Property="Margin" Value="5,0,5,0" />
         </Style>
 
-        <!--  Style to right align text in the data grid  -->
-        <Style x:Key="ColumnCenter" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
-
-        <!--  Style to center text in the data grid header  -->
-        <Style x:Key="HeaderCenter" TargetType="DataGridColumnHeader">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
+        <!--  Convert ItemType into user friendly words  -->
+        <local:ItemTypeConverter x:Key="ItemTypeConverter" />
 
     </Window.Resources>
 
@@ -112,6 +105,9 @@
                         <MenuItem Name="mnuBackupXML"
                             Click="MnuBackupXML_Click"
                             Header="Backup Menu File" />
+                        <MenuItem Name="mnuRestoreXML"
+                            Click="MnuRestoreXML_Click"
+                            Header="Restore Menu File" />
                         <Separator />
                         <MenuItem Name="mnuExit"
                             Click="MnuExit_Click"
@@ -209,11 +205,23 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ItemType}" Value="SEP">
                             <Setter Property="Foreground" Value="LightSlateGray" />
-                            <Setter Property="FontWeight" Value="Regular" />
+                            <Setter Property="FontStyle" Value="Italic" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemType}" Value="SM">
+                            <Setter Property="Foreground" Value="Blue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemType}" Value="SMI">
+                            <Setter Property="Foreground" Value="Green" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ItemType}" Value="SH">
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
+
+
 
             <!--  Datagrid context menu  -->
             <DataGrid.ContextMenu>
@@ -249,13 +257,12 @@
                     Binding="{Binding Pos}"
                     ElementStyle="{StaticResource alignRight}"
                     Header="Pos" />
-                <!-- HeaderStyle="{StaticResource HeaderCenter}" -->
                 <DataGridTextColumn
                     Width="auto"
                     MinWidth="40"
-                    Binding="{Binding ItemType}"
-                    ElementStyle="{StaticResource ColumnCenter}"
-                    Header="Type" />
+                    Binding="{Binding ItemType, Converter={StaticResource ItemTypeConverter}}"
+                    ElementStyle="{StaticResource ColumnMargin5}"
+                    Header="Item Type" />
                 <DataGridTextColumn
                     Width="auto"
                     MinWidth="120"

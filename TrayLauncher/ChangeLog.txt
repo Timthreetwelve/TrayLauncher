@@ -55,4 +55,8 @@
       - The Menu Item Text text box will have focus after opening the Add, Copy or Update window.
       - Added the previously missing keyboard accelerator for the Menu Configuration menu.
       - Updated ReadMe files.
+      - Added item type color coding for the main window.
+      - The item types display is now more user friendly.
+      - Fixed misaligned combo box in the Copy Item window.
+      - Added menu file restore function.
 

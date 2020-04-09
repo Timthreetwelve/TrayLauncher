@@ -204,13 +204,15 @@
                 Height="25"
                 Margin="2,2,15,2"
                 Click="BtnCopy_Click"
-                Content="Copy" />
+                Content="Copy"
+                Style="{DynamicResource RoundedButtonStyle}" />
             <Button x:Name="btnExitCopy"
                 Width="70"
                 Height="25"
                 Margin="2"
                 Click="BtnExitCopy_Click"
-                Content="Cancel" />
+                Content="Cancel"
+                Style="{DynamicResource RoundedButtonStyle}" />
         </StackPanel>
 
         <!--  Status  -->

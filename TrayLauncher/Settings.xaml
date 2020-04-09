@@ -14,9 +14,11 @@
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight">
 
-    <!--  Converter  -->
+
     <Window.Resources>
+        <!--  Converter  -->
         <local:BooleanInverter x:Key="boolInverter" />
+
     </Window.Resources>
 
     <Grid>
@@ -274,12 +276,14 @@
                             <Button x:Name="rbLight"
                                 Margin="0,5"
                                 Click="RbLight_Click"
-                                Content="Light" />
+                                Content="Light"
+                                Style="{DynamicResource RoundedButtonStyle}" />
                             <Button x:Name="rbDark"
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbDark_Click"
-                                Content="Dark" />
+                                Content="Dark"
+                                Style="{DynamicResource RoundedButtonStyle}" />
                         </StackPanel>
                         <StackPanel
                             Width="90"
@@ -289,12 +293,14 @@
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbBlues_Click"
-                                Content="The Blues" />
+                                Content="The Blues"
+                                Style="{DynamicResource RoundedButtonStyle}" />
                             <Button x:Name="rbBanana"
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbBanana_Click"
-                                Content="Bananas" />
+                                Content="Bananas"
+                                Style="{DynamicResource RoundedButtonStyle}" />
                         </StackPanel>
                         <StackPanel
                             Width="90"
@@ -304,12 +310,14 @@
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbCherry_Click"
-                                Content="Cherries" />
+                                Content="Cherries"
+                                Style="{DynamicResource RoundedButtonStyle}" />
                             <Button x:Name="rbSpring"
                                 Margin="0,5"
                                 VerticalContentAlignment="Stretch"
                                 Click="RbSpring_Click"
-                                Content="Spring" />
+                                Content="Spring"
+                                Style="{DynamicResource RoundedButtonStyle}" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

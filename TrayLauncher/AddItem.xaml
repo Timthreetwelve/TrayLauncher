@@ -213,13 +213,15 @@
                 Height="25"
                 Margin="2,2,15,2"
                 Click="BtnAdd_Click"
-                Content="Add" />
+                Content="Add"
+                Style="{DynamicResource RoundedButtonStyle}" />
             <Button x:Name="btnExitAdd"
                 Width="70"
                 Height="25"
                 Margin="2"
                 Click="BtnExitAdd_Click"
-                Content="Done" />
+                Content="Done"
+                Style="{DynamicResource RoundedButtonStyle}" />
         </StackPanel>
 
         <!--  Status  -->

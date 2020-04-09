@@ -56,13 +56,15 @@
                     Header="Value" />
             </DataGrid.Columns>
         </DataGrid>
-        <DockPanel Grid.Column="0" Grid.Row="1">
+        <DockPanel Grid.Row="1" Grid.Column="0">
             <Button x:Name="btnExit"
                 Width="60"
                 Height="30"
                 Margin="0,5,0,10"
                 Click="BtnExit_Click"
-                Content="Close" />
+                Content="Close"
+                FontSize="14"
+                Style="{DynamicResource RoundedButtonStyle}" />
         </DockPanel>
     </Grid>
 </Window>

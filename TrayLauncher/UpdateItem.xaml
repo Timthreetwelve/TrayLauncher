@@ -45,9 +45,9 @@
             Grid.Row="1"
             Grid.Column="2"
             Grid.ColumnSpan="3"
-            LostFocus="TbUpdateHeader_LostFocus"
             Height="25"
             Margin="0,0,0,0"
+            LostFocus="TbUpdateHeader_LostFocus"
             MaxLength="260" />
 
         <!--  App path  -->
@@ -205,13 +205,15 @@
                 Height="25"
                 Margin="2,2,15,2"
                 Click="BtnUpdate_Click"
-                Content="Update" />
+                Content="Update"
+                Style="{DynamicResource RoundedButtonStyle}" />
             <Button x:Name="btnExitUpdate"
                 Width="70"
                 Height="25"
                 Margin="2"
                 Click="BtnExitUpdate_Click"
-                Content="Cancel" />
+                Content="Cancel"
+                Style="{DynamicResource RoundedButtonStyle}" />
         </StackPanel>
 
         <!--  Status  -->

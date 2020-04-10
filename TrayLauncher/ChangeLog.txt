@@ -59,4 +59,6 @@
       - The item types display is now more user friendly.
       - Fixed misaligned combo box in the Copy Item window.
       - Added menu file restore function.
+      - Added styling to buttons.
+      - Fallback to notepad.exe if xml and log files are not associated with an application.
 

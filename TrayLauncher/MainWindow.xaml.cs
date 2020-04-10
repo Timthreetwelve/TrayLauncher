@@ -643,7 +643,7 @@ namespace TrayLauncher
                         launch.StartInfo.Arguments = Environment.ExpandEnvironmentVariables(x.Arguments);
 
                         // Next line does the magic.
-                        launch.Start();
+                        _ = launch.Start();
                         string arg;
                         if (string.IsNullOrEmpty(x.Arguments))
                         {
@@ -894,13 +894,13 @@ namespace TrayLauncher
         // Readme
         private void MnuReadme_Click(object sender, RoutedEventArgs e)
         {
-            _ = Process.Start(@".\ReadMe.txt");
+            TextFileViewer.ViewTextFile(@".\ReadMe.txt");
         }
 
         // Change log
         private void MnuChange_Click(object sender, RoutedEventArgs e)
         {
-            _ = Process.Start(@".\ChangeLog.txt");
+            TextFileViewer.ViewTextFile(@".\ChangeLog.txt");
         }
 
         // About
@@ -923,13 +923,14 @@ namespace TrayLauncher
         // View menu file
         private void MnuViewMenu_Click(object sender, RoutedEventArgs e)
         {
-            ViewMenuFile();
+            TextFileViewer.ViewTextFile(xmlMenuFile);
         }
 
         // View temp/log file
         private void MnuViewLog_Click(object sender, RoutedEventArgs e)
         {
-            ViewTempFile();
+            string path = WriteLog.GetTempFile();
+            TextFileViewer.ViewTextFile(path);
         }
         #endregion region
 
@@ -970,13 +971,14 @@ namespace TrayLauncher
             // F3 = View menu file
             if (e.Key == Key.F3)
             {
-                ViewMenuFile();
+                TextFileViewer.ViewTextFile(xmlMenuFile);
             }
 
             // F4 = View temp file
             if (e.Key == Key.F4)
             {
-                ViewTempFile();
+                string path = WriteLog.GetTempFile();
+                TextFileViewer.ViewTextFile(path);
             }
 
             // F5 = Refresh
@@ -1631,58 +1633,12 @@ namespace TrayLauncher
         }
         #endregion
 
-        #region View files
-        // View the temp/log file
-        private static void ViewTempFile()
-        {
-            string path = WriteLog.GetTempFile();
-            if (File.Exists(path))
-            {
-                try
-                {
-                    using (Process fileExp = new Process())
-                    {
-                        fileExp.StartInfo.FileName = path;
-                        fileExp.StartInfo.UseShellExecute = true;
-                        fileExp.StartInfo.ErrorDialog = false;
-                        fileExp.Start();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show($"Unable to start default application used to open" +
-                        $" {path}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    WriteLog.WriteTempFile($"* Unable to open {path}");
-                    WriteLog.WriteTempFile($"* {ex.Message}");
-                }
-            }
-        }
 
         // View the Menu file
         private void ViewMenuFile()
         {
-            if (File.Exists(xmlMenuFile))
-            {
-                try
-                {
-                    using (Process fileExp = new Process())
-                    {
-                        fileExp.StartInfo.FileName = xmlMenuFile;
-                        fileExp.StartInfo.UseShellExecute = true;
-                        fileExp.StartInfo.ErrorDialog = false;
-                        fileExp.Start();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show($"Unable to start default application used to open" +
-                        $" {xmlMenuFile}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    WriteLog.WriteTempFile($"* Unable to open {xmlMenuFile}");
-                    WriteLog.WriteTempFile($"* {ex.Message}");
-                }
-            }
+            TextFileViewer.ViewTextFile(xmlMenuFile);
         }
-        #endregion
 
         #region Explicit Shutdown
         private void ExplicitShutdown()
@@ -1691,7 +1647,6 @@ namespace TrayLauncher
             Application.Current.Shutdown();
         }
         #endregion
-
 
     }
 }

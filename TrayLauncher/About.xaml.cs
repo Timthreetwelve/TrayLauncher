@@ -48,7 +48,7 @@ namespace TrayLauncher
         {
             this.Topmost = false;
             this.Close();
-            _ = Process.Start(".\\ReadMe.txt");
+            TextFileViewer.ViewTextFile(@".\ReadMe.txt");
         }
     }
 }

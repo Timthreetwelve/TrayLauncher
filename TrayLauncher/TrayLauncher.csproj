@@ -88,6 +88,7 @@
     <Compile Include="Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TextFileViewer.cs" />
     <Compile Include="Voodoo.cs" />
     <Compile Include="SpecialMenuItems.cs" />
     <Compile Include="UpdateItem.xaml.cs">

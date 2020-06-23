@@ -87,7 +87,7 @@
             Margin="10,0"
             Orientation="Horizontal">
             <TextBlock Width="90" Text="Crafted by: " />
-            <TextBlock x:Name="tbCompany" />
+            <TextBlock Text="Tim Kennedy" />
         </StackPanel>
 
         <StackPanel
@@ -109,10 +109,10 @@
             <TextBlock Width="90" Text="Email:" />
             <TextBlock>
                 <Hyperlink
-                    NavigateUri="mailto: TimCoCode@outlook.com?subject=TrayLauncher Feedback"
+                    NavigateUri="mailto: KennedyTim@outlook.com?subject=TrayLauncher Feedback"
                     RequestNavigate="OnNavigate"
                     ToolTip="Send a friendly email to Tim">
-                    TimCoCode@outlook.com
+                    KennedyTim@outlook.com
                 </Hyperlink>
             </TextBlock>
         </StackPanel>

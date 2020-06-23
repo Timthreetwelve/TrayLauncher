@@ -36,7 +36,7 @@
                         <!--  Fade in the textblock  -->
                         <DoubleAnimation
                             BeginTime="0:0:1"
-                            Storyboard.TargetName="tbTimCo"
+                            Storyboard.TargetName="tbTim"
                             Storyboard.TargetProperty="Opacity"
                             From="0.1"
                             To="1.0"
@@ -61,13 +61,13 @@
                 Foreground="Red"
                 Text="TrayLauncher" />
             <!--  Set Opacity to 0 and let animation fade it in  -->
-            <TextBlock x:Name="tbTimCo"
+            <TextBlock x:Name="tbTim"
                 HorizontalAlignment="Center"
                 FontSize="24"
                 FontWeight="Regular"
                 Foreground="Red"
                 Opacity="0"
-                Text="by TimCo" />
+                Text="by Tim" />
         </StackPanel>
     </Grid>
 

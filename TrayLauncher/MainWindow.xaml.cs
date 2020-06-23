@@ -1,5 +1,6 @@
 ﻿// TrayLauncher - TrayLauncher is a customizable menu to launch applications, websites, documents,
 // settings, and folders from the system tray.
+// Copyright (c) TIm Kennedy. All Rights Reserved. Licensed under the MIT License.
 //
 // See App.xaml.cs for code that restricts app to one instance
 
@@ -691,6 +692,12 @@ namespace TrayLauncher
         {
             BackupXMLFile();
         }
+
+        // Restore the menu file
+        private void MnuRestoreXML_Click(object sender, RoutedEventArgs e)
+        {
+            RestoreXMLFile();
+        }
         #endregion
 
         ////////////////////////////// Configuration menu //////////////////////////
@@ -1183,6 +1190,9 @@ namespace TrayLauncher
                 Properties.Settings.Default.Upgrade();
                 Properties.Settings.Default.SettingsUpgradeRequired = false;
                 Properties.Settings.Default.Save();
+                // CleanupPrevSettings must be called AFTER settings Upgrade and Save
+                CleanUp.CleanupPrevSettings();
+                Debug.WriteLine("*** SettingsUpgradeRequired");
             }
 
             // First time?
@@ -1537,8 +1547,9 @@ namespace TrayLauncher
         }
         #endregion Backup XML data
 
-        #region Restore XML date
-        private void MnuRestoreXML_Click(object sender, RoutedEventArgs e)
+        #region Restore XML data
+
+        private void RestoreXMLFile()
         {
             OpenFileDialog dlgOpen = new OpenFileDialog
             {
@@ -1634,12 +1645,6 @@ namespace TrayLauncher
         #endregion
 
 
-        // View the Menu file
-        private void ViewMenuFile()
-        {
-            TextFileViewer.ViewTextFile(xmlMenuFile);
-        }
-
         #region Explicit Shutdown
         private void ExplicitShutdown()
         {
@@ -1647,6 +1652,7 @@ namespace TrayLauncher
             Application.Current.Shutdown();
         }
         #endregion
+
 
     }
 }

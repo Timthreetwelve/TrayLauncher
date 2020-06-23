@@ -1,4 +1,5 @@
 ﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
+// Copyright (c) TIm Kennedy. All Rights Reserved. Licensed under the MIT License.
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -33,13 +34,10 @@ namespace TrayLauncher
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
 
             string version = versionInfo.FileVersion;
-            string company = versionInfo.CompanyName;
             string copyright = versionInfo.LegalCopyright;
             string product = versionInfo.ProductName;
-
             this.tbVersion.Text = version.Remove(version.LastIndexOf("."));
             this.tbCopyright.Text = copyright.Replace("Copyright ", "");
-            this.tbCompany.Text = company;
             this.Title = $"About {product}";
             this.Topmost = true;
         }

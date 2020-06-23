@@ -62,3 +62,6 @@
       - Added styling to buttons.
       - Fallback to notepad.exe if xml and log files are not associated with an application.
 
+0.8.x - Removed references to TimCo.
+	  - Added method to clean up settings folders.
+	  - New Installer - TrayLauncher will now be installed in %localappdata%/T_K/TrayLauncher.

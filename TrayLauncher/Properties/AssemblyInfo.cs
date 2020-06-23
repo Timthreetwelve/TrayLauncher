@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("TrayLauncher")]
 [assembly: AssemblyDescription("TrayLauncher is a customizable menu to launch applications, websites, documents, settings, and folders from the system tray.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TimCo")]
+[assembly: AssemblyCompany("T_K")]
 [assembly: AssemblyProduct("TrayLauncher")]
 [assembly: AssemblyCopyright("Copyright ©  2019-2020 Tim Kennedy")]
 [assembly: AssemblyTrademark("")]
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.7.29.0")]
-[assembly: AssemblyFileVersion("0.7.29.0")]
+[assembly: AssemblyVersion("0.8.2.1938")]
+[assembly: AssemblyFileVersion("0.8.2.1938")]

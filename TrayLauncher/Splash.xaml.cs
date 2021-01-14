@@ -1,13 +1,12 @@
-﻿using System;
+﻿// Copyright (c) Tim Kennedy. All Rights Reserved. Licensed under the MIT License.
+
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 
 namespace TrayLauncher
 {
-    /// <summary>
-    /// Interaction logic for Splash.xaml
-    /// </summary>
     public partial class Splash : Window
     {
         private DispatcherTimer timer;

@@ -145,9 +145,6 @@ After taking several minutes/hours/days to customize the menu with just the righ
 
 TrayLauncher should be able to launch anything that you can launch using the built-in Run dialog.
 
-If you really dislike all the tray icons, you can use your own. Navigate to TrayLauncher's folder in Program Files and then to the Images folder. Rename one of the icons. Edit one of the existing icons or copy a new icon into that folder and name it the original name of the one that was renamed. Then select that icon color in Preferences. Note that the new icon must be an ICO file and not another image format.
-
-
 
 #### Notices and License
 
@@ -156,7 +153,7 @@ TrayLauncher was written in C# by Tim Kennedy. Graphics & sound files were creat
 TrayLauncher uses Hardcodet.NotifyIcon.Wpf from Philipp Sumi.  http://www.hardcodet.net/wpf-notifyicon
 
 **MIT License**
-**Copyright (c) 2019 - 2020 Tim Kennedy**
+**Copyright (c) 2019 - 2021 Tim Kennedy**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -182,7 +182,6 @@ Note that settings are saved when the Preferences window is closed.
 
 Help
 ====
-
 In addition to the About dialog, the Help menu has options to view this readme file as well as the
 Change log.
 
@@ -195,7 +194,6 @@ temp file.
 
 Tips
 ====
-
 If the TrayLauncher icon doesn't stay visible in the system tray, open the Settings app and
 navigate to Personalization then to Taskbar then click on "Select which icons appear on the taskbar"
 then toggle the switch next to TrayLauncher on.
@@ -222,23 +220,16 @@ menu. If your menu ever gets messed up, you restore it by replacing it with the 
 
 TrayLauncher should be able to launch anything that you can launch using the Run dialog.
 
-If you really dislike all the tray icons, you can use your own. Navigate to TrayLauncher's folder
-in Program Files and then to the Images folder. Rename one of the icons. Edit one of the existing
-icons or copy a new icon into that folder and name it the original name of the one that was renamed.
-Then select that icon color in Preferences. Note that the new icon must be an ICO file and not
-another image format.
-
 
 Notices and License
 ===================
-
 TrayLauncher was written in C# by Tim Kennedy. Graphics & sound files were created by Tim Kennedy.
 
 TrayLauncher uses Hardcodet.NotifyIcon.Wpf from Philipp Sumi.  http://www.hardcodet.net/wpf-notifyicon
 
 
 MIT License
-Copyright (c) 2019 - 2020 Tim Kennedy
+Copyright (c) 2019 - 2021 Tim Kennedy
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction, including

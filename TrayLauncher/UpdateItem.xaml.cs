@@ -1,6 +1,5 @@
-﻿//
-// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
-//
+﻿// Copyright (c) Tim Kennedy. All Rights Reserved. Licensed under the MIT License.
+
 #region using directives
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,6 @@ using TKUtils;
 
 namespace TrayLauncher
 {
-    // Interaction logic for UpdateItem.xaml
     public partial class UpdateItem : Window
     {
         private const string specItemsXML = "SpecialItems.xml";
@@ -51,8 +49,8 @@ namespace TrayLauncher
         private void ReadSettings()
         {
             WriteLog.WriteTempFile("  Entering UpdateItem");
-            xmlMenuFile = Properties.Settings.Default.XMLfile;
-            FontSize = Properties.Settings.Default.FontSize;
+            xmlMenuFile = UserSettings.Setting.XMLFile;
+            FontSize = UserSettings.Setting.FontSize;
             if (FontSize > 16)
             {
                 FontSize = 16;
@@ -67,13 +65,12 @@ namespace TrayLauncher
         #endregion Read Settings
 
         #region Load ComboBox
-
         public void LoadComboBox()
         {
             try
             {
                 // Location of XML file
-                string sourceXML = specItemsXML;
+                const string sourceXML = specItemsXML;
                 string currentFolder = Assembly.GetExecutingAssembly().Location;
                 string inputXML = Path.Combine(Path.GetDirectoryName(currentFolder), sourceXML);
 
@@ -91,7 +88,7 @@ namespace TrayLauncher
                 cboxItems.Add(ph);
 
                 // Add items to combo box
-                Debug.WriteLine($"  Adding items to ComboBox");
+                Debug.WriteLine("  Adding items to ComboBox");
                 foreach (Shortcut item in special.shortcuts)
                 {
                     cboxItems.Add(item);
@@ -106,11 +103,10 @@ namespace TrayLauncher
             {
                 _ = MessageBox.Show($"Error reading or writing to special items file\n{ex.Message}",
                     "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                WriteLog.WriteTempFile($"* Error reading or writing to special items file.");
+                WriteLog.WriteTempFile("* Error reading or writing to special items file.");
                 WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
-
         #endregion Load ComboBox
 
         #region Buttons
@@ -184,7 +180,7 @@ namespace TrayLauncher
             {
                 _ = MessageBox.Show($"Error reading or writing to menu file\n{ex.Message}",
                                      "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                WriteLog.WriteTempFile($"* Error reading or writing to menu file.");
+                WriteLog.WriteTempFile("* Error reading or writing to menu file.");
                 WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
@@ -198,7 +194,6 @@ namespace TrayLauncher
         #endregion Buttons
 
         #region Text Box events
-
         private void TbUpdateHeader_LostFocus(object sender, RoutedEventArgs e)
         {
             HandleUnderscore((TextBox)sender);
@@ -220,7 +215,6 @@ namespace TrayLauncher
         #endregion
 
         #region ComboBox events
-
         // Combo box selection changed
         private void CmbSpecial_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -246,7 +240,7 @@ namespace TrayLauncher
                         // If item type isn't blank, check the appropriate radio button
                         if (!string.IsNullOrEmpty(itemType))
                         {
-                            CheckRadioButton(itemType.ToString());
+                            CheckRadioButton(itemType);
                         }
                         else
                         {
@@ -257,11 +251,9 @@ namespace TrayLauncher
                 }
             }
         }
-
         #endregion ComboBox events
 
         #region Radio buttons
-
         // Check radio button based on itemType
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -314,7 +306,6 @@ namespace TrayLauncher
             tbUpdateArguments.IsEnabled = true;
             tbUpdateToolTip.IsEnabled = true;
         }
-
         #endregion Radio buttons
 
         #region Helper methods
@@ -411,7 +402,6 @@ namespace TrayLauncher
                 box.Text = sb.ToString();
             }
         }
-
         #endregion Helper methods
     }
 }

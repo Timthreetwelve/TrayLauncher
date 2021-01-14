@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Tim Kennedy. All Rights Reserved. Licensed under the MIT License.
+
+using System;
 using System.Globalization;
 using System.Windows.Data;
 

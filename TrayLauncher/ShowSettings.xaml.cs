@@ -1,149 +1,92 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿// Copyright (c) Tim Kennedy. All Rights Reserved. Licensed under the MIT License.
+
+#region Using directives
+using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
+#endregion Using directives
 
 namespace TrayLauncher
 {
-    /// <summary>
-    /// Interaction logic for ShowSettings.xaml
-    /// </summary>
     public partial class ShowSettings : Window
     {
+        private static readonly SortedDictionary<string, string> mySettings =
+            new SortedDictionary<string, string>();
+
         public ShowSettings()
         {
             InitializeComponent();
-
-            Refresh();
+            GetSettings();
+            GetSystemParameters();
+            dg1.ItemsSource = mySettings;
         }
 
-        private void Refresh()
+        #region Get System Parameters
+        private static void GetSystemParameters()
         {
-            List<MySettings> settings = ReadSettings();
-
-            GetDoubleClick(settings);
-
-            GetSystemParameters(settings);
-
-            dg1.ItemsSource = settings.OrderBy(x => x.Name);
+            mySettings.Add("System - Double-click Delay", $"{ NativeMethods.GetDoubleClickTime()} ms");
+            mySettings.Add("System - Menu Delay", $"{SystemParameters.MenuShowDelay} ms");
+            mySettings.Add("System - Primary Screen Height", SystemParameters.PrimaryScreenHeight.ToString());
+            mySettings.Add("System - Primary Screen Width", SystemParameters.PrimaryScreenWidth.ToString());
         }
+        #endregion Get System Parameters
 
-        private static void GetDoubleClick(List<MySettings> settings)
+        #region Get Settings
+        private static void GetSettings()
         {
-            MySettings dd = new MySettings
+            mySettings.Clear();
+            foreach (KeyValuePair<string, object> property in UserSettings.ListSettings())
             {
-                Name = "Double-click Delay",
-                Value = $"{NativeMethods.GetDoubleClickTime().ToString()} ms"
-            };
-            settings.Add(dd);
-        }
-
-        private static void GetSystemParameters(List<MySettings> settings)
-        {
-            MySettings sp1 = new MySettings
-            {
-                Name = "Mouse Present",
-                Value = $"{SystemParameters.IsMousePresent.ToString()}"
-            };
-            settings.Add(sp1);
-
-            MySettings sp2 = new MySettings
-            {
-                Name = "Menu Delay",
-                Value = $"{SystemParameters.MenuShowDelay.ToString()} ms"
-            };
-            settings.Add(sp2);
-
-            MySettings sp3 = new MySettings
-            {
-                Name = "Main Window Max Height",
-                Value = $"{(SystemParameters.PrimaryScreenHeight -20).ToString()}"
-            };
-            settings.Add(sp3);
-
-            MySettings sp4 = new MySettings
-            {
-                Name = "Primary Screen Height",
-                Value = $"{SystemParameters.PrimaryScreenHeight.ToString()}"
-            };
-            settings.Add(sp4);
-
-            MySettings sp5 = new MySettings
-            {
-                Name = "Primary Screen Width",
-                Value = $"{SystemParameters.PrimaryScreenWidth.ToString()}"
-            };
-            settings.Add(sp5);
-        }
-
-        private static List<MySettings> ReadSettings()
-        {
-            List<MySettings> settings = new List<MySettings>();
-            foreach (SettingsPropertyValue property in Properties.Settings.Default.PropertyValues)
-            {
-                MySettings show = new MySettings();
-                switch (property.Name)
+                string key;
+                string value;
+                switch (property.Key)
                 {
                     case "BackColor":
-                        {
-                            show.Value = $"Index {property.PropertyValue} = " +
-                                $"{ColorIndexToName((int)property.PropertyValue)}";
-                            break;
-                        }
                     case "ForeColor":
-                        {
-                            show.Value = $"Index {property.PropertyValue} = " +
-                                $"{ColorIndexToName((int)property.PropertyValue)}";
-                            break;
-                        }
                     case "SectionHeaderColor":
-                        {
-                            show.Value = $"Index {property.PropertyValue} = " +
-                                $"{ColorIndexToName((int)property.PropertyValue)}";
-                            break;
-                        }
                     case "SeparatorColor":
-                        {
-                            show.Value = $"Index {property.PropertyValue} = " +
-                                $"{ColorIndexToName((int)property.PropertyValue)}";
-                            break;
-                        }
+                        key = property.Key;
+                        value = $"Index {property.Value} = " +
+                           $"{ColorIndexToName((int)property.Value)}";
+                        break;
+                    case "XMLFile":
+                        key = "Menu Items File";
+                        value = property.Value.ToString();
+                        break;
                     default:
-                        {
-                            show.Value = property.PropertyValue.ToString();
-                            break;
-                        }
+                        key = property.Key;
+                        value = property.Value.ToString();
+                        break;
                 }
-                show.Name = property.Name;
-                settings.Add(show);
+                mySettings.Add(key, value);
             }
-
-            return settings;
         }
+        #endregion Get Settings
 
+        #region Button Events
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+        #endregion Button Events
 
-        public static string ColorIndexToName(int c)
-        {
-            var colors = typeof(Colors).GetProperties();
-            return colors[c].Name;
-        }
-
+        #region Keyboard Events
         private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.F5)
-            {
-                Refresh();
-            }
-
             if (e.Key == System.Windows.Input.Key.Escape)
             {
                 Close();
             }
         }
+        #endregion Keyboard Events
+
+        #region Color Index to Color Name
+        public static string ColorIndexToName(int c)
+        {
+            PropertyInfo[] colors = typeof(Colors).GetProperties();
+            return colors[c].Name;
+        }
+        #endregion Color Index to Color Name
     }
 }

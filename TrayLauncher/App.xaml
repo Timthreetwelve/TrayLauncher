@@ -1,4 +1,5 @@
-﻿<Application x:Class="TrayLauncher.App"
+﻿<Application
+    x:Class="TrayLauncher.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:TrayLauncher"
@@ -10,7 +11,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
+                        <Border
+                            x:Name="border"
                             Padding="2"
                             Background="Gainsboro"
                             BorderBrush="Black"

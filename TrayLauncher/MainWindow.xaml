@@ -1,19 +1,19 @@
-﻿<Window x:Class="TrayLauncher.MainWindow"
+﻿<Window
+    x:Class="TrayLauncher.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Properties="clr-namespace:TrayLauncher.Properties"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TrayLauncher"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tb="http://www.hardcodet.net/taskbar"
-    mc:Ignorable="d"
     Title="TrayLauncher"
     Width="800"
     Height="450"
     MaxWidth="{x:Static SystemParameters.PrimaryScreenWidth}"
     Closing="Window_Closing"
     KeyUp="Window_KeyUp"
-    StateChanged="Window_StateChanged">
+    StateChanged="Window_StateChanged"
+    mc:Ignorable="d">
 
     <Window.Resources>
         <!--  This provides a way to change the menu background in code  -->
@@ -40,7 +40,8 @@
 
     <Grid>
         <!--  Taskbar Icon  -->
-        <tb:TaskbarIcon x:Name="myNotifyIcon"
+        <tb:TaskbarIcon
+            x:Name="myNotifyIcon"
             MenuActivation="LeftOrRightClick"
             ToolTipText="TrayLauncher"
             TrayMouseDoubleClick="MyNotifyIcon_TrayMouseDoubleClick"
@@ -56,7 +57,8 @@
                     BorderThickness="2"
                     CornerRadius="5"
                     Opacity=".9">
-                    <TextBlock x:Name="tbToolTip"
+                    <TextBlock
+                        x:Name="tbToolTip"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         FontWeight="Normal"
@@ -93,7 +95,8 @@
             <DockPanel LastChildFill="False">
 
                 <!--  Begin menu  -->
-                <Menu x:Name="mnuMain"
+                <Menu
+                    x:Name="mnuMain"
                     Height="28"
                     Padding="10,5,0,0"
                     Background="White"
@@ -102,14 +105,17 @@
 
                     <!--  File menu  -->
                     <MenuItem Header="_File">
-                        <MenuItem Name="mnuBackupXML"
+                        <MenuItem
+                            Name="mnuBackupXML"
                             Click="MnuBackupXML_Click"
                             Header="Backup Menu File" />
-                        <MenuItem Name="mnuRestoreXML"
+                        <MenuItem
+                            Name="mnuRestoreXML"
                             Click="MnuRestoreXML_Click"
                             Header="Restore Menu File" />
                         <Separator />
-                        <MenuItem Name="mnuExit"
+                        <MenuItem
+                            Name="mnuExit"
                             Click="MnuExit_Click"
                             Header="Exit"
                             InputGestureText="Alt+F4" />
@@ -117,29 +123,36 @@
 
                     <!--  Configuration menu  -->
                     <MenuItem Header="_Menu Configuration" SubmenuOpened="MenuItem_SubmenuOpened">
-                        <MenuItem Name="mnuAdd"
+                        <MenuItem
+                            Name="mnuAdd"
                             Click="MnuAdd_Click"
                             Header="Add Menu Item" />
-                        <MenuItem Name="mnuCopy"
+                        <MenuItem
+                            Name="mnuCopy"
                             Click="MnuCopy_Click"
                             Header="Copy Menu Item" />
-                        <MenuItem Name="mnuDelete"
+                        <MenuItem
+                            Name="mnuDelete"
                             Click="MnuDel_Click"
                             Header="Remove Selected Item" />
-                        <MenuItem Name="mnuUpdate"
+                        <MenuItem
+                            Name="mnuUpdate"
                             Click="MnuUpdate_Click"
                             Header="Update Selected Item" />
                         <Separator />
-                        <MenuItem Name="mnuTest"
+                        <MenuItem
+                            Name="mnuTest"
                             Click="MnuTest_Click"
                             Header="Test Selected Item" />
                         <Separator />
-                        <MenuItem Name="mnuRefresh"
+                        <MenuItem
+                            Name="mnuRefresh"
                             Click="MnuRefresh_Click"
                             Header="Refresh List"
                             InputGestureText="F5" />
                         <Separator />
-                        <MenuItem Name="mnuPreferences"
+                        <MenuItem
+                            Name="mnuPreferences"
                             Click="MnuPreferences_Click"
                             Header="_Preferences"
                             InputGestureText="Ctrl+," />
@@ -147,27 +160,33 @@
 
                     <!--  Help menu  -->
                     <MenuItem Header="_Help">
-                        <MenuItem Name="mnuAbout"
+                        <MenuItem
+                            Name="mnuAbout"
                             Click="MnuAbout_Click"
                             Header="About"
                             InputGestureText="F1" />
-                        <MenuItem Name="mnuReadme"
+                        <MenuItem
+                            Name="mnuReadme"
                             Click="MnuReadme_Click"
                             Header="View Readme File" />
-                        <MenuItem Name="mnuChange"
+                        <MenuItem
+                            Name="mnuChange"
                             Click="MnuChange_Click"
                             Header="View Change Log" />
                         <Separator />
                         <MenuItem Header="Debug">
-                            <MenuItem Name="mnuShowSettings"
+                            <MenuItem
+                                Name="mnuShowSettings"
                                 Click="MnuShowSettings_Click"
                                 Header="View Settings"
                                 InputGestureText="Shift+F1" />
-                            <MenuItem Name="mnuViewMenu"
+                            <MenuItem
+                                Name="mnuViewMenu"
                                 Click="MnuViewMenu_Click"
                                 Header="View Menu File"
                                 InputGestureText="F3" />
-                            <MenuItem Name="mnuViewLog"
+                            <MenuItem
+                                Name="mnuViewLog"
                                 Click="MnuViewLog_Click"
                                 Header="View Temp File"
                                 InputGestureText="F4" />
@@ -178,7 +197,8 @@
         </StackPanel>
 
         <!--  theDataGrid  -->
-        <DataGrid x:Name="theDataGrid"
+        <DataGrid
+            x:Name="theDataGrid"
             MinHeight="50"
             Margin="10,30,10,20"
             AlternatingRowBackground="WhiteSmoke"
@@ -226,24 +246,30 @@
             <!--  Datagrid context menu  -->
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Name="dgcmAdd"
+                    <MenuItem
+                        Name="dgcmAdd"
                         Click="MnuAdd_Click"
                         Header="Add Menu Item" />
-                    <MenuItem Name="dgcmCopy"
+                    <MenuItem
+                        Name="dgcmCopy"
                         Click="MnuCopy_Click"
                         Header="Copy Menu Item" />
-                    <MenuItem Name="dgcmRemove"
+                    <MenuItem
+                        Name="dgcmRemove"
                         Click="MnuDel_Click"
                         Header="Remove Selected Item" />
-                    <MenuItem Name="dgcmUpdate"
+                    <MenuItem
+                        Name="dgcmUpdate"
                         Click="MnuUpdate_Click"
                         Header="Update Selected Item" />
                     <Separator />
-                    <MenuItem Name="dgcmTest"
+                    <MenuItem
+                        Name="dgcmTest"
                         Click="MnuTest_Click"
                         Header="Test Selected Item" />
                     <Separator />
-                    <MenuItem Name="dgcmRefresh"
+                    <MenuItem
+                        Name="dgcmRefresh"
                         Click="MnuRefresh_Click"
                         Header="Refresh Menu List" />
                 </ContextMenu>

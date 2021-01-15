@@ -1009,6 +1009,7 @@ namespace TrayLauncher
         #endregion Keyboard events
 
         ////////////////////////////// Settings events //////////////////////////////
+
         #region Setting change
         private void UserSettingChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -1121,6 +1122,7 @@ namespace TrayLauncher
             WriteLog.WriteTempFile($"    Changing {e.PropertyName} to {newValue}");
         }
         #endregion Setting change
+
         ////////////////////////////// Read Settings ///////////////////////////////
 
         #region Settings file

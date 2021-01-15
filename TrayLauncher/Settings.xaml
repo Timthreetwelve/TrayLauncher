@@ -1,18 +1,18 @@
-﻿<Window x:Class="TrayLauncher.Settings"
+﻿<Window
+    x:Class="TrayLauncher.Settings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Prop="clr-namespace:TrayLauncher.Properties"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TrayLauncher"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
     Title="Tray Launcher Preferences"
     Width="700"
     Height="430"
     Closing="Window_Closing"
     FontSize="14"
     ResizeMode="NoResize"
-    SizeToContent="WidthAndHeight">
+    SizeToContent="WidthAndHeight"
+    mc:Ignorable="d">
 
 
     <Window.Resources>
@@ -52,36 +52,39 @@
                         Margin="5"
                         FontWeight="Bold"
                         Text="Main Window Options" />
-                    <CheckBox x:Name="cbStartWW"
+                    <CheckBox
+                        x:Name="cbStartWW"
                         Margin="5,5"
                         Content="Start with Windows"
-                        IsChecked="{Binding StartWithWindows, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}" />
+                        IsChecked="{Binding StartWithWindows, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}" />
                     <CheckBox
                         Margin="5,5"
                         Content="Startup Notification"
-                        IsChecked="{Binding StartNotification, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}" />
+                        IsChecked="{Binding StartNotification, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}" />
                     <CheckBox
                         Margin="5,5"
                         Content="Hide Main Window on Start"
-                        IsChecked="{Binding HideOnStart, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}" />
-                    <CheckBox x:Name="cbMin"
+                        IsChecked="{Binding HideOnStart, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}" />
+                    <CheckBox
+                        x:Name="cbMin"
                         Margin="5,5"
                         Content="Minimize to Tray on Exit"
-                        IsChecked="{Binding MinimizeToTrayOnExit, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}"
+                        IsChecked="{Binding MinimizeToTrayOnExit, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}"
                         IsEnabled="{Binding ElementName=cbVer, Path=IsChecked, Converter={StaticResource boolInverter}}" />
-                    <CheckBox x:Name="cbVer"
+                    <CheckBox
+                        x:Name="cbVer"
                         Margin="5,5"
                         Content="Confirm Main Window Exit"
-                        IsChecked="{Binding VerifyExit, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}"
+                        IsChecked="{Binding VerifyExit, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}"
                         IsEnabled="{Binding ElementName=cbMin, Path=IsChecked, Converter={StaticResource boolInverter}}" />
                     <CheckBox
                         Margin="5,5"
                         Content="Show Item Type Column"
-                        IsChecked="{Binding ShowItemType, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}" />
+                        IsChecked="{Binding ShowItemType, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}" />
                     <CheckBox
                         Margin="5,5"
                         Content="Shade Alternate Rows"
-                        IsChecked="{Binding ShadeAltRows, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}" />
+                        IsChecked="{Binding ShadeAltRows, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}" />
                 </StackPanel>
 
                 <!--  Font size  -->
@@ -95,7 +98,8 @@
                         FontWeight="Bold"
                         Text="Font Size" />
                     <StackPanel Margin="5,12" Orientation="Horizontal">
-                        <Slider x:Name="sldFontSize"
+                        <Slider
+                            x:Name="sldFontSize"
                             Width="120"
                             Height="40"
                             HorizontalAlignment="Left"
@@ -108,8 +112,9 @@
                             Orientation="Horizontal"
                             TickPlacement="Both"
                             ToolTip="Font size can also be adjusted by Ctrl plus Num+ / Num– in the main window"
-                            Value="{Binding FontSize, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}" />
-                        <TextBlock Name="tbFontSize"
+                            Value="{Binding FontSize, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}" />
+                        <TextBlock
+                            Name="tbFontSize"
                             Margin="8,5"
                             HorizontalAlignment="Left"
                             Text="{Binding ElementName=sldFontSize, Path=Value}" />
@@ -128,11 +133,12 @@
 
                     <!--  Tray Icon Color  -->
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox x:Name="cmbTrayIcon"
+                        <ComboBox
+                            x:Name="cmbTrayIcon"
                             Width="195"
                             Margin="5"
                             HorizontalAlignment="Left"
-                            SelectedItem="{Binding Icon, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}">
+                            SelectedItem="{Binding Icon, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -154,11 +160,12 @@
 
                     <!--  Menu Text Color  -->
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox Name="CmbForeground"
+                        <ComboBox
+                            Name="CmbForeground"
                             Width="195"
                             Margin="5"
                             IsSynchronizedWithCurrentItem="True"
-                            SelectedIndex="{Binding ForeColor, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}">
+                            SelectedIndex="{Binding ForeColor, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -180,10 +187,11 @@
 
                     <!--  Background Color  -->
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox Name="CmbBackground"
+                        <ComboBox
+                            Name="CmbBackground"
                             Width="195"
                             Margin="5"
-                            SelectedIndex="{Binding BackColor, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}">
+                            SelectedIndex="{Binding BackColor, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -205,11 +213,12 @@
 
                     <!--  Separator Color  -->
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox Name="CmbSeparator"
+                        <ComboBox
+                            Name="CmbSeparator"
                             Width="195"
                             Margin="4"
                             IsSynchronizedWithCurrentItem="True"
-                            SelectedIndex="{Binding SeparatorColor, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}">
+                            SelectedIndex="{Binding SeparatorColor, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -231,11 +240,12 @@
 
                     <!--  Section Header Color  -->
                     <StackPanel Orientation="Horizontal">
-                        <ComboBox Name="CmbHeader"
+                        <ComboBox
+                            Name="CmbHeader"
                             Width="195"
                             Margin="5"
                             IsSynchronizedWithCurrentItem="True"
-                            SelectedIndex="{Binding SectionHeaderColor, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}">
+                            SelectedIndex="{Binding SectionHeaderColor, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -259,7 +269,7 @@
                     <CheckBox
                         Margin="5,5,0,20"
                         Content="Bold Section Headers"
-                        IsChecked="{Binding SectionHeaderBold, Source={x:Static Prop:Settings.Default}, Mode=TwoWay}" />
+                        IsChecked="{Binding SectionHeaderBold, Source={x:Static local:UserSettings.Setting}, Mode=TwoWay}" />
                 </StackPanel>
 
                 <!--  Menu Themes  -->
@@ -273,12 +283,14 @@
                             Width="90"
                             Margin="0,0,20,0"
                             Orientation="Vertical">
-                            <Button x:Name="rbLight"
+                            <Button
+                                x:Name="rbLight"
                                 Margin="0,5"
                                 Click="RbLight_Click"
                                 Content="Light"
                                 Style="{DynamicResource RoundedButtonStyle}" />
-                            <Button x:Name="rbDark"
+                            <Button
+                                x:Name="rbDark"
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbDark_Click"
@@ -289,13 +301,15 @@
                             Width="90"
                             Margin="0,0,20,0"
                             Orientation="Vertical">
-                            <Button x:Name="rbBlues"
+                            <Button
+                                x:Name="rbBlues"
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbBlues_Click"
                                 Content="The Blues"
                                 Style="{DynamicResource RoundedButtonStyle}" />
-                            <Button x:Name="rbBanana"
+                            <Button
+                                x:Name="rbBanana"
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbBanana_Click"
@@ -306,13 +320,15 @@
                             Width="90"
                             Margin="0,0,20,0"
                             Orientation="Vertical">
-                            <Button x:Name="rbCherry"
+                            <Button
+                                x:Name="rbCherry"
                                 Margin="0,5"
                                 VerticalContentAlignment="Center"
                                 Click="RbCherry_Click"
                                 Content="Cherries"
                                 Style="{DynamicResource RoundedButtonStyle}" />
-                            <Button x:Name="rbSpring"
+                            <Button
+                                x:Name="rbSpring"
                                 Margin="0,5"
                                 VerticalContentAlignment="Stretch"
                                 Click="RbSpring_Click"

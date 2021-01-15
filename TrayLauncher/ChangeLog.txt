@@ -1,11 +1,45 @@
-﻿0.2.x - Initial release
+﻿0.9.x - Migrated to UserSettings (JSON format settings file)
 
-0.3.x - Added section headers with color & bold options
-      - Changed Tray Icon Color menu & added additional icons
-      - In Add & Update windows, hitting enter in position field will add menu item.
-      - Fixed main window datagrid scrolling issue
-      - Fixed an issue with the Special Items drop-down in the Add window.
+0.8.x - Removed references to TimCo.
+	  - Added method to clean up settings folders.
+	  - New Installer - TrayLauncher will now be installed in %localappdata%/T_K/TrayLauncher.
+
+0.7.x - Updated the splash screen.
+      - Added logic to handle underscore characters in menu item text. See ReadMe files.
+      - The Menu Item Text text box will have focus after opening the Add, Copy or Update window.
+      - Added the previously missing keyboard accelerator for the Menu Configuration menu.
+      - Updated ReadMe files.
+      - Added item type color coding for the main window.
+      - The item types display is now more user friendly.
+      - Fixed misaligned combo box in the Copy Item window.
+      - Added menu file restore function.
+      - Added styling to buttons.
+      - Fallback to notepad.exe if xml and log files are not associated with an application.
+
+0.6.x - Added capability top copy an entry.
+      - Moved status message field in the Add & Update windows to facilitate longer messages.
+      - Added a check for position value conflict in Add & Copy windows.
+      - Changed Item Type column location.
+      - Added five values to View Settings.
+      - Fixed warning message disappearing when second instance is started.
+      - Added ReadMe.md, a markdown version of the ReadMe file.
+      - Updated ReadMe files.
+
+0.5.x - Added MSEdge, PowerShell Core and Windows Terminal to the Special Items list.
+      - Replaced settings menu with a new Preferences dialog.
+      - Added setting to turn on/off confirmation when closing main window with X in title bar.
+      - Most preferences will change immediately and more efficiently.
+      - Ctrl + comma will open the Preferences dialog.
+      - Fixed Section Header display in datagrid.
+      - Certain menu items are now disabled if no row in the datagrid has been selected.
+      - Test failure messages are now displayed in a message box.
+      - Added a splash screen.
+      - Added option to view this change log.
       - Updated ReadMe file to reflect these changes.
+      - Fixed gap between sub menu and menu when sub menu appears on left of the tray menu.
+      - Added check for mouse presence.
+      - Added additional details in View Settings window.
+      - The Add dialog will now increment the Position field by 1 after each Add.
 
 0.4.x - Added capability to define sub-menus (one level).
       - Left-click on tray icon will now activate menu.
@@ -25,43 +59,11 @@
       - Tray icon tool tip colors are now the same colors as the tray menu.
       - Updated ReadMe file to reflect these changes.
 
-0.5.x - Added MSEdge, PowerShell Core and Windows Terminal to the Special Items list.
-      - Replaced settings menu with a new Preferences dialog.
-      - Added setting to turn on/off confirmation when closing main window with X in title bar.
-      - Most preferences will change immediately and more efficiently.
-      - Ctrl + comma will open the Preferences dialog.
-      - Fixed Section Header display in datagrid.
-      - Certain menu items are now disabled if no row in the datagrid has been selected.
-      - Test failure messages are now displayed in a message box.
-      - Added a splash screen.
-      - Added option to view this change log.
+0.3.x - Added section headers with color & bold options
+      - Changed Tray Icon Color menu & added additional icons
+      - In Add & Update windows, hitting enter in position field will add menu item.
+      - Fixed main window datagrid scrolling issue
+      - Fixed an issue with the Special Items drop-down in the Add window.
       - Updated ReadMe file to reflect these changes.
-      - Fixed gap between sub menu and menu when sub menu appears on left of the tray menu.
-      - Added check for mouse presence.
-      - Added additional details in View Settings window.
-      - The Add dialog will now increment the Position field by 1 after each Add.
 
-0.6.x - Added capability top copy an entry.
-      - Moved status message field in the Add & Update windows to facilitate longer messages.
-      - Added a check for position value conflict in Add & Copy windows.
-      - Changed Item Type column location.
-      - Added five values to View Settings.
-      - Fixed warning message disappearing when second instance is started.
-      - Added ReadMe.md, a markdown version of the ReadMe file.
-      - Updated ReadMe files.
-
-0.7.x - Updated the splash screen.
-      - Added logic to handle underscore characters in menu item text. See ReadMe files.
-      - The Menu Item Text text box will have focus after opening the Add, Copy or Update window.
-      - Added the previously missing keyboard accelerator for the Menu Configuration menu.
-      - Updated ReadMe files.
-      - Added item type color coding for the main window.
-      - The item types display is now more user friendly.
-      - Fixed misaligned combo box in the Copy Item window.
-      - Added menu file restore function.
-      - Added styling to buttons.
-      - Fallback to notepad.exe if xml and log files are not associated with an application.
-
-0.8.x - Removed references to TimCo.
-	  - Added method to clean up settings folders.
-	  - New Installer - TrayLauncher will now be installed in %localappdata%/T_K/TrayLauncher.
+0.2.x - Initial release

@@ -1,6 +1,6 @@
-﻿// TrayLauncher - A customizable tray menu to launch applications, websites and folders.
-#region using directives
+﻿// Copyright (c) Tim Kennedy. All Rights Reserved. Licensed under the MIT License.
 
+#region using directives
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,6 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using TKUtils;
-
 #endregion using directives
 
 namespace TrayLauncher
@@ -28,7 +27,7 @@ namespace TrayLauncher
     {
         private const string specItemsXML = "SpecialItems.xml";
         private string xmlMenuFile;
-        private int addCount = 0;
+        private int addCount;
         private string itemType = string.Empty;
         private readonly List<Shortcut> cboxItems = new List<Shortcut>();
 
@@ -44,14 +43,13 @@ namespace TrayLauncher
         }
 
         #region Read Settings
-
         private void ReadSettings()
         {
             WriteLog.WriteTempFile("  Entering AddItem");
             lblStatus.Text = "Ready";
             lblStatus.Foreground = Brushes.SlateGray;
-            xmlMenuFile = Properties.Settings.Default.XMLfile;
-            FontSize = Properties.Settings.Default.FontSize;
+            xmlMenuFile = UserSettings.Setting.XMLFile;
+            FontSize = UserSettings.Setting.FontSize;
             if (FontSize > 16)
             {
                 FontSize = 16;
@@ -62,17 +60,15 @@ namespace TrayLauncher
             }
             _ = tbAddHeader.Focus();
         }
-
         #endregion Read Settings
 
         #region Load ComboBox
-
         public void LoadComboBox()
         {
             try
             {
                 // Location of XML file
-                string sourceXML = specItemsXML;
+                const string sourceXML = specItemsXML;
                 string currentFolder = Assembly.GetExecutingAssembly().Location;
                 string inputXML = Path.Combine(Path.GetDirectoryName(currentFolder), sourceXML);
 
@@ -90,7 +86,7 @@ namespace TrayLauncher
                 cboxItems.Add(ph);
 
                 // Add items to combo box
-                Debug.WriteLine($"  Adding items to ComboBox");
+                Debug.WriteLine("  Adding items to ComboBox");
                 foreach (Shortcut item in special.shortcuts)
                 {
                     cboxItems.Add(item);
@@ -105,15 +101,13 @@ namespace TrayLauncher
             {
                 _ = MessageBox.Show($"Error reading or writing to special items file\n{ex.Message}",
                     "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                WriteLog.WriteTempFile($"* Error reading or writing to special items file.");
+                WriteLog.WriteTempFile("* Error reading or writing to special items file.");
                 WriteLog.WriteTempFile($"* {ex.Message}");
             }
         }
-
         #endregion Load ComboBox
 
         #region Buttons
-
         // Add a menu item
         public void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -203,11 +197,9 @@ namespace TrayLauncher
             WriteLog.WriteTempFile($"  Leaving AddItem, {addCount} items added");
             Close();
         }
-
         #endregion Buttons
 
         #region Text box events
-
         // Change single underscore character to two in menu header
         private void TbAddHeader_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -247,11 +239,9 @@ namespace TrayLauncher
                 tbAddAppPath.Text = dlgOpen.FileName;
             }
         }
-
         #endregion Text box events
 
         #region ComboBox events
-
         // Combo box selection changed
         private void CmbSpecial_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -277,18 +267,16 @@ namespace TrayLauncher
                         // If item type isn't blank, check the appropriate radio button
                         if (!string.IsNullOrEmpty(itemType))
                         {
-                            CheckRadioButton(itemType.ToString());
+                            CheckRadioButton(itemType);
                         }
                         break;
                     }
                 }
             }
         }
-
         #endregion ComboBox events
 
         #region Radio buttons
-
         // Check radio button based on itemType
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -343,11 +331,9 @@ namespace TrayLauncher
             tbAddToolTip.IsEnabled = true;
             btnOpenDlg.IsEnabled = true;
         }
-
         #endregion Radio buttons
 
         #region Helper Methods
-
         // Blank text boxes and set color values to be ready for next item
         private void ReadyForNext(string p)
         {

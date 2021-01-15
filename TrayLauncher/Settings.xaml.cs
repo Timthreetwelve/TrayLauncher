@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Tim Kennedy. All Rights Reserved. Licensed under the MIT License.
+
+#region Using directives
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+#endregion Using directives
 
 namespace TrayLauncher
 {
@@ -24,7 +29,7 @@ namespace TrayLauncher
                 cbStartWW.IsEnabled = false;
             }
         }
-        #endregion
+        #endregion Disable if debug
 
         #region Load combo boxes
         private void LoadComboBoxes()
@@ -44,7 +49,7 @@ namespace TrayLauncher
         #region Load Icon colors
         private void LoadIconColors()
         {
-            List<string> iconList = new List<string>
+            List<string> iconColors = new List<string>
             {
                 "Black",
                 "Cyan",
@@ -59,66 +64,67 @@ namespace TrayLauncher
                 "White",
                 "Yellow"
             };
-            cmbTrayIcon.ItemsSource = iconList;
+            cmbTrayIcon.ItemsSource = iconColors;
+
+            cmbTrayIcon.SelectedIndex = iconColors.FindIndex(c => c.Equals(UserSettings.Setting.Icon, StringComparison.OrdinalIgnoreCase));
         }
         #endregion Load Icon colors
 
         #region Window Events
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Properties.Settings.Default.Save();
+            UserSettings.SaveSettings();
         }
         #endregion Window Events
 
         #region Color themes
         private void RbLight_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.BackColor = 47;
-            Properties.Settings.Default.ForeColor = 7;
-            Properties.Settings.Default.SectionHeaderColor = 7;
-            Properties.Settings.Default.SeparatorColor = 50;
+            UserSettings.Setting.BackColor = 47;
+            UserSettings.Setting.ForeColor = 7;
+            UserSettings.Setting.SectionHeaderColor = 7;
+            UserSettings.Setting.SeparatorColor = 50;
         }
 
         private void RbDark_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.BackColor = 40;
-            Properties.Settings.Default.ForeColor = 67;
-            Properties.Settings.Default.SectionHeaderColor = 7;
-            Properties.Settings.Default.SeparatorColor = 125;
+            UserSettings.Setting.BackColor = 40;
+            UserSettings.Setting.ForeColor = 67;
+            UserSettings.Setting.SectionHeaderColor = 7;
+            UserSettings.Setting.SeparatorColor = 125;
         }
 
         private void RbBlues_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.BackColor = 72;
-            Properties.Settings.Default.ForeColor = 9;
-            Properties.Settings.Default.SectionHeaderColor = 115;
-            Properties.Settings.Default.SeparatorColor = 74;
+            UserSettings.Setting.BackColor = 72;
+            UserSettings.Setting.ForeColor = 9;
+            UserSettings.Setting.SectionHeaderColor = 115;
+            UserSettings.Setting.SeparatorColor = 74;
         }
 
         private void RbBanana_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.BackColor = 62;
-            Properties.Settings.Default.ForeColor = 40;
-            Properties.Settings.Default.SectionHeaderColor = 85;
-            Properties.Settings.Default.SeparatorColor = 24;
+            UserSettings.Setting.BackColor = 62;
+            UserSettings.Setting.ForeColor = 40;
+            UserSettings.Setting.SectionHeaderColor = 85;
+            UserSettings.Setting.SeparatorColor = 24;
         }
-
 
         private void RbCherry_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.BackColor = 69;
-            Properties.Settings.Default.ForeColor = 113;
-            Properties.Settings.Default.SectionHeaderColor = 38;
-            Properties.Settings.Default.SeparatorColor = 89;
+            UserSettings.Setting.BackColor = 69;
+            UserSettings.Setting.ForeColor = 113;
+            UserSettings.Setting.SectionHeaderColor = 38;
+            UserSettings.Setting.SeparatorColor = 89;
         }
 
         private void RbSpring_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.BackColor = 103;
-            Properties.Settings.Default.ForeColor = 44;
-            Properties.Settings.Default.SectionHeaderColor = 77;
-            Properties.Settings.Default.SeparatorColor = 51;
+            UserSettings.Setting.BackColor = 103;
+            UserSettings.Setting.ForeColor = 44;
+            UserSettings.Setting.SectionHeaderColor = 77;
+            UserSettings.Setting.SeparatorColor = 51;
         }
-        #endregion
+        #endregion Color themes
     }
 }

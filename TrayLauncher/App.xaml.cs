@@ -1,18 +1,20 @@
-﻿// TrayLauncher - A customizable tray menu to launch applications and folders.
-#region using directives
+﻿// Copyright (c) Tim Kennedy. All Rights Reserved. Licensed under the MIT License.
 
+#region using directives
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using TKUtils;
-
 #endregion using directives
 
 namespace TrayLauncher
 {
     public partial class App : Application
     {
+        internal static bool WindowsLogoffOrShutdown { get; set; }
+        internal static bool ExplicitClose { get; set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             OneInstance();
@@ -47,13 +49,12 @@ namespace TrayLauncher
                                         MessageBoxResult.OK,
                                         MessageBoxOptions.DefaultDesktopOnly);
 
-                    Voodoo.WindowsLogoffOrShutdown = true;
+                    WindowsLogoffOrShutdown = true;
                     Environment.Exit(1);
                     break;
                 }
             }
         }
-
         #endregion Only One Instance
 
         #region Splash screen
@@ -67,36 +68,27 @@ namespace TrayLauncher
             // in order to ensure the UI stays responsive, we need to do the work on a different thread
             _ = Task.Factory.StartNew(() =>
             {
-                // simulate some work being done the sleep value should be >= the total animation time
-                //System.Threading.Thread.Sleep(2500);
-
                 // since we're not on the UI thread once we're done we need to use the Dispatcher to
                 // create and show the main window
                 Dispatcher.Invoke(() =>
                 {
                     // initialize the main window, set it as the application main window and close
                     // the splash screen
-                    MainWindow mainWindow = new MainWindow();
-                    MainWindow = mainWindow;
+                    MainWindow = new MainWindow();
 
                     // Normally we'd show the MainWindow here, but we don't want to show it for TrayLauncher
                     //mainWindow.Show();
                     //splashScreen.Close();
                 });
             });
-
-
         }
-
-        #endregion Splish Splash
+        #endregion Splash screen
 
         #region Session ending
-
         private void Application_SessionEnding(object sender, SessionEndingCancelEventArgs e)
         {
-            Voodoo.WindowsLogoffOrShutdown = true;
+            WindowsLogoffOrShutdown = true;
         }
-
         #endregion Session ending
     }
 }

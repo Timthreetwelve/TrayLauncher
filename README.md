@@ -6,4 +6,8 @@ TrayLauncher is a customizable menu to launch applications, websites, documents,
 
 <br />
 
+### The Menu
+![TrayLauncher screenshot](https://github.com/Timthreetwelve/TrayLauncher/blob/main/Images/TLMenu.png?raw=true)
+
+### The Main Window
 ![TrayLauncher screenshot](https://github.com/Timthreetwelve/TrayLauncher/blob/main/Images/TrayLauncher.png?raw=true)
